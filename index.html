@@ -112,6 +112,8 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 #hud.show #shootZone{display:flex}
 #shootBtn{width:72px;height:34px;border-radius:17px;border:1px solid rgba(240,242,255,.25);background:rgba(10,13,22,.4);color:rgba(240,242,255,.6);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;letter-spacing:.05em;backdrop-filter:blur(4px);touch-action:auto}
 #shootBtn:active{background:rgba(0,229,160,.12);border-color:var(--viral);color:var(--paper)}
+#shootBtn.danger{background:rgba(255,77,109,.22);border-color:var(--engage);color:#fff;animation:postDangerPulse .72s ease-in-out infinite alternate}
+@keyframes postDangerPulse{from{transform:scale(1)}to{transform:scale(1.06)}}
 
 /* Toast */
 #toast{position:fixed;bottom:22%;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:12px;letter-spacing:.1em;color:var(--ink);background:var(--gold);padding:9px 20px;border-radius:4px;z-index:99;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;text-align:center;max-width:90vw}
@@ -138,6 +140,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 .rss-item-title{font-size:13px;line-height:1.45;margin-bottom:4px;font-family:var(--display);color:var(--paper)}
 .rss-item-date{font-size:10px;opacity:.35;letter-spacing:.06em}
 .rss-item-body{font-size:11px;line-height:1.65;opacity:.6;margin-top:8px;border-top:1px solid rgba(240,242,255,.08);padding-top:8px;display:none}
+.rss-save-btn{margin-top:10px;font-family:var(--display);font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(0,229,160,.45);background:rgba(0,229,160,.08);color:var(--viral);border-radius:4px;padding:7px 9px;cursor:pointer}
 .rss-item.expanded .rss-item-body{display:block}
 .rss-empty{text-align:center;padding:40px 20px;opacity:.4;font-size:12px;line-height:1.9}
 .rss-loading{text-align:center;padding:30px 20px;font-size:11px;opacity:.45;letter-spacing:.1em}
@@ -164,12 +167,12 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 
 <div id="hud">
   <div id="hudTop">
-    <div><div id="lvlTag">LV 1</div><div id="engageTag">0 engagements</div></div>
+    <div><div id="lvlTag">LV 1</div><div id="engageTag">Reach: 0</div></div>
     <button id="pauseBtn">| |</button>
   </div>
   <div id="progressWrap"><div id="progressBar"></div></div>
   <div id="tapHint"><span>&#9664; hold</span><span>hold &#9654;</span></div>
-  <div id="shootZone"><button id="shootBtn">&#128228; post</button></div>
+  <div id="shootZone"><button id="shootBtn">POST</button></div>
 </div>
 
 <!-- MAIN MENU -->
@@ -182,7 +185,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <div style="height:44px;display:flex;align-items:center;justify-content:center;width:100%;max-width:290px"><p class="sub" id="menuTagline" style="margin:0;font-size:12px;opacity:.7;line-height:1.55;text-align:center"></p></div>
   <button class="btn accent" id="startBtn">Start Posting</button>
   <button class="btn ghost" id="lvlSelBtn">Level Select</button>
-  <button class="btn ghost" id="feedBtn">&#128240; Read Industry News</button>
+  <button class="btn ghost" id="feedBtn">&#128240; Trend Radar</button>
   <p class="sub" style="opacity:.3;font-size:10px;margin-top:2px">WASD / Arrows &middot; Space to post</p>
   <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:-4px">Built by</div>
   <a id="benCard" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">
@@ -208,13 +211,14 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <div class="card">
     <div class="eyebrow" id="introEyebrow">Platform 1 of 10</div>
     <h2 id="introName" style="font-size:20px;margin-top:4px">LINKEDIN</h2>
+    <p style="font-size:10px;opacity:.55;margin-top:5px;letter-spacing:.12em;text-transform:uppercase" id="introCampaign"></p>
     <div class="mechanic-tag" id="introMechanic">NORMAL ALGORITHM</div>
     <div class="tag-row" id="introTags"></div>
     <p style="font-size:11px;opacity:.6;margin-top:10px;line-height:1.65" id="introDesc"></p>
     <p style="font-size:10px;opacity:.45;margin-top:8px;font-style:italic;line-height:1.6" id="introMeme"></p>
   </div>
   <button class="btn accent" id="introGo">Post It</button>
-  <button class="btn ghost" id="introFeedBtn" style="min-width:0;font-size:12px;padding:10px 20px">&#128240; Read Feeds First</button>
+  <button class="btn ghost" id="introFeedBtn" style="min-width:0;font-size:12px;padding:10px 20px">&#128240; Scout Trends First</button>
 </div>
 
 <!-- PAUSED -->
@@ -222,7 +226,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2>PAUSED</h2>
   <div class="stat" id="pauseStat"></div>
   <button class="btn accent" id="resumeBtn">Resume</button>
-  <button class="btn ghost" id="pauseFeedBtn">&#128240; Read Feeds</button>
+  <button class="btn ghost" id="pauseFeedBtn">&#128240; Trend Radar</button>
   <button class="btn ghost" id="pauseMenuBtn">Main Menu</button>
 </div>
 
@@ -233,7 +237,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <div class="stat" id="failStat"></div>
   <p style="font-size:11px;opacity:.6;font-style:italic;max-width:270px;line-height:1.7;margin-top:-2px" id="failQuote"></p>
   <button class="btn accent" id="retryBtn">Try Again (lol)</button>
-  <button class="btn ghost" id="failFeedBtn">&#128240; Read While You Cry</button>
+  <button class="btn ghost" id="failFeedBtn">&#128240; Doomscroll Responsibly</button>
   <button class="btn ghost" id="failMenuBtn">Main Menu</button>
   <p class="fail-attr">Made by someone who actually beats the algorithm. &nbsp;<a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">Ben Campbell &#8599;</a></p>
 </div>
@@ -244,7 +248,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2 id="clearTitle">POST CLEARED</h2>
   <div class="stat" id="clearStat"></div>
   <p style="font-size:11px;opacity:.55;font-style:italic;max-width:260px;line-height:1.6" id="clearMeme"></p>
-  <button class="btn viral" id="clearFeedBtn">&#128240; Read Industry News</button>
+  <button class="btn viral" id="clearFeedBtn">&#128240; Check the Feed</button>
   <button class="btn accent" id="nextBtn">Next Platform &#8594;</button>
   <button class="btn ghost" id="clearMenuBtn">Main Menu</button>
 </div>
@@ -270,7 +274,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 <!-- RSS PANEL -->
 <div id="rssPanel" class="hidden">
   <div id="rssPanelTop">
-    <h3>&#128240; INDUSTRY FEEDS</h3>
+    <h3>&#9889; TREND RADAR</h3>
     <button class="btn ghost" id="rssPanelClose" style="min-width:0;padding:8px 16px;font-size:11px">&#10005; Close</button>
   </div>
   <div class="rss-tabs" id="rssTabs"></div>
@@ -278,7 +282,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
     <input type="text" id="rssUrlInput" placeholder="Paste any RSS feed URL..." />
     <button id="rssAddBtn">+ Add</button>
   </div>
-  <div id="rssItems"><div class="rss-empty">Select a feed above to load articles.<br><br>Social Media Today &middot; Buffer Blog &middot; Marketing Brew<br>Later Blog &middot; HubSpot &middot; Sprout Social</div></div>
+  <div id="rssItems"><div class="rss-empty">Pick a feed. Find the trend.<br>Pretend this was the plan all along.<br><br>Social Media Today &middot; Buffer Blog &middot; Marketing Brew<br>Later Blog &middot; HubSpot &middot; Sprout Social</div></div>
   <div id="rssContinueWrap">
     <button class="btn accent" id="rssContinueBtn" style="min-width:0;width:100%;font-size:14px">Back to Game</button>
   </div>
@@ -428,70 +432,117 @@ const LOGO_FNS={
   bluesky:drawLogoBluesky, reddit:drawLogoReddit, pinterest:drawLogoPinterest,
   mastodon:drawLogoMastodon,
 };
+const LOGO_DATA_URLS={};
+function getLogoDataUrl(id){
+  if(LOGO_DATA_URLS[id])return LOGO_DATA_URLS[id];
+  const mc=document.createElement('canvas');mc.width=36;mc.height=36;
+  const mx=mc.getContext('2d');mx.translate(18,18);
+  const fn=LOGO_FNS[id];if(fn){try{fn(mx,14);}catch(e){}}
+  return LOGO_DATA_URLS[id]=mc.toDataURL();
+}
 
 /* ── Platform metadata ── */
 const PLATFORMS_META=[
-  {id:'linkedin', name:'LINKEDIN',
+  {id:'linkedin', name:'LINKEDIN', campaign:'The Humblebrag Climb',
    color:'#0077b5',star:'#a8c8ff',bg:'#061525',
    desc:'Thought leadership. Humble brags disguised as life lessons. Every post starts with "I was today years old when..."',
    meme:'"Just got rejected by 47 companies. Here\'s what I learned about RESILIENCE. \uD83D\uDCAA 47,000 likes."',
    winMeme:'"Excited to announce I\'m thriving in this space and pivoting my journey!"',
    mechanic:'normal',        hazType:'algorithm', spring:.10,moving:.00,brittle:.00,bh:0,   goal:18,gap:[48,65]},
-  {id:'twitter', name:'X / TWITTER',
+  {id:'twitter', name:'X / TWITTER', campaign:'Ratio Canyon',
    color:'#1da1f2',star:'#7dd3fc',bg:'#040d14',
    desc:'Hot takes, quote-tweets of hot takes, and threads about why hot takes are ruining discourse. Heavy gravity.',
    meme:'"This website is terrible." *has been on it for 11 years*',
    winMeme:'"Congrats on not getting ratio\'d. Today, anyway."',
    mechanic:'heavy-grav',    hazType:'ratio',     spring:.14,moving:.08,brittle:.06,bh:0,   goal:22,gap:[50,68]},
-  {id:'tiktok', name:'TIKTOK',
+  {id:'tiktok', name:'TIKTOK', campaign:'Hook Speed Run',
    color:'#69c9d0',star:'#a5f3ef',bg:'#040e10',
    desc:'Low gravity but ruthless. You have 0.3 seconds to hook them or they scroll to a raccoon eating a hot dog.',
    meme:'"Let me show you how to make content in 2024." *proceeds to do the same trend from 2021*',
    winMeme:'"You went viral! The algorithm has chosen you. For now. For today."',
    mechanic:'low-grav',      hazType:'trend',     spring:.08,moving:.12,brittle:.05,bh:0,   goal:26,gap:[58,80]},
-  {id:'instagram', name:'INSTAGRAM',
+  {id:'instagram', name:'INSTAGRAM', campaign:'Ghost Reach Gulch',
    color:'#e1306c',star:'#fda4af',bg:'#150609',
    desc:'Ghost posts. Your reach died in 2019 and nobody told you. Try Reels. No wait, try carousels. No wait—',
    meme:'"Authentic, unfiltered." *45 minutes of editing*',
    winMeme:'"Your engagement spiked! It was a bot. The bot has left."',
    mechanic:'ghost',         hazType:'algorithm', spring:.08,moving:.10,brittle:.08,bh:0,   goal:30,gap:[54,74]},
-  {id:'youtube', name:'YOUTUBE',
+  {id:'youtube', name:'YOUTUBE', campaign:'Subscribe or Fall',
    color:'#ff0000',star:'#fca5a5',bg:'#150202',
    desc:'Recommendation ring bands will sweep you into "15-Hour Fireplace Video" territory. Demonetization awaits.',
    meme:'"Please like and subscribe I am literally begging you I have a family"',
    winMeme:'"You got monetized! Congrats on your $0.003 per view."',
    mechanic:'ring-bands',    hazType:'demonetize',spring:.09,moving:.14,brittle:.10,bh:0,   goal:34,gap:[56,76]},
-  {id:'threads', name:'THREADS',
+  {id:'threads', name:'THREADS', campaign:'Is This Thing On?',
    color:'#aaaaaa',star:'#d1d5db',bg:'#0e0e0e',
    desc:'Nobody knows what this is for. Not even Meta. Wormholes of content appear. Posts vanish. Engagement is a myth.',
    meme:'"Is this thing on?" *crickets* "Nice." *posts again tomorrow*',
    winMeme:'"You got 3 likes! One was you. One was your mom. One is a mystery."',
    mechanic:'wormhole',      hazType:'ratio',     spring:.09,moving:.18,brittle:.12,bh:.02, goal:38,gap:[58,80]},
-  {id:'bluesky', name:'BLUESKY',
+  {id:'bluesky', name:'BLUESKY', campaign:'Chronological Chaos',
    color:'#0085ff',star:'#bae6fd',bg:'#020d1a',
    desc:'The promised land. Everyone left Twitter for this. Now they post the same stuff here AND Twitter. Full chaos.',
    meme:'"Finally, a platform with no toxicity." *has been here 48 hours*',
    winMeme:'"The chronological feed shows your post to everyone! All 40 of them."',
    mechanic:'event-horizon', hazType:'trend',     spring:.08,moving:.22,brittle:.16,bh:.04, goal:42,gap:[62,84]},
-  {id:'reddit', name:'REDDIT',
+  {id:'reddit', name:'REDDIT', campaign:'Mod Queue Mountain',
    color:'#ff4500',star:'#fca5a5',bg:'#0f0500',
    desc:'Black holes of discourse. Post something earnest and get destroyed. Post something stupid and get 40k upvotes.',
    meme:'"Your post was removed for being too helpful. Read the rules. Rule 7. No, not that rule 7. The other rule 7."',
    winMeme:'"Awarded! A stranger spent real money on a digital trophy for you. Normal."',
    mechanic:'ghost',         hazType:'downvote',  spring:.10,moving:.20,brittle:.18,bh:.05, goal:46,gap:[62,84]},
-  {id:'pinterest', name:'PINTEREST',
+  {id:'pinterest', name:'PINTEREST', campaign:'Recipe Rabbit Hole',
    color:'#e60023',star:'#fda4af',bg:'#140102',
    desc:'Heavy gravity. Nobody is here to buy anything. They are here to pin 200 recipes they will never make.',
    meme:'"DIY barn door for $12." *actually costs $847 and 3 hospital visits*',
    winMeme:'"Your pin reached 1M people! Zero of them clicked. It\'s art."',
    mechanic:'heavy-grav',    hazType:'algorithm', spring:.14,moving:.22,brittle:.16,bh:.04, goal:50,gap:[55,76]},
-  {id:'mastodon', name:'MASTODON',
+  {id:'mastodon', name:'MASTODON', campaign:'Federated Final Boss',
    color:'#6364ff',star:'#c4b5fd',bg:'#08081a',
    desc:'The final boss. Federated, righteous, and perpetually explaining what federated means. Wormholes everywhere.',
    meme:'"Just boost this toot." *someone in 2024 actually said this*',
    winMeme:'"You escaped the algorithm! You are free! ...You miss the algorithm, don\'t you."',
    mechanic:'event-horizon', hazType:'trend',     spring:.07,moving:.28,brittle:.22,bh:.07, goal:55,gap:[66,90]},
 ];
+
+
+const TUTORIAL_TIPS=[
+  {jump:0,msg:'Hold left or right to steer.'},
+  {jump:2,msg:'Tap POST to clear bad takes.'},
+  {jump:5,msg:'Reach the viral post to clear the platform.'},
+];
+const REACTION_TOASTS=[
+  '+12 likes from people who did not read the post',
+  'Someone commented “This.”',
+  'A brand account noticed you 👀',
+  'Your boss asked if this can go on TikTok too',
+  'One unsubscribe. Three new followers. Balanced.',
+  'Someone replied with a 9-paragraph thread',
+  'The intern made a better version in Canva',
+];
+const PLATFORM_START_TOASTS={
+  linkedin:'Professional mode: humblebrag carefully.',
+  twitter:'Heavy gravity. Hot takes fall fast.',
+  tiktok:'Low gravity. Hook fast or vanish.',
+  instagram:'Ghost reach activated.',
+  youtube:'Avoid recommendation bands.',
+  threads:'Engagement may or may not exist.',
+  bluesky:'Chronological chaos unlocked.',
+  reddit:'Do not anger the mods.',
+  pinterest:'Heavy pins. Soft vibes. Weird physics.',
+  mastodon:'Final boss: federated confusion.',
+};
+let shownTutorialTips={};
+function showTutorialTip(){
+  if(level!==0)return;
+  const landedJump=jumpCount-1;
+  const tip=TUTORIAL_TIPS.find(t=>t.jump===landedJump);
+  if(tip&&!shownTutorialTips[tip.jump]){shownTutorialTips[tip.jump]=true;toast(tip.msg,2200);}
+}
+function randomReactionToast(){
+  if(Math.random()<.18)toast(REACTION_TOASTS[Math.floor(Math.random()*REACTION_TOASTS.length)],2200);
+}
+function getPlatformStartToast(cfg){return PLATFORM_START_TOASTS[cfg.id]||'';}
 
 const HAZ_CFG={
   algorithm: {label:'Algorithm Update'},
@@ -594,18 +645,26 @@ async function loadFeed(feed){
   }
   rssCache[key]=items;return items;
 }
+function saveContentIdea(item,feedName){
+  const ideas=JSON.parse(localStorage.getItem('fv_content_ideas')||'[]');
+  ideas.unshift({title:item.title||'Untitled',source:feedName,link:item.link||'#',savedAt:new Date().toISOString()});
+  localStorage.setItem('fv_content_ideas',JSON.stringify(ideas.slice(0,30)));
+}
 function renderFeedItems(items,feedName,feedColor){
   const container=document.getElementById('rssItems');
-  if(!items||!items.length){container.innerHTML='<div class="rss-empty">No articles found.</div>';return;}
+  if(!items||!items.length){container.innerHTML='<div class="rss-empty">Pick a feed. Find the trend.<br>Pretend this was the plan all along.</div>';return;}
   container.innerHTML='';
   items.forEach(item=>{
     const el=document.createElement('div');el.className='rss-item';
     const dateStr=item.date?new Date(item.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    el.innerHTML='<div class="rss-item-source" style="color:'+feedColor+'">'+feedName+'</div>'+
-      '<div class="rss-item-title">'+item.title+'</div>'+
+    el.innerHTML='<div class="rss-item-source" style="color:'+feedColor+'">'+feedName+'</div>'+ 
+      '<div class="rss-item-title">'+item.title+'</div>'+ 
       (dateStr?'<div class="rss-item-date">'+dateStr+'</div>':'')+
-      (item.desc?'<div class="rss-item-body">'+item.desc+(item.link&&item.link!=='#'?'<br><br><a href="'+item.link+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ MORE \u2197</a>':'')+'</div>':'');
+      '<div class="rss-item-body">'+(item.desc||'No summary. Classic.')+
+      (item.link&&item.link!=='#'?'<br><br><a href="'+item.link+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ MORE ↗</a>':'')+
+      '<br><button class="rss-save-btn" type="button">SAVE AS CONTENT IDEA</button></div>';
     el.addEventListener('click',()=>el.classList.toggle('expanded'));
+    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();saveContentIdea(item,feedName);toast('Saved as content idea ✍️',1600);});
     container.appendChild(el);
   });
 }
@@ -729,6 +788,13 @@ function shoot(){
   if(state!=='playing'||shootCd>0)return;
   shootCd=14;sndPost();bullets.push({x:player.x+16,y:player.y-4,vy:-10,dead:false});
 }
+function updatePostButtonDangerState(){
+  const btn=document.getElementById('shootBtn');
+  if(state!=='playing'||!player||!hazards){btn.classList.remove('danger');return;}
+  const pcx=player.x+16,pcy=player.y+18;
+  const danger=hazards.some(h=>!h.dead&&h.type!=='blackhole'&&Math.hypot(h.x-pcx,h.y-pcy)<95);
+  btn.classList.toggle('danger',danger);
+}
 
 let stars=[];
 function makeStars(){stars=[];for(let i=0;i<85;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.4,p:Math.random()*Math.PI*2,d:.3+Math.random()*.7});}
@@ -818,8 +884,11 @@ function startLevel(n){
   if(cfg.mechanic==='ring-bands'){ringBands=[];for(let i=0;i<4;i++)ringBands.push({y:H*.2+i*(H*.19),vy:rand(.5,1.)*(Math.random()<.5?1:-1),thick:20+rand(0,14)});}
   player={x:W/2-16,y:H-90,w:32,h:36,vx:0,vy:-13.2,face:1};
   cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;
-  document.getElementById('lvlTag').textContent=cfg.name;setState('playing');
+  document.getElementById('lvlTag').textContent=cfg.name;document.getElementById('engageTag').textContent='Reach: 0';setState('playing');
+  const startToast=getPlatformStartToast(cfg);
+  if(startToast)setTimeout(()=>{if(state==='playing'&&level===n)toast(startToast,2200);},450);
 }
+
 
 const BASE_GRAV=.37,JUMP=-13.2,SPRING_V=-19.5,MOVE=.54,MAXVX=6.2;
 
@@ -845,7 +914,7 @@ function update(){
         if(p.spring)sndViral();else sndJump();
         jet(player.x+player.w/2,player.y+player.h,p.spring?'#00e5a0':'#5b8dff');
         if(p===finishPad){completeLevel();return;}
-        jumpCount++;
+        jumpCount++;showTutorialTip();randomReactionToast();
       }
     }
   }
@@ -900,12 +969,13 @@ function update(){
     if(jumpCount>=cfg.goal&&!finishPad){
       const finishY=topY;
       // Only clear nearby hazards — keep all platforms so the path stays intact
-      hazards=hazards.filter(h=>Math.abs(h.y-finishY)>180);
-      if(wormholes)wormholes=wormholes.filter(w=>Math.abs(w.y-finishY)>180);
-      // Two solid helper platforms leading up to the finish
-      platforms.push({x:W/2-105,y:finishY+175,w:84,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      platforms.push({x:W/2+20, y:finishY+95, w:84,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      finishPad={x:W/2-90,y:finishY,w:180,h:18,type:'finish',vx:0,spring:false,broken:false,ghost:false,ghostVis:1};
+      hazards=hazards.filter(h=>Math.abs(h.y-finishY)>260);
+      if(wormholes)wormholes=wormholes.filter(w=>Math.abs(w.y-finishY)>260);
+      // Three safe helper platforms staircase up to a wider finish pad
+      platforms.push({x:W/2-112,y:finishY+210,w:92,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+      platforms.push({x:W/2+18, y:finishY+140,w:92,h:14,type:'solid',vx:0,spring:true, broken:false,ghost:false,ghostVis:1});
+      platforms.push({x:W/2-84, y:finishY+72, w:96,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+      finishPad={x:W/2-105,y:finishY,w:210,h:18,type:'finish',vx:0,spring:false,broken:false,ghost:false,ghostVis:1};
       platforms.push(finishPad);levelDone=true;break;
     } else {
       platforms.push(spawnPlatform(topY,cfg));spawnHazard(topY,cfg);
@@ -919,7 +989,8 @@ function update(){
   particles=particles.filter(pt=>pt.life>0);
   if(player.y>H+60){failGame();return;}
   document.getElementById('progressBar').style.width=Math.min(100,jumpCount/PLATFORMS_META[level].goal*100)+'%';
-  document.getElementById('engageTag').textContent=Math.floor(maxAlt/10).toLocaleString()+' engagements';
+  updatePostButtonDangerState();
+  document.getElementById('engageTag').textContent='Reach: '+Math.floor(maxAlt/10).toLocaleString();
 }
 
 /* ── Draw platform as branded post card ── */
@@ -1029,6 +1100,10 @@ function drawLevelBg(cfg,t){
 /* ── Draw hazard as hand-drawn logo ── */
 function drawHazard(h,cfg){
   ctx.save();ctx.translate(h.x,h.y);ctx.rotate(h.rot*.25);
+  const pulse=.5+.5*Math.sin(performance.now()/135);
+  // warning ring
+  ctx.globalAlpha=.55+.28*pulse;ctx.strokeStyle='#ff4d6d';ctx.lineWidth=2.5+pulse*1.5;ctx.beginPath();ctx.arc(0,0,h.r+9+pulse*5,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=.18;ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,h.r+15+pulse*7,0,Math.PI*2);ctx.stroke();
   // glow
   ctx.globalAlpha=.14;ctx.fillStyle=cfg.color;ctx.beginPath();ctx.arc(0,0,h.r+8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
   // draw the platform's own logo as the hazard
@@ -1129,12 +1204,8 @@ function buildLevelGrid(){
     const completed=i<furthest,unlocked=i<=furthest;
     const node=document.createElement('div');
     node.className='lvl-node'+(completed?' completed':unlocked?' unlocked':' locked');
-    // draw mini logo in a temp canvas
-    const mc=document.createElement('canvas');mc.width=36;mc.height=36;
-    const mx=mc.getContext('2d');mx.translate(18,18);
-    const fn=LOGO_FNS[cfg.id];if(fn){try{fn(mx,14);}catch(e){}}
     node.innerHTML=(completed?'<span class="lvl-check">\u2713</span>':'')+
-      '<img src="'+mc.toDataURL()+'" style="width:28px;height:28px;display:block;margin:0 auto 2px">'+
+      '<img src="'+getLogoDataUrl(cfg.id)+'" style="width:28px;height:28px;display:block;margin:0 auto 2px">'+
       '<span class="lvl-num">'+(i+1)+'</span>'+
       '<span class="lvl-name">'+cfg.name+'</span>';
     if(unlocked)node.addEventListener('pointerup',e=>{e.stopPropagation();sndClick();openIntro(i);});
@@ -1163,25 +1234,27 @@ function openIntro(n){
   level=n;const cfg=PLATFORMS_META[n];
   document.getElementById('introEyebrow').textContent='Platform '+(n+1)+' of '+PLATFORMS_META.length;
   document.getElementById('introName').textContent=cfg.name;
+  document.getElementById('introCampaign').textContent=cfg.campaign||'';
   document.getElementById('introMechanic').textContent=cfg.mechanic.replace(/-/g,' ').toUpperCase()+' ALGORITHM';
   document.getElementById('introDesc').textContent=cfg.desc;
   document.getElementById('introMeme').textContent=cfg.meme;
   const best=save.getBest(n);
   document.getElementById('introTags').innerHTML=
     '<span class="platform-tag" style="color:'+cfg.color+';border-color:'+cfg.color+'44">'+cfg.name+'</span>'+
+    '<span class="platform-tag" style="color:var(--viral);border-color:rgba(0,229,160,.35)">'+cfg.campaign+'</span>'+
     '<span class="platform-tag" style="color:#aaa;border-color:#aaa44">'+cfg.hazType+'</span>'+
     (best?'<span class="platform-tag" style="color:var(--gold);border-color:rgba(255,215,0,.3)">\u2605 best '+Math.floor(best/10).toLocaleString()+'</span>':'');
   state='intro';show('introScreen');
 }
 function pauseGame(){
   state='paused';
-  document.getElementById('pauseStat').innerHTML=PLATFORMS_META[level].name+' &nbsp;\u00b7&nbsp; <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> engagements';
+  document.getElementById('pauseStat').innerHTML=PLATFORMS_META[level].name+' &nbsp;\u00b7&nbsp; <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> reach';
   show('pauseScreen');
 }
 function failGame(){
   sndRatio();state='fail';
   document.getElementById('failEyebrow').textContent=(HAZ_CFG[PLATFORMS_META[level].hazType]||{}).label||'Signal lost';
-  document.getElementById('failStat').innerHTML=PLATFORMS_META[level].name+' \u00b7 <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> engagements';
+  document.getElementById('failStat').innerHTML=PLATFORMS_META[level].name+' \u00b7 <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> reach';
   document.getElementById('failQuote').textContent=FAIL_QUOTES[Math.floor(Math.random()*FAIL_QUOTES.length)];
   document.getElementById('hud').classList.remove('show');show('failScreen');
 }
@@ -1191,11 +1264,11 @@ function completeLevel(){
   const isLast=level===PLATFORMS_META.length-1;
   document.getElementById('hud').classList.remove('show');
   if(isLast){
-    state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> engagements';show('winScreen');
+    state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';show('winScreen');
   } else {
     state='clear';
     document.getElementById('clearTitle').textContent=cfg.name+' CLEARED';
-    document.getElementById('clearStat').innerHTML='<b>'+gained.toLocaleString()+'</b> engagements';
+    document.getElementById('clearStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';
     document.getElementById('clearMeme').textContent=cfg.winMeme;
     show('clearScreen');
   }
