@@ -118,6 +118,24 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 /* Toast */
 #toast{position:fixed;bottom:22%;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:12px;letter-spacing:.1em;color:var(--ink);background:var(--gold);padding:9px 20px;border-radius:4px;z-index:99;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;text-align:center;max-width:90vw}
 #toast.show{opacity:1}
+/* Win/share/install polish */
+#screenFlash{position:fixed;inset:0;background:#fff;z-index:80;opacity:0;pointer-events:none;transition:opacity .28s}
+#screenFlash.show{opacity:.72;transition:opacity .04s}
+.headline-card,.idea-board{border:1px solid rgba(0,229,160,.32);background:rgba(0,229,160,.055);border-radius:8px;padding:13px 14px;max-width:310px;width:100%;text-align:left}
+.headline-card.hidden,.idea-board.hidden,#installBanner.hidden{display:none}
+.headline-source{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--viral);margin-bottom:5px}
+.headline-title{font-family:var(--display);font-size:13px;line-height:1.45;color:var(--paper);margin-bottom:10px}
+.headline-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mini-btn{font-family:var(--display);font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,242,255,.22);background:rgba(240,242,255,.06);color:var(--paper);border-radius:4px;padding:8px 10px;cursor:pointer;text-decoration:none}
+.mini-btn.save{border-color:rgba(0,229,160,.45);color:var(--viral)}
+.mini-btn.share{border-color:rgba(255,215,0,.45);color:var(--gold)}
+.idea-board{max-height:52vh;overflow:auto;background:rgba(240,242,255,.04);border-color:rgba(91,141,255,.28)}
+.idea-item{border-bottom:1px solid rgba(240,242,255,.08);padding:9px 0}.idea-item:last-child{border-bottom:0}
+.idea-title{font-family:var(--display);font-size:12px;line-height:1.4}.idea-meta{font-size:9px;opacity:.5;margin-top:4px;letter-spacing:.08em;text-transform:uppercase}
+#installBanner{position:fixed;left:14px;right:14px;bottom:max(14px,env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(10,13,22,.94);border:1px solid rgba(91,141,255,.38);border-left:3px solid var(--viral);border-radius:8px;padding:12px 14px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+#installBanner p{font-size:10px;line-height:1.45;opacity:.72;text-align:left}
+.install-actions{display:flex;gap:6px;flex-shrink:0}
+.install-actions button{min-width:0;padding:8px 10px;font-size:10px}
 
 /* RSS Panel */
 #rssPanel{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;background:rgba(10,13,22,.98);backdrop-filter:blur(14px)}
@@ -227,7 +245,16 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <div class="stat" id="pauseStat"></div>
   <button class="btn accent" id="resumeBtn">Resume</button>
   <button class="btn ghost" id="pauseFeedBtn">&#128240; Trend Radar</button>
+  <button class="btn ghost" id="ideaBoardBtn">Saved Ideas</button>
   <button class="btn ghost" id="pauseMenuBtn">Main Menu</button>
+</div>
+
+<!-- IDEA BOARD -->
+<div class="overlay hidden" id="ideaScreen">
+  <div class="eyebrow">Saved headlines</div>
+  <h2>CONTENT IDEAS</h2>
+  <div class="idea-board" id="ideaList"></div>
+  <button class="btn ghost" id="ideaBackBtn">Back</button>
 </div>
 
 <!-- FAIL -->
@@ -248,7 +275,9 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2 id="clearTitle">POST CLEARED</h2>
   <div class="stat" id="clearStat"></div>
   <p style="font-size:11px;opacity:.55;font-style:italic;max-width:260px;line-height:1.6" id="clearMeme"></p>
+  <div class="headline-card hidden" id="betweenHeadline"></div>
   <button class="btn viral" id="clearFeedBtn">&#128240; Check the Feed</button>
+  <button class="btn ghost" id="clearShareBtn">Share Score</button>
   <button class="btn accent" id="nextBtn">Next Platform &#8594;</button>
   <button class="btn ghost" id="clearMenuBtn">Main Menu</button>
 </div>
@@ -267,6 +296,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
       <div style="font-family:var(--display);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--engage);margin-top:5px">bencampbell.netlify.app &#8599;</div>
     </div>
   </a>
+  <button class="btn viral" id="winShareBtn">Share the Crown</button>
   <button class="btn accent" id="againBtn">Play Again</button>
   <button class="btn ghost" id="winMenuBtn">Main Menu</button>
 </div>
@@ -288,6 +318,8 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   </div>
 </div>
 
+<div id="screenFlash"></div>
+<div id="installBanner" class="hidden"><p><b>Install Feed Velocity?</b><br>Launch from your home screen like a tiny content gremlin.</p><div class="install-actions"><button class="btn viral" id="installAccept">Install</button><button class="btn ghost" id="installDismiss">Not now</button></div></div>
 <div id="toast"></div>
 <script>
 /* =========================================================
@@ -295,6 +327,8 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
    Nobody Studios · Hand-drawn logos · Platform memes
    ========================================================= */
 const W=390,H=680;
+// One canonical game URL for all share surfaces.
+const GAME_URL='https://feed-velocity.netlify.app/';
 const cvs=document.getElementById('game');
 const ctx=cvs.getContext('2d');
 let viewScale=1;
@@ -588,7 +622,9 @@ const DEFAULT_FEEDS=[
   {name:'HubSpot Blog',      rss:'https://blog.hubspot.com/marketing/rss.xml', color:'#ff7a59'},
   {name:'Sprout Social',     rss:'https://sproutsocial.com/insights/feed/',    color:'#59cb59'},
 ];
-let userFeeds=JSON.parse(localStorage.getItem('fv_feeds')||'null')||DEFAULT_FEEDS;
+// Safe localStorage JSON helpers keep corrupt saves from crashing the game.
+function safeJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback;}catch(e){return fallback;}}
+let userFeeds=safeJson('fv_feeds',null)||DEFAULT_FEEDS;
 let rssCache={};let activeFeedIdx=0;let rssReturnAction=null;
 function saveFeeds(){localStorage.setItem('fv_feeds',JSON.stringify(userFeeds));}
 
@@ -645,11 +681,23 @@ async function loadFeed(feed){
   }
   rssCache[key]=items;return items;
 }
+// Local content idea board shared by Trend Radar and between-level headlines.
+function getContentIdeas(){const ideas=safeJson('fv_content_ideas',[]);return Array.isArray(ideas)?ideas:[];}
+function ideaKey(title,link){return ((link&&link!=='#')?link:title||'').trim().toLowerCase();}
 function saveContentIdea(item,feedName){
-  const ideas=JSON.parse(localStorage.getItem('fv_content_ideas')||'[]');
-  ideas.unshift({title:item.title||'Untitled',source:feedName,link:item.link||'#',savedAt:new Date().toISOString()});
-  localStorage.setItem('fv_content_ideas',JSON.stringify(ideas.slice(0,30)));
+  const ideas=getContentIdeas();const key=ideaKey(item.title,item.link);
+  if(ideas.some(i=>ideaKey(i.title,i.url||i.link)===key))return false;
+  ideas.unshift({title:item.title||'Untitled',source:feedName||item.source||'Trend Radar',url:item.link||item.url||'#',savedAt:new Date().toISOString()});
+  localStorage.setItem('fv_content_ideas',JSON.stringify(ideas.slice(0,50)));return true;
 }
+function setSaveButtonState(btn,saved){btn.textContent=saved?'SAVED!':'SAVE AS CONTENT IDEA';btn.disabled=!!saved;}
+function renderIdeaBoard(){
+  const box=$('ideaList');const ideas=getContentIdeas();
+  if(!ideas.length){box.innerHTML='<div class="rss-empty">No saved ideas yet.<br>Open Trend Radar or clear a platform to steal from the internet responsibly.</div>';return;}
+  box.innerHTML=ideas.map(i=>'<div class="idea-item"><div class="idea-title">'+escapeHtml(i.title||'Untitled')+'</div><div class="idea-meta">'+escapeHtml(i.source||'Trend Radar')+' · '+new Date(i.savedAt||Date.now()).toLocaleDateString()+'</div>'+(i.url&&i.url!=='#'?'<a class="mini-btn" style="display:inline-block;margin-top:7px" target="_blank" rel="noopener" href="'+escapeAttr(i.url)+'">READ ↗</a>':'')+'</div>').join('');
+}
+function escapeHtml(str){return String(str).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function escapeAttr(str){return escapeHtml(str).replace(/'/g,'&#39;');}
 function renderFeedItems(items,feedName,feedColor){
   const container=document.getElementById('rssItems');
   if(!items||!items.length){container.innerHTML='<div class="rss-empty">Pick a feed. Find the trend.<br>Pretend this was the plan all along.</div>';return;}
@@ -664,7 +712,7 @@ function renderFeedItems(items,feedName,feedColor){
       (item.link&&item.link!=='#'?'<br><br><a href="'+item.link+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ MORE ↗</a>':'')+
       '<br><button class="rss-save-btn" type="button">SAVE AS CONTENT IDEA</button></div>';
     el.addEventListener('click',()=>el.classList.toggle('expanded'));
-    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();saveContentIdea(item,feedName);toast('Saved as content idea ✍️',1600);});
+    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();const saved=saveContentIdea(item,feedName);setSaveButtonState(e.currentTarget,saved);toast(saved?'Saved as content idea ✍️':'Already saved ✅',1600);});
     container.appendChild(el);
   });
 }
@@ -700,9 +748,9 @@ document.getElementById('rssAddBtn').onclick=async()=>{
 
 /* ── Persistence ── */
 const save={
-  get furthest(){return parseInt(localStorage.getItem('fv_furthest')||'0')},
+  get furthest(){return parseInt(localStorage.getItem('fv_furthest')||'0')||0},
   set furthest(v){localStorage.setItem('fv_furthest',Math.max(this.furthest,v))},
-  getBest(l){return parseInt(localStorage.getItem('fv_best_'+l)||'0')},
+  getBest(l){return parseInt(localStorage.getItem('fv_best_'+l)||'0')||0},
   setBest(l,v){if(v>this.getBest(l))localStorage.setItem('fv_best_'+l,v)},
 };
 
@@ -1188,6 +1236,15 @@ function drawSocialPerson(x,y,face){
   ctx.restore();
 }
 function jet(x,y,color){for(let i=0;i<6;i++)particles.push({x,y,vx:rand(-1.2,1.2),vy:rand(.4,1.8),life:rand(12,22),color});}
+// One-shot finish pad celebration: flash, particles, sound, and optional haptics.
+function doFanfare(cfg){
+  const flash=$('screenFlash');flash.style.background=cfg.color||'#fff';flash.classList.add('show');setTimeout(()=>flash.classList.remove('show'),70);
+  sndViral();setTimeout(()=>beep(1760,.16,'triangle',.045),260);
+  if(navigator.vibrate)navigator.vibrate([35,25,55]);
+  const x=finishPad?finishPad.x+finishPad.w/2:W/2,y=finishPad?finishPad.y+finishPad.h/2:H*.35;
+  for(let i=0;i<42;i++)particles.push({x,y,vx:rand(-4.2,4.2),vy:rand(-5.2,1.2),life:rand(22,42),color:i%3?cfg.color:'#ffd700'});
+  draw();
+}
 
 function loop(){
   if(state==='playing'){update();if(state==='playing')draw();}
@@ -1213,7 +1270,7 @@ function buildLevelGrid(){
   });
 }
 
-const SCREENS=['menuScreen','levelSelectScreen','introScreen','pauseScreen','failScreen','clearScreen','winScreen'];
+const SCREENS=['menuScreen','levelSelectScreen','introScreen','pauseScreen','ideaScreen','failScreen','clearScreen','winScreen'];
 function show(id){SCREENS.forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>document.getElementById(s).classList.add('hidden'));}
 function setState(s){state=s;document.getElementById('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
 
@@ -1259,18 +1316,19 @@ function failGame(){
   document.getElementById('hud').classList.remove('show');show('failScreen');
 }
 function completeLevel(){
-  sndViral();save.setBest(level,maxAlt);save.furthest=level+1;
-  const gained=Math.floor(maxAlt/10);const cfg=PLATFORMS_META[level];
+  if(state!=='playing')return;
+  const cfg=PLATFORMS_META[level];doFanfare(cfg);save.setBest(level,maxAlt);save.furthest=level+1;
+  const gained=Math.floor(maxAlt/10);
   const isLast=level===PLATFORMS_META.length-1;
   document.getElementById('hud').classList.remove('show');
   if(isLast){
-    state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';show('winScreen');
+    state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';show('winScreen');$('winShareBtn').onclick=()=>shareScore(cfg,gained,true);
   } else {
     state='clear';
     document.getElementById('clearTitle').textContent=cfg.name+' CLEARED';
     document.getElementById('clearStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';
     document.getElementById('clearMeme').textContent=cfg.winMeme;
-    show('clearScreen');
+    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);showBetweenHeadline();
   }
 }
 
@@ -1284,6 +1342,8 @@ $('introFeedBtn').onclick=()=>openFeedPanel(()=>{state='intro';show('introScreen
 $('pauseBtn').onclick=()=>{if(state==='playing')pauseGame();};
 $('resumeBtn').onclick=()=>{show(null);setState('playing');};
 $('pauseFeedBtn').onclick=()=>openFeedPanel(()=>{show(null);setState('playing');});
+$('ideaBoardBtn').onclick=()=>{renderIdeaBoard();state='paused';show('ideaScreen');};
+$('ideaBackBtn').onclick=()=>{state='paused';show('pauseScreen');};
 $('pauseMenuBtn').onclick=()=>{state='menu';document.getElementById('hud').classList.remove('show');show('menuScreen');};
 $('retryBtn').onclick=()=>{sndClick();openIntro(level);};
 $('failFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level));
@@ -1295,6 +1355,32 @@ if($('winFeedBtn'))$('winFeedBtn').onclick=()=>openFeedPanel(null);
 $('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('againBtn').onclick=()=>{sndClick();openIntro(0);};
 $('shootBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(state==='playing')shoot();});
+
+// Between-level headline card: opportunistic RSS value with graceful failure.
+async function getOneHeadline(){
+  try{const feed=userFeeds[activeFeedIdx]||userFeeds[0];const items=await loadFeed(feed);const item=(items||[]).find(i=>i.link&&i.link!=='#'&&!/^⚠/.test(i.title))||(items||[])[0];return item?{...item,source:feed.name,color:feed.color}:null;}catch(e){return null;}
+}
+async function showBetweenHeadline(){
+  const card=$('betweenHeadline');card.classList.add('hidden');card.innerHTML='';
+  const item=await getOneHeadline();if(state!=='clear'||!item||/^⚠/.test(item.title))return;
+  card.innerHTML='<div class="headline-source" style="color:'+escapeAttr(item.color||'#00e5a0')+'">'+escapeHtml(item.source)+'</div><div class="headline-title">'+escapeHtml(item.title)+'</div><div class="headline-actions"><button class="mini-btn save" id="betweenSaveBtn">SAVE IDEA</button>'+(item.link&&item.link!=='#'?'<a class="mini-btn" target="_blank" rel="noopener" href="'+escapeAttr(item.link)+'">READ ↗</a>':'')+'</div>';
+  card.classList.remove('hidden');
+  $('betweenSaveBtn').onclick=e=>{const saved=saveContentIdea(item,item.source);e.currentTarget.textContent=saved?'SAVED!':'ALREADY SAVED';toast(saved?'Saved as content idea ✍️':'Already saved ✅',1600);};
+}
+// Native share first, then X intent, then clipboard/toast fallback.
+async function shareScore(cfg,reach,won){
+  const text=(won?'I defeated every algorithm in Feed Velocity':'I cleared '+cfg.name+' with '+reach.toLocaleString()+' reach')+'. Built by Ben Campbell. '+(won?'The content crown is unwell.':'My engagement dashboard needs a little lie down.');
+  const shareData={title:'Feed Velocity',text,url:GAME_URL};
+  try{if(navigator.share){await navigator.share(shareData);toast('Shared. The algorithm is nervous.',1600);return;}}catch(e){}
+  const intent='https://twitter.com/intent/tweet?text='+encodeURIComponent(text+' '+GAME_URL);
+  try{window.open(intent,'_blank','noopener');toast('Opened share draft ✨',1600);return;}catch(e){}
+  try{await navigator.clipboard.writeText(text+' '+GAME_URL);toast('Copied share text 📋',1600);}catch(e){toast('Share text ready: '+text,3200);}
+}
+// Non-blocking PWA install prompt; silently stays hidden when unavailable.
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('installBanner').classList.remove('hidden');});
+$('installAccept').onclick=async()=>{if(!deferredInstallPrompt)return $('installBanner').classList.add('hidden');deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice;}catch(e){}deferredInstallPrompt=null;$('installBanner').classList.add('hidden');};
+$('installDismiss').onclick=()=>{$('installBanner').classList.add('hidden');};
 </script>
 </body>
 </html>
