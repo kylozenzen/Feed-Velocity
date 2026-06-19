@@ -177,6 +177,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 .lvl-node .lvl-name{font-size:7px;letter-spacing:.04em;opacity:.45;text-transform:uppercase;line-height:1.3;margin-top:2px}
 .lvl-check{position:absolute;top:2px;right:4px;font-size:8px;color:var(--viral)}
 .card{border:1px solid rgba(91,141,255,.35);background:rgba(10,13,22,.75);padding:20px 22px;max-width:310px;width:100%;border-radius:8px}
+.how-row{display:flex;align-items:center;gap:11px;font-size:12px;line-height:1.45}.how-row span{font-size:20px;width:28px;text-align:center}.how-row p{margin:0;opacity:.82}
 .mechanic-tag{display:inline-block;background:rgba(0,229,160,.1);border:1px solid var(--viral);color:var(--viral);font-size:9px;letter-spacing:.2em;padding:3px 10px;border-radius:12px;margin-top:8px}
 .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .platform-tag{font-size:9px;letter-spacing:.1em;padding:3px 10px;border-radius:10px;border:1px solid;text-transform:uppercase}
@@ -204,6 +205,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   </div>
   <div style="height:44px;display:flex;align-items:center;justify-content:center;width:100%;max-width:290px"><p class="sub" id="menuTagline" style="margin:0;font-size:12px;opacity:.7;line-height:1.55;text-align:center"></p></div>
   <button class="btn accent" id="startBtn">Start Posting</button>
+  <button class="btn ghost" id="howBtn">How to Play</button>
   <button class="btn ghost" id="lvlSelBtn">Level Select</button>
   <button class="btn ghost" id="feedBtn">&#128240; Trend Radar</button>
   <p class="sub" style="opacity:.3;font-size:10px;margin-top:2px">WASD / Arrows &middot; Space to post</p>
@@ -216,6 +218,23 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
       <span id="benCta">bencampbell.netlify.app &#8599;</span>
     </div>
   </a>
+</div>
+
+
+<!-- HOW TO PLAY -->
+<div class="overlay hidden" id="howScreen">
+  <div class="eyebrow">Quick start</div>
+  <h2>HOW TO PLAY</h2>
+  <div class="card" style="display:grid;gap:10px;text-align:left">
+    <div class="how-row"><span>↔️</span><p>Hold left/right to steer.</p></div>
+    <div class="how-row"><span>🧱</span><p>Land on posts to climb.</p></div>
+    <div class="how-row"><span>🚀</span><p>Tap POST to clear bad takes.</p></div>
+    <div class="how-row"><span>📰</span><p>Grab trend cards to save ideas.</p></div>
+    <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to win.</p></div>
+  </div>
+  <button class="btn viral" id="practiceBtn">Practice</button>
+  <button class="btn accent" id="howStartBtn">Start Game</button>
+  <button class="btn ghost" id="howBackBtn">Back</button>
 </div>
 
 <!-- LEVEL SELECT -->
@@ -540,45 +559,16 @@ const PLATFORMS_META=[
    winMeme:'"You escaped the algorithm! You are free! ...You miss the algorithm, don\'t you."',
    mechanic:'event-horizon', hazType:'trend',     spring:.07,moving:.28,brittle:.22,bh:.07, goal:55,gap:[66,90]},
 ];
+const PRACTICE_META={id:'practice', name:'PRACTICE RUN', campaign:'Warm-Up Feed', color:'#00e5a0',star:'#b9ffe9',bg:'#061512',desc:'A no-fail climb to learn the rhythm.',meme:'',winMeme:'You’re ready. Now go fight the algorithm.',mechanic:'practice',hazType:'algorithm',spring:.04,moving:.00,brittle:.00,bh:0,hazard:0,goal:9,gap:[44,56],earlyWidth:118,practice:true};
+function getCfg(){return level<0?PRACTICE_META:PLATFORMS_META[level];}
 
-
-const TUTORIAL_TIPS=[
-  {jump:0,msg:'Hold left or right to steer.'},
-  {jump:2,msg:'Tap POST to clear bad takes.'},
-  {jump:5,msg:'Reach the viral post to clear the platform.'},
-];
-const REACTION_TOASTS=[
-  '+12 likes from people who did not read the post',
-  'Someone commented “This.”',
-  'A brand account noticed you 👀',
-  'Your boss asked if this can go on TikTok too',
-  'One unsubscribe. Three new followers. Balanced.',
-  'Someone replied with a 9-paragraph thread',
-  'The intern made a better version in Canva',
-];
-const PLATFORM_START_TOASTS={
-  linkedin:'Professional mode: humblebrag carefully.',
-  twitter:'Heavy gravity. Hot takes fall fast.',
-  tiktok:'Low gravity. Hook fast or vanish.',
-  instagram:'Ghost reach activated.',
-  youtube:'Avoid recommendation bands.',
-  threads:'Engagement may or may not exist.',
-  bluesky:'Chronological chaos unlocked.',
-  reddit:'Do not anger the mods.',
-  pinterest:'Heavy pins. Soft vibes. Weird physics.',
-  mastodon:'Final boss: federated confusion.',
-};
+const TUTORIAL_TIPS=[];
+const REACTION_TOASTS=[];
+const PLATFORM_START_TOASTS={};
 let shownTutorialTips={};
-function showTutorialTip(){
-  if(level!==0)return;
-  const landedJump=jumpCount-1;
-  const tip=TUTORIAL_TIPS.find(t=>t.jump===landedJump);
-  if(tip&&!shownTutorialTips[tip.jump]){shownTutorialTips[tip.jump]=true;toast(tip.msg,2200);}
-}
-function randomReactionToast(){
-  if(Math.random()<.008)toast(REACTION_TOASTS[Math.floor(Math.random()*REACTION_TOASTS.length)],1300,{priority:'low'});
-}
-function getPlatformStartToast(cfg){return PLATFORM_START_TOASTS[cfg.id]||'';}
+function showTutorialTip(){}
+function randomReactionToast(){}
+function getPlatformStartToast(cfg){return '';}
 
 const HAZ_CFG={
   algorithm: {label:'Algorithm Update'},
@@ -814,7 +804,7 @@ addEventListener('keyup',e=>{
 /* ── Game state ── */
 let state='menu';let level=0;
 let player,platforms,particles,hazards,bullets,wormholes,ringBands;
-let cam,maxAlt,finishPad,levelDone,shootCd,ghostTimer,gravMult,jumpCount,combo,runIdeasSaved,trendToken,trendTokenArmed;
+let cam,maxAlt,finishPad,levelDone,shootCd,ghostTimer,gravMult,jumpCount,combo,runIdeasSaved,trendToken,trendTokenArmed,lastSafePlatform;
 let _consNonSolid=0;
 
 function spawnPlatform(y,cfg){
@@ -825,7 +815,7 @@ function spawnPlatform(y,cfg){
   }
   if(type==='solid')_consNonSolid=0;else _consNonSolid++;
   const ghost=cfg.mechanic==='ghost'&&type==='solid'&&_consNonSolid===0&&Math.random()<.38;
-  const width=cfg.earlyWidth&&level===0&&jumpCount<10?cfg.earlyWidth:68;
+  const width=cfg.practice?150:(cfg.earlyWidth&&level===0&&jumpCount<10?cfg.earlyWidth:68);
   return{x:rand(10,W-width-10),y,w:width,h:14,type,
     vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
     spring:Math.random()<cfg.spring,broken:false,ghost,
@@ -922,33 +912,31 @@ initMenuBg();
 
 /* ── Start level ── */
 function startLevel(n){
-  level=n;const cfg=PLATFORMS_META[n];
+  level=n;const cfg=getCfg();
   platforms=[];particles=[];hazards=[];bullets=[];wormholes=[];ringBands=[];
   shootCd=0;ghostTimer=0;_consNonSolid=0;
   gravMult=cfg.mechanic==='heavy-grav'?1.38:cfg.mechanic==='low-grav'?.44:1;
-  const RUNGS=5,RUNG_GAP=68;const sides=[W*.15,W*.54,W*.20,W*.58,W*.24];
+  const RUNGS=cfg.practice?7:5,RUNG_GAP=cfg.practice?58:68;const sides=cfg.practice?[W*.5-70,W*.5-62,W*.5-78,W*.5-58,W*.5-72,W*.5-64,W*.5-80]:[W*.15,W*.54,W*.20,W*.58,W*.24];
   let y=H-40;
-  platforms.push({x:W/2-58,y,w:116,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-  for(let r=0;r<RUNGS;r++){y-=RUNG_GAP;platforms.push({x:sides[r],y,w:84,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});}
+  platforms.push({x:W/2-(cfg.practice?82:58),y,w:cfg.practice?164:116,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+  for(let r=0;r<RUNGS;r++){y-=RUNG_GAP;platforms.push({x:sides[r],y,w:cfg.practice?150:84,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});}
   while(y>-H*1.5){
     y-=rand(cfg.gap[0],Math.min(cfg.gap[1],108));
     platforms.push(spawnPlatform(y,cfg));
-    if(y<H-900)spawnHazard(y,cfg);
-    if(cfg.mechanic==='wormhole'&&Math.random()<.09)wormholes.push({x:rand(30,W-60),y:y-40,r:16,rot:0});
+    if(!cfg.practice&&y<H-900)spawnHazard(y,cfg);
+    if(!cfg.practice&&cfg.mechanic==='wormhole'&&Math.random()<.09)wormholes.push({x:rand(30,W-60),y:y-40,r:16,rot:0});
   }
-  if(cfg.mechanic==='ring-bands'){ringBands=[];for(let i=0;i<4;i++)ringBands.push({y:H*.2+i*(H*.19),vy:rand(.5,1.)*(Math.random()<.5?1:-1),thick:20+rand(0,14)});}
+  if(!cfg.practice&&cfg.mechanic==='ring-bands'){ringBands=[];for(let i=0;i<4;i++)ringBands.push({y:H*.2+i*(H*.19),vy:rand(.5,1.)*(Math.random()<.5?1:-1),thick:20+rand(0,14)});}
   player={x:W/2-16,y:H-90,w:32,h:36,vx:0,vy:-13.2,face:1};
-  cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;combo=0;runIdeasSaved=0;trendToken=null;trendTokenArmed=false;toastQueue.length=0;toastActive=false;clearTimeout(_tt);
+  cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;combo=0;runIdeasSaved=0;trendToken=null;trendTokenArmed=false;lastSafePlatform=platforms[0];toastQueue.length=0;toastActive=false;clearTimeout(_tt);
   document.getElementById('lvlTag').textContent=cfg.name;document.getElementById('engageTag').textContent='Reach: 0';document.getElementById('comboTag').classList.add('hidden');setState('playing');
-  const startToast=getPlatformStartToast(cfg);
-  if(startToast)setTimeout(()=>{if(state==='playing'&&level===n)toast(startToast,2200);},450);
 }
 
 
 const BASE_GRAV=.37,JUMP=-13.2,SPRING_V=-19.5,MOVE=.54,MAXVX=6.2;
 
 function update(){
-  const cfg=PLATFORMS_META[level];
+  const cfg=getCfg();
   const grav=BASE_GRAV*gravMult;
   const jumpV=cfg.mechanic==='low-grav'?JUMP*.80:JUMP;
   const springV=cfg.mechanic==='heavy-grav'?SPRING_V*1.18:SPRING_V;
@@ -969,8 +957,8 @@ function update(){
         if(p.spring)sndViral();else sndJump();
         jet(player.x+player.w/2,player.y+player.h,p.spring?'#00e5a0':'#5b8dff');haptic(p.spring?[20,25,20]:8);
         if(p===finishPad){completeLevel();return;}
-        jumpCount++;combo++;if(combo&&combo%5===0){maxAlt+=35;toast('Combo x'+combo+' +reach',900,{priority:'low'});haptic([12,20,12]);}
-        showTutorialTip();randomReactionToast();maybeSpawnTrendToken(p,cfg);
+        lastSafePlatform=p;jumpCount++;combo++;if(combo&&combo%5===0){maxAlt+=35;haptic([12,20,12]);}
+        maybeSpawnTrendToken(p,cfg);
       }
     }
   }
@@ -989,6 +977,7 @@ function update(){
   }
   if(shootCd>0)shootCd--;
   const pcx=player.x+16,pcy=player.y+18;
+  if(finishPad&&pcx>finishPad.x-8&&pcx<finishPad.x+finishPad.w+8&&player.y+player.h<finishPad.y&&player.y+player.h>finishPad.y-40){completeLevel();return;}
   for(const h of hazards){
     if(h.dead)continue;
     if(h.type==='blackhole'){
@@ -1020,6 +1009,7 @@ function update(){
   }
   let topY=platforms.length?Math.min(...platforms.map(p=>p.y)):H*.4;
   while(topY>-300){
+    if(finishPad)break;
     topY-=rand(cfg.gap[0],Math.min(cfg.gap[1],108));
     // Place finish pad after N jumps, but only in the live spawn window
     if(jumpCount>=cfg.goal&&!finishPad){
@@ -1028,14 +1018,21 @@ function update(){
       hazards=hazards.filter(h=>Math.abs(h.y-finishY)>260);
       if(wormholes)wormholes=wormholes.filter(w=>Math.abs(w.y-finishY)>260);
       // Three safe helper platforms staircase up to a wider finish pad
-      platforms.push({x:W/2-112,y:finishY+210,w:92,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      platforms.push({x:W/2+18, y:finishY+140,w:92,h:14,type:'solid',vx:0,spring:true, broken:false,ghost:false,ghostVis:1});
-      platforms.push({x:W/2-84, y:finishY+72, w:96,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      finishPad={x:W/2-105,y:finishY,w:210,h:18,type:'finish',vx:0,spring:false,broken:false,ghost:false,ghostVis:1};
-      platforms.push(finishPad);levelDone=true;break;
+      const helperW=cfg.practice?150:92,helperW3=cfg.practice?160:96;
+      platforms.push({x:W/2-(cfg.practice?75:112),y:finishY+210,w:helperW,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+      platforms.push({x:W/2+(cfg.practice?-75:18), y:finishY+140,w:helperW,h:14,type:'solid',vx:0,spring:!cfg.practice, broken:false,ghost:false,ghostVis:1});
+      platforms.push({x:W/2-(cfg.practice?80:84), y:finishY+72, w:helperW3,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+      finishPad={x:W/2-(cfg.practice?132:118),y:finishY,w:cfg.practice?264:236,h:18,type:'finish',vx:0,spring:false,broken:false,ghost:false,ghostVis:1};
+      platforms.push(finishPad);
+      platforms=platforms.filter(p=>p===finishPad||p.y>=finishPad.y);
+      hazards=hazards.filter(h=>h.y>=finishPad.y);
+      if(wormholes)wormholes=wormholes.filter(w=>w.y>=finishPad.y);
+      bullets=bullets.filter(b=>b.y>=finishPad.y);
+      if(ringBands)ringBands=ringBands.filter(rb=>rb.y>=finishPad.y);
+      levelDone=true;break;
     } else {
-      platforms.push(spawnPlatform(topY,cfg));spawnHazard(topY,cfg);
-      if(cfg.mechanic==='wormhole'&&Math.random()<.08)wormholes.push({x:rand(30,W-60),y:topY-40,r:16,rot:0});
+      platforms.push(spawnPlatform(topY,cfg));if(!cfg.practice)spawnHazard(topY,cfg);
+      if(!cfg.practice&&cfg.mechanic==='wormhole'&&Math.random()<.08)wormholes.push({x:rand(30,W-60),y:topY-40,r:16,rot:0});
     }
   }
   platforms=platforms.filter(p=>p.y<H+110&&!(p.broken&&p.y>H));
@@ -1044,8 +1041,8 @@ function update(){
   for(const pt of particles){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.05;pt.life--;}
   particles=particles.filter(pt=>pt.life>0);
   if(trendToken&&!trendToken.collected){trendToken.y+=Math.sin(performance.now()/260)*.05;if(Math.abs((player.x+16)-trendToken.x)<24&&Math.abs((player.y+18)-trendToken.y)<26)collectTrendToken();}
-  if(player.y>H+60){failGame();return;}
-  document.getElementById('progressBar').style.width=Math.min(100,jumpCount/PLATFORMS_META[level].goal*100)+'%';
+  if(player.y>H+60){if(cfg.practice){const p=lastSafePlatform||platforms[0];player.x=(p?p.x+p.w/2:W/2)-16;player.y=(p?p.y:H-80)-player.h-8;player.vx=0;player.vy=JUMP*.75;haptic(10);}else{failGame();return;}}
+  document.getElementById('progressBar').style.width=Math.min(100,jumpCount/getCfg().goal*100)+'%';
   updatePostButtonDangerState();
   const reach=Math.floor(maxAlt/10);document.getElementById('engageTag').textContent='Reach: '+reach.toLocaleString();
   const comboEl=document.getElementById('comboTag');comboEl.textContent='Combo x'+combo;comboEl.classList.toggle('hidden',combo<2);
@@ -1165,12 +1162,12 @@ function drawHazard(h,cfg){
   // glow
   ctx.globalAlpha=.14;ctx.fillStyle=cfg.color;ctx.beginPath();ctx.arc(0,0,h.r+8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
   // draw the platform's own logo as the hazard
-  try{const fn=LOGO_FNS[PLATFORMS_META[level].id];if(fn)fn(ctx,h.r*.85);}catch(e){}
+  try{const fn=LOGO_FNS[getCfg().id];if(fn)fn(ctx,h.r*.85);}catch(e){}
   ctx.restore();
 }
 
 function draw(){
-  const cfg=PLATFORMS_META[level];const t=performance.now()/1000;
+  const cfg=getCfg();const t=performance.now()/1000;
   drawLevelBg(cfg,t);
   // stars
   for(const s of stars){
@@ -1285,7 +1282,7 @@ function buildLevelGrid(){
   });
 }
 
-const SCREENS=['menuScreen','levelSelectScreen','introScreen','pauseScreen','ideaScreen','failScreen','clearScreen','winScreen'];
+const SCREENS=['menuScreen','howScreen','levelSelectScreen','introScreen','pauseScreen','ideaScreen','failScreen','clearScreen','winScreen'];
 function show(id){SCREENS.forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>document.getElementById(s).classList.add('hidden'));maybeShowInstallPrompt();}
 function setState(s){state=s;document.getElementById('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
 
@@ -1303,7 +1300,7 @@ const FAIL_QUOTES=[
 ];
 
 function openIntro(n){
-  level=n;const cfg=PLATFORMS_META[n];
+  level=n;const cfg=getCfg();
   document.getElementById('introEyebrow').textContent='Platform '+(n+1)+' of '+PLATFORMS_META.length;
   document.getElementById('introName').textContent=cfg.name;
   document.getElementById('introCampaign').textContent=cfg.campaign||'';
@@ -1320,29 +1317,40 @@ function openIntro(n){
 }
 function pauseGame(){
   state='paused';
-  document.getElementById('pauseStat').innerHTML=PLATFORMS_META[level].name+' &nbsp;\u00b7&nbsp; Current <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> &nbsp; Best <b>'+Math.floor(save.getBest(level)/10).toLocaleString()+'</b>';
+  document.getElementById('pauseStat').innerHTML=getCfg().name+' &nbsp;\u00b7&nbsp; Current <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> &nbsp; Best <b>'+Math.floor(level<0?0:save.getBest(level)/10).toLocaleString()+'</b>';
   show('pauseScreen');
 }
 function failGame(){
-  sndRatio();save.setBest(level,maxAlt);state='fail';
-  document.getElementById('failEyebrow').textContent=(HAZ_CFG[PLATFORMS_META[level].hazType]||{}).label||'Signal lost';
-  const current=Math.floor(maxAlt/10),best=Math.floor(Math.max(save.getBest(level),maxAlt)/10);
-  document.getElementById('failStat').innerHTML=PLATFORMS_META[level].name+' · Current <b>'+current.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b>';
+  sndRatio();if(level>=0)save.setBest(level,maxAlt);state='fail';
+  document.getElementById('failEyebrow').textContent=(HAZ_CFG[getCfg().hazType]||{}).label||'Signal lost';
+  const current=Math.floor(maxAlt/10),best=Math.floor(Math.max(level<0?0:save.getBest(level),maxAlt)/10);
+  document.getElementById('failStat').innerHTML=getCfg().name+' · Current <b>'+current.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b>';
   document.getElementById('failQuote').textContent=FAIL_QUOTES[Math.floor(Math.random()*FAIL_QUOTES.length)];
   haptic([45,35,45]);document.getElementById('hud').classList.remove('show');show('failScreen');
 }
 function completeLevel(){
   if(state!=='playing')return;
-  const cfg=PLATFORMS_META[level];doFanfare(cfg);save.setBest(level,maxAlt);save.furthest=level+1;
+  const cfg=getCfg();doFanfare(cfg);if(level>=0)save.setBest(level,maxAlt);if(level>=0)save.furthest=level+1;
   const gained=Math.floor(maxAlt/10);
+  const isPractice=level<0;
   const isLast=level===PLATFORMS_META.length-1;
   document.getElementById('hud').classList.remove('show');
+  if(isPractice){
+    state='clear';
+    document.getElementById('clearTitle').textContent='PRACTICE CLEARED';
+    document.getElementById('clearStat').innerHTML='You’re ready. Now go fight the algorithm.';
+    document.getElementById('clearMeme').textContent='';
+    $('betweenHeadline').classList.add('hidden');
+    $('nextBtn').textContent='Start Game';
+    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);return;
+  }
   if(isLast){
     state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';show('winScreen');$('winShareBtn').onclick=()=>shareScore(cfg,gained,true);
   } else {
     state='clear';
+    $('nextBtn').textContent='Next Platform →';
     document.getElementById('clearTitle').textContent=cfg.name+' CLEARED';
-    const best=Math.floor(save.getBest(level)/10);
+    const best=Math.floor(level<0?0:save.getBest(level)/10);
     document.getElementById('clearStat').innerHTML='Current <b>'+gained.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b><br>Ideas saved this run <b>'+runIdeasSaved+'</b>';
     document.getElementById('clearMeme').textContent=cfg.winMeme;
     show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);showBetweenHeadline();
@@ -1351,6 +1359,10 @@ function completeLevel(){
 
 const $=id=>document.getElementById(id);
 $('startBtn').onclick=()=>{sndClick();openIntro(0);};
+$('howBtn').onclick=()=>{sndClick();state='how';show('howScreen');};
+$('practiceBtn').onclick=()=>{sndClick();startLevel(-1);};
+$('howStartBtn').onclick=()=>{sndClick();openIntro(0);};
+$('howBackBtn').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('lvlSelBtn').onclick=()=>{sndClick();state='levelselect';buildLevelGrid();show('levelSelectScreen');};
 $('feedBtn').onclick=()=>openFeedPanel(null);
 $('lvlSelBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
@@ -1365,9 +1377,9 @@ $('pauseMenuBtn').onclick=()=>{state='menu';document.getElementById('hud').class
 $('retryBtn').onclick=()=>{sndClick();openIntro(level);};
 $('failFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level));
 $('failMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('nextBtn').onclick=()=>{sndClick();openIntro(level+1);};
+$('nextBtn').onclick=()=>{sndClick();openIntro(level<0?0:level+1);};
 $('clearMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('clearFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level+1));
+$('clearFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level<0?0:level+1));
 if($('winFeedBtn'))$('winFeedBtn').onclick=()=>openFeedPanel(null);
 $('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('againBtn').onclick=()=>{sndClick();openIntro(0);};
