@@ -207,7 +207,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <button class="btn accent" id="startBtn">Start Posting</button>
   <button class="btn ghost" id="howBtn">How to Play</button>
   <button class="btn ghost" id="lvlSelBtn">Level Select</button>
-  <button class="btn ghost" id="feedBtn">&#128240; Trend Radar</button>
+  <button class="btn ghost" id="feedBtn">&#128240; Stories</button>
   <p class="sub" style="opacity:.3;font-size:10px;margin-top:2px">WASD / Arrows &middot; Space to post</p>
   <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:-4px">Built by</div>
   <a id="benCard" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">
@@ -229,7 +229,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
     <div class="how-row"><span>↔️</span><p>Hold left/right to steer.</p></div>
     <div class="how-row"><span>🧱</span><p>Land on posts to climb.</p></div>
     <div class="how-row"><span>🚀</span><p>Tap POST to clear bad takes.</p></div>
-    <div class="how-row"><span>📰</span><p>Grab trend cards to save ideas.</p></div>
+    <div class="how-row"><span>📰</span><p>Grab story cards, then choose what to save between levels.</p></div>
     <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to win.</p></div>
   </div>
   <button class="btn viral" id="practiceBtn">Practice</button>
@@ -257,7 +257,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
     <p style="font-size:10px;opacity:.45;margin-top:8px;font-style:italic;line-height:1.6" id="introMeme"></p>
   </div>
   <button class="btn accent" id="introGo">Post It</button>
-  <button class="btn ghost" id="introFeedBtn" style="min-width:0;font-size:12px;padding:10px 20px">&#128240; Scout Trends First</button>
+  <button class="btn ghost" id="introFeedBtn" style="min-width:0;font-size:12px;padding:10px 20px">&#128240; Read Stories</button>
 </div>
 
 <!-- PAUSED -->
@@ -265,14 +265,14 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2>PAUSED</h2>
   <div class="stat" id="pauseStat"></div>
   <button class="btn accent" id="resumeBtn">Resume</button>
-  <button class="btn ghost" id="pauseFeedBtn">&#128240; Trend Radar</button>
+  <button class="btn ghost" id="pauseFeedBtn">&#128240; Stories</button>
   <button class="btn ghost" id="ideaBoardBtn">Idea Locker</button>
   <button class="btn ghost" id="pauseMenuBtn">Main Menu</button>
 </div>
 
 <!-- IDEA BOARD -->
 <div class="overlay hidden" id="ideaScreen">
-  <div class="eyebrow">Saved headlines</div>
+  <div class="eyebrow">Idea Locker</div>
   <h2>IDEA LOCKER</h2>
   <div class="idea-board" id="ideaList"></div>
   <button class="btn ghost" id="ideaBackBtn">Back</button>
@@ -284,8 +284,8 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2 id="failTitle">ACCOUNT<br>SUSPENDED</h2>
   <div class="stat" id="failStat"></div>
   <p style="font-size:11px;opacity:.6;font-style:italic;max-width:270px;line-height:1.7;margin-top:-2px" id="failQuote"></p>
-  <button class="btn accent" id="retryBtn">Try Again (lol)</button>
-  <button class="btn ghost" id="failFeedBtn">&#128240; Doomscroll Responsibly</button>
+  <button class="btn accent" id="retryBtn">Try Again</button>
+  <button class="btn ghost" id="failFeedBtn">&#128240; Read Stories</button>
   <button class="btn ghost" id="failMenuBtn">Main Menu</button>
   <p class="fail-attr">Made by someone who actually beats the algorithm. &nbsp;<a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">Ben Campbell &#8599;</a></p>
 </div>
@@ -299,7 +299,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <div class="headline-card hidden" id="betweenHeadline"></div>
   <button class="btn accent" id="nextBtn">Next Platform &#8594;</button>
   <button class="btn ghost" id="clearShareBtn">Share Score</button>
-  <button class="btn ghost" id="clearFeedBtn">&#128240; Trend Radar</button>
+  <button class="btn ghost" id="clearFeedBtn">&#128240; Stories</button>
   <button class="btn ghost" id="clearMenuBtn">Main Menu</button>
 </div>
 
@@ -325,7 +325,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
 <!-- RSS PANEL -->
 <div id="rssPanel" class="hidden">
   <div id="rssPanelTop">
-    <h3>&#9889; TREND RADAR</h3>
+    <h3>&#9889; STORIES</h3>
     <button class="btn ghost" id="rssPanelClose" style="min-width:0;padding:8px 16px;font-size:11px">&#10005; Close</button>
   </div>
   <div class="rss-tabs" id="rssTabs"></div>
@@ -333,7 +333,7 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
     <input type="text" id="rssUrlInput" placeholder="Paste any RSS feed URL..." />
     <button id="rssAddBtn">+ Add</button>
   </div>
-  <div id="rssItems"><div class="rss-empty">Pick a feed. Find the trend.<br>Pretend this was the plan all along.<br><br>Social Media Today &middot; Buffer Blog &middot; Marketing Brew<br>Later Blog &middot; HubSpot &middot; Sprout Social</div></div>
+  <div id="rssItems"><div class="rss-empty">Loading stories…</div></div>
   <div id="rssContinueWrap">
     <button class="btn accent" id="rssContinueBtn" style="min-width:0;width:100%;font-size:14px">Back to Game</button>
   </div>
@@ -503,19 +503,19 @@ const PLATFORMS_META=[
    desc:'Thought leadership. Humble brags disguised as life lessons. Every post starts with "I was today years old when..."',
    meme:'"Just got rejected by 47 companies. Here\'s what I learned about RESILIENCE. \uD83D\uDCAA 47,000 likes."',
    winMeme:'"Excited to announce I\'m thriving in this space and pivoting my journey!"',
-   mechanic:'normal',        hazType:'algorithm', spring:.08,moving:.00,brittle:.00,bh:0, hazard:.01, goal:14,gap:[42,58],earlyWidth:92},
+   mechanic:'normal',        hazType:'algorithm', spring:.08,moving:.00,brittle:.00,bh:0, hazard:.006, goal:12,gap:[38,54],earlyWidth:112},
   {id:'twitter', name:'X / TWITTER', campaign:'Ratio Canyon',
    color:'#1da1f2',star:'#7dd3fc',bg:'#040d14',
    desc:'Hot takes, quote-tweets of hot takes, and threads about why hot takes are ruining discourse. Heavy gravity.',
    meme:'"This website is terrible." *has been on it for 11 years*',
    winMeme:'"Congrats on not getting ratio\'d. Today, anyway."',
-   mechanic:'heavy-grav',    hazType:'ratio',     spring:.14,moving:.08,brittle:.06,bh:0,   goal:22,gap:[50,68]},
+   mechanic:'heavy-grav',    hazType:'ratio',     spring:.14,moving:.08,brittle:.06,bh:0,   goal:20,gap:[48,66],earlyWidth:88},
   {id:'tiktok', name:'TIKTOK', campaign:'Hook Speed Run',
    color:'#69c9d0',star:'#a5f3ef',bg:'#040e10',
    desc:'Low gravity but ruthless. You have 0.3 seconds to hook them or they scroll to a raccoon eating a hot dog.',
    meme:'"Let me show you how to make content in 2024." *proceeds to do the same trend from 2021*',
    winMeme:'"You went viral! The algorithm has chosen you. For now. For today."',
-   mechanic:'low-grav',      hazType:'trend',     spring:.08,moving:.12,brittle:.05,bh:0,   goal:26,gap:[58,80]},
+   mechanic:'low-grav',      hazType:'trend',     spring:.08,moving:.12,brittle:.05,bh:0,   goal:25,gap:[56,78],earlyWidth:84},
   {id:'instagram', name:'INSTAGRAM', campaign:'Ghost Reach Gulch',
    color:'#e1306c',star:'#fda4af',bg:'#150609',
    desc:'Ghost posts. Your reach died in 2019 and nobody told you. Try Reels. No wait, try carousels. No wait—',
@@ -573,7 +573,7 @@ function getPlatformStartToast(cfg){return '';}
 const HAZ_CFG={
   algorithm: {label:'Algorithm Update'},
   ratio:     {label:"Ratio'd"},
-  trend:     {label:'Trending Topic'},
+  trend:     {label:'Hot Topic'},
   demonetize:{label:'Demonetized'},
   downvote:  {label:'Downvoted'},
 };
@@ -614,10 +614,52 @@ const DEFAULT_FEEDS=[
   {name:'HubSpot Blog',      rss:'https://blog.hubspot.com/marketing/rss.xml', color:'#ff7a59'},
   {name:'Sprout Social',     rss:'https://sproutsocial.com/insights/feed/',    color:'#59cb59'},
 ];
+const FALLBACK_STORIES=[
+  {title:'How to turn one strong post into a week of content',source:'Buffer Blog',url:'#',date:'',desc:'A practical framework for repurposing one useful idea across short posts, carousels, videos, and newsletters.',color:'#00e5a0'},
+  {title:'What social teams should measure before chasing reach',source:'Social Media Today',url:'#',date:'',desc:'A simple reminder to connect awareness, engagement, saves, clicks, and conversions before calling a post a win.',color:'#0077b5'},
+  {title:'Why brand voice matters more when every feed looks the same',source:'Marketing Brew',url:'#',date:'',desc:'As formats converge, recognizable language and point of view help social content feel worth stopping for.',color:'#ffd700'},
+  {title:'A calmer planning system for always-on social calendars',source:'Later Blog',url:'#',date:'',desc:'Batch evergreen ideas, timely hooks, and community replies so the calendar supports the team instead of running it.',color:'#ff4d6d'},
+  {title:'How to write hooks that do not sound like engagement bait',source:'HubSpot',url:'#',date:'',desc:'Lead with the reader problem, make a clear promise, and skip the fake urgency that teaches audiences to scroll past.',color:'#ff7a59'},
+  {title:'Community management lessons from high-volume comment threads',source:'Sprout Social',url:'#',date:'',desc:'Fast replies help, but consistent tone, escalation rules, and saved responses keep support moments from becoming chaos.',color:'#59cb59'},
+  {title:'Short-form video ideas that start with customer questions',source:'Buffer Blog',url:'#',date:'',desc:'Mine FAQs, sales objections, and support tickets for video prompts that answer real needs instead of chasing random topics.',color:'#00e5a0'},
+  {title:'The difference between a timely topic and a useful angle',source:'Social Media Today',url:'#',date:'',desc:'A timely topic becomes valuable when it connects to your audience, your expertise, and a takeaway people can use.',color:'#0077b5'},
+  {title:'Why marketers are rebuilding owned audience habits',source:'Marketing Brew',url:'#',date:'',desc:'Social discovery is powerful, but newsletters, communities, and websites give strong stories a longer shelf life.',color:'#ffd700'},
+  {title:'A lightweight checklist before publishing a campaign post',source:'Later Blog',url:'#',date:'',desc:'Check the hook, asset crop, accessibility, destination link, comment plan, and save-worthy takeaway before launch.',color:'#ff4d6d'},
+  {title:'How social listening can shape better content briefs',source:'HubSpot',url:'#',date:'',desc:'Recurring phrases, questions, and complaints can become sharper briefs than a blank calendar brainstorm.',color:'#ff7a59'},
+  {title:'What saved posts can reveal about audience intent',source:'Sprout Social',url:'#',date:'',desc:'Saves often point to future intent: tutorials, templates, checklists, and research people want to revisit.',color:'#59cb59'},
+];
+function normalizeStory(rawItem,feed){
+  if(!rawItem||!rawItem.title||/^⚠/.test(rawItem.title))return null;
+  const url=(rawItem.link||rawItem.url||'#').trim();
+  const source=rawItem.source||feed?.name||'Stories';
+  const id=ideaKey(rawItem.title,url)||String(Math.random());
+  return {id,title:(rawItem.title||'Untitled').trim(),source,url,date:rawItem.date||'',desc:(rawItem.desc||'').replace(/\s+/g,' ').trim().slice(0,220),color:rawItem.color||feed?.color||'#00e5a0'};
+}
+function fallbackStories(){return FALLBACK_STORIES.map((it,i)=>normalizeStory({...it,link:it.url}, {name:it.source,color:it.color})||{...it,id:'fallback-'+i});}
+function getCachedStories(){const cached=safeJson('fv_story_pool',[]);return Array.isArray(cached)&&cached.length?cached:fallbackStories();}
+async function preloadStories(){
+  if(storyPoolLoaded)return storyPool;
+  const found=[];
+  await Promise.all(userFeeds.map(async feed=>{try{const items=await loadFeed(feed,true);(items||[]).forEach(it=>{const story=normalizeStory(it,feed);if(story)found.push(story);});}catch(e){}}));
+  const unique=[];const seen=new Set();
+  found.forEach(st=>{if(!seen.has(st.id)){seen.add(st.id);unique.push(st);}});
+  if(unique.length){storyPool=unique.slice(0,80);safeSet('fv_story_pool',JSON.stringify(storyPool));}
+  else storyPool=getCachedStories();
+  storyPoolLoaded=true;return storyPool;
+}
+function getStoryPool(){
+  if(storyPool.length)return storyPool;
+  storyPool=getCachedStories();return storyPool;
+}
+function getStoryForCard(){const pool=getStoryPool();const story=pool[storyCursor++%pool.length];return {...story};}
+function getStoryForBreak(){return getStoryForCard();}
+setTimeout(()=>preloadStories(),0);
+
 // Safe localStorage JSON helpers keep corrupt saves from crashing the game.
 function safeJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback;}catch(e){return fallback;}}
 let userFeeds=safeJson('fv_feeds',null)||DEFAULT_FEEDS;
 let rssCache={};let activeFeedIdx=0;let rssReturnAction=null;
+let storyPool=[];let storyPoolLoaded=false;let runStories=[];let levelStories=[];let storyCursor=0;
 function safeSet(key,value){try{localStorage.setItem(key,value);return true;}catch(e){return false;}}
 function saveFeeds(){safeSet('fv_feeds',JSON.stringify(userFeeds));}
 
@@ -660,52 +702,52 @@ async function fetchViaProxy(rawUrl){
   return null;
 }
 
-async function loadFeed(feed){
+async function loadFeed(feed,quiet){
   const key=feed.rss||feed.url||feed.name;
   if(rssCache[key])return rssCache[key];
-  document.getElementById('rssItems').innerHTML='<div class="rss-loading">Loading '+feed.name+'\u2026</div>';
+  if(!quiet&&!loadFeed.quiet)document.getElementById('rssItems').innerHTML='<div class="rss-loading">Loading '+feed.name+'\u2026</div>';
   const rawUrl=feed.rss||feed.url;
   // Try rss2json first, fall back to raw XML proxy
   let items=await fetchViaRss2Json(rawUrl);
   if(!items)items=await fetchViaProxy(rawUrl);
-  if(!items){
-    return[{title:'\u26a0 Feed unavailable',link:'#',date:'',
-      desc:feed.name+' couldn\u2019t be reached right now. The site may be blocking external access. Try the direct URL: '+rawUrl}];
-  }
+  if(!items){return [];}
   rssCache[key]=items;return items;
 }
-// Local content idea board shared by Trend Radar and between-level headlines.
+// Local content idea board shared by Stories and between-level story breaks.
 function getContentIdeas(){const ideas=safeJson('fv_content_ideas',[]);return Array.isArray(ideas)?ideas:[];}
 function ideaKey(title,link){return ((link&&link!=='#')?link:title||'').trim().toLowerCase();}
 function saveContentIdea(item,feedName){
   const ideas=getContentIdeas();const key=ideaKey(item.title,item.link);
   if(ideas.some(i=>ideaKey(i.title,i.url||i.link)===key))return false;
-  ideas.unshift({title:item.title||'Untitled',source:feedName||item.source||'Trend Radar',url:item.link||item.url||'#',savedAt:new Date().toISOString()});
+  ideas.unshift({title:item.title||'Untitled',source:feedName||item.source||'Stories',url:item.link||item.url||'#',savedAt:new Date().toISOString()});
   return safeSet('fv_content_ideas',JSON.stringify(ideas.slice(0,50)));
 }
 function setSaveButtonState(btn,saved){btn.textContent=saved?'SAVED':'ALREADY SAVED';btn.disabled=true;}
 function renderIdeaBoard(){
   const box=$('ideaList');const ideas=getContentIdeas();
   if(!ideas.length){box.innerHTML='<div class="rss-empty">No ideas in the locker yet.<br>Quiet genius takes time.</div>';return;}
-  box.innerHTML=ideas.map(i=>'<div class="idea-item"><div class="idea-title">'+escapeHtml(i.title||'Untitled')+'</div><div class="idea-meta">'+escapeHtml(i.source||'Trend Radar')+' · '+new Date(i.savedAt||Date.now()).toLocaleDateString()+'</div>'+(i.url&&i.url!=='#'?'<a class="mini-btn" style="display:inline-block;margin-top:7px" target="_blank" rel="noopener" href="'+escapeAttr(i.url)+'">READ ↗</a>':'')+'</div>').join('');
+  box.innerHTML=ideas.map(i=>'<div class="idea-item"><div class="idea-title">'+escapeHtml(i.title||'Untitled')+'</div><div class="idea-meta">'+escapeHtml(i.source||'Stories')+' · '+new Date(i.savedAt||Date.now()).toLocaleDateString()+'</div>'+(i.url&&i.url!=='#'?'<a class="mini-btn" style="display:inline-block;margin-top:7px" target="_blank" rel="noopener" href="'+escapeAttr(i.url)+'">READ ↗</a>':'')+'</div>').join('');
 }
 function escapeHtml(str){return String(str).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function escapeAttr(str){return escapeHtml(str).replace(/'/g,'&#39;');}
 function renderFeedItems(items,feedName,feedColor){
   const container=document.getElementById('rssItems');
-  if(!items||!items.length){container.innerHTML='<div class="rss-empty">Pick a feed. Find the trend.<br>Pretend this was the plan all along.</div>';return;}
+  if(!items||!items.length){items=getStoryPool();feedName='Stories';feedColor='#00e5a0';}
   container.innerHTML='';
   items.forEach(item=>{
     const el=document.createElement('div');el.className='rss-item';
     const dateStr=item.date?new Date(item.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    el.innerHTML='<div class="rss-item-source" style="color:'+feedColor+'">'+feedName+'</div>'+ 
-      '<div class="rss-item-title">'+item.title+'</div>'+ 
+    const source=item.source||feedName;
+    const color=item.color||feedColor;
+    const url=item.url||item.link||'#';
+    el.innerHTML='<div class="rss-item-source" style="color:'+escapeAttr(color)+'">'+escapeHtml(source)+'</div>'+ 
+      '<div class="rss-item-title">'+escapeHtml(item.title)+'</div>'+ 
       (dateStr?'<div class="rss-item-date">'+dateStr+'</div>':'')+
-      '<div class="rss-item-body">'+(item.desc||'No summary. Classic.')+
-      (item.link&&item.link!=='#'?'<br><br><a href="'+item.link+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ MORE ↗</a>':'')+
-      '<br><button class="rss-save-btn" type="button">SAVE TO IDEA LOCKER</button></div>';
+      '<div class="rss-item-body">'+escapeHtml(item.desc||'No summary available yet.')+
+      (url&&url!=='#'?'<br><br><a href="'+escapeAttr(url)+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ ↗</a>':'')+
+      '<br><button class="rss-save-btn" type="button">SAVE FOR LATER</button></div>';
     el.addEventListener('click',()=>el.classList.toggle('expanded'));
-    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();setSaveButtonState(e.currentTarget,saveContentIdea(item,feedName));});
+    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();setSaveButtonState(e.currentTarget,saveContentIdea({...item,link:url,source},source));});
     container.appendChild(el);
   });
 }
@@ -721,8 +763,11 @@ function buildRssTabs(){
 async function openFeedPanel(onClose){
   if(onClose!==undefined)rssReturnAction=onClose;
   document.getElementById('rssPanel').classList.remove('hidden');
-  buildRssTabs();const feed=userFeeds[activeFeedIdx];
-  const items=await loadFeed(feed);renderFeedItems(items,feed.name,feed.color);
+  buildRssTabs();
+  renderFeedItems(getStoryPool(),'Stories','#00e5a0');
+  const feed=userFeeds[activeFeedIdx];
+  const items=await loadFeed(feed);
+  renderFeedItems((items&&items.length)?items:getStoryPool(),(items&&items.length)?feed.name:'Stories',(items&&items.length)?feed.color:'#00e5a0');
 }
 function closeFeedPanel(){
   document.getElementById('rssPanel').classList.add('hidden');
@@ -804,7 +849,7 @@ addEventListener('keyup',e=>{
 /* ── Game state ── */
 let state='menu';let level=0;
 let player,platforms,particles,hazards,bullets,wormholes,ringBands;
-let cam,maxAlt,finishPad,levelDone,shootCd,ghostTimer,gravMult,jumpCount,combo,runIdeasSaved,trendToken,trendTokenArmed,lastSafePlatform;
+let cam,maxAlt,finishPad,levelDone,shootCd,ghostTimer,gravMult,jumpCount,combo,runIdeasSaved,storyCard,storyCardArmed,lastSafePlatform;
 let _consNonSolid=0;
 
 function spawnPlatform(y,cfg){
@@ -815,7 +860,8 @@ function spawnPlatform(y,cfg){
   }
   if(type==='solid')_consNonSolid=0;else _consNonSolid++;
   const ghost=cfg.mechanic==='ghost'&&type==='solid'&&_consNonSolid===0&&Math.random()<.38;
-  const width=cfg.practice?150:(cfg.earlyWidth&&level===0&&jumpCount<10?cfg.earlyWidth:68);
+  const earlyGame=jumpCount<10;
+  const width=cfg.practice?150:(cfg.earlyWidth&&earlyGame?cfg.earlyWidth:68);
   return{x:rand(10,W-width-10),y,w:width,h:14,type,
     vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
     spring:Math.random()<cfg.spring,broken:false,ghost,
@@ -823,7 +869,7 @@ function spawnPlatform(y,cfg){
 }
 function spawnHazard(y,cfg){
   if(cfg.bh&&Math.random()<cfg.bh){hazards.push({type:'blackhole',x:rand(50,W-50),y:y-rand(30,60),r:14,pull:100,vx:0,dead:false});return;}
-  const earlySafe=(level===0&&jumpCount<9)||(level<2&&jumpCount<5);
+  const earlySafe=(level===0&&jumpCount<14)||(level>0&&level<3&&jumpCount<6);
   if(!earlySafe&&Math.random()<(cfg.hazard||.05)){
     hazards.push({type:cfg.hazType||'algorithm',x:rand(24,W-24),y:y-rand(20,55),r:16,
       vx:(Math.random()<.5?-1:1)*rand(.5,1.5),rot:Math.random()*Math.PI*2,dead:false});
@@ -918,8 +964,8 @@ function startLevel(n){
   gravMult=cfg.mechanic==='heavy-grav'?1.38:cfg.mechanic==='low-grav'?.44:1;
   const RUNGS=cfg.practice?7:5,RUNG_GAP=cfg.practice?58:68;const sides=cfg.practice?[W*.5-70,W*.5-62,W*.5-78,W*.5-58,W*.5-72,W*.5-64,W*.5-80]:[W*.15,W*.54,W*.20,W*.58,W*.24];
   let y=H-40;
-  platforms.push({x:W/2-(cfg.practice?82:58),y,w:cfg.practice?164:116,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-  for(let r=0;r<RUNGS;r++){y-=RUNG_GAP;platforms.push({x:sides[r],y,w:cfg.practice?150:84,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});}
+  platforms.push({x:W/2-(cfg.practice?82:(level===0?72:58)),y,w:cfg.practice?164:(level===0?144:116),h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
+  for(let r=0;r<RUNGS;r++){y-=RUNG_GAP;platforms.push({x:sides[r],y,w:cfg.practice?150:(level===0?108:84),h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});}
   while(y>-H*1.5){
     y-=rand(cfg.gap[0],Math.min(cfg.gap[1],108));
     platforms.push(spawnPlatform(y,cfg));
@@ -928,7 +974,7 @@ function startLevel(n){
   }
   if(!cfg.practice&&cfg.mechanic==='ring-bands'){ringBands=[];for(let i=0;i<4;i++)ringBands.push({y:H*.2+i*(H*.19),vy:rand(.5,1.)*(Math.random()<.5?1:-1),thick:20+rand(0,14)});}
   player={x:W/2-16,y:H-90,w:32,h:36,vx:0,vy:-13.2,face:1};
-  cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;combo=0;runIdeasSaved=0;trendToken=null;trendTokenArmed=false;lastSafePlatform=platforms[0];toastQueue.length=0;toastActive=false;clearTimeout(_tt);
+  cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;combo=0;runIdeasSaved=0;levelStories=[];if(n===0||n<0)runStories=[];storyCard=null;storyCardArmed=false;lastSafePlatform=platforms[0];toastQueue.length=0;toastActive=false;clearTimeout(_tt);$('toast').classList.remove('show');
   document.getElementById('lvlTag').textContent=cfg.name;document.getElementById('engageTag').textContent='Reach: 0';document.getElementById('comboTag').classList.add('hidden');setState('playing');
 }
 
@@ -958,7 +1004,7 @@ function update(){
         jet(player.x+player.w/2,player.y+player.h,p.spring?'#00e5a0':'#5b8dff');haptic(p.spring?[20,25,20]:8);
         if(p===finishPad){completeLevel();return;}
         lastSafePlatform=p;jumpCount++;combo++;if(combo&&combo%5===0){maxAlt+=35;haptic([12,20,12]);}
-        maybeSpawnTrendToken(p,cfg);
+        maybeSpawnStoryCard(p,cfg);
       }
     }
   }
@@ -1040,7 +1086,7 @@ function update(){
   if(wormholes)wormholes=wormholes.filter(w=>w.y<H+50);
   for(const pt of particles){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.05;pt.life--;}
   particles=particles.filter(pt=>pt.life>0);
-  if(trendToken&&!trendToken.collected){trendToken.y+=Math.sin(performance.now()/260)*.05;if(Math.abs((player.x+16)-trendToken.x)<24&&Math.abs((player.y+18)-trendToken.y)<26)collectTrendToken();}
+  if(storyCard&&!storyCard.collected){storyCard.y+=Math.sin(performance.now()/260)*.05;if(Math.abs((player.x+16)-storyCard.x)<24&&Math.abs((player.y+18)-storyCard.y)<26)collectStoryCard();}
   if(player.y>H+60){if(cfg.practice){const p=lastSafePlatform||platforms[0];player.x=(p?p.x+p.w/2:W/2)-16;player.y=(p?p.y:H-80)-player.h-8;player.vx=0;player.vy=JUMP*.75;haptic(10);}else{failGame();return;}}
   document.getElementById('progressBar').style.width=Math.min(100,jumpCount/getCfg().goal*100)+'%';
   updatePostButtonDangerState();
@@ -1191,8 +1237,8 @@ function draw(){
     drawPlatformCard(p,cfg);
     if(p.ghost)ctx.globalAlpha=1;
   }
-  // trend token collectible
-  if(trendToken&&!trendToken.collected){drawTrendToken(trendToken,cfg,t);}
+  // story card collectible
+  if(storyCard&&!storyCard.collected){drawStoryCard(storyCard,cfg,t);}
   // hazards — drawn as platform logos
   for(const h of hazards){
     if(h.dead)continue;
@@ -1245,9 +1291,9 @@ function drawSocialPerson(x,y,face){
   ctx.restore();
 }
 function jet(x,y,color){for(let i=0;i<6;i++)particles.push({x,y,vx:rand(-1.2,1.2),vy:rand(.4,1.8),life:rand(12,22),color});}
-function drawTrendToken(tok,cfg,t){ctx.save();ctx.translate(tok.x,tok.y+Math.sin(t*4)*3);ctx.globalAlpha=.22;ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(0,0,24,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#f0f2ff';ctx.strokeStyle=cfg.color;ctx.lineWidth=2;if(ctx.roundRect)ctx.beginPath(),ctx.roundRect(-13,-15,26,30,4),ctx.fill(),ctx.stroke();else ctx.fillRect(-13,-15,26,30);ctx.fillStyle=cfg.color;ctx.fillRect(-8,-8,16,2);ctx.fillRect(-8,-2,13,2);ctx.fillRect(-8,4,10,2);ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(11,-12,5,0,Math.PI*2);ctx.fill();ctx.restore();}
-function maybeSpawnTrendToken(platform,cfg){if(trendTokenArmed||trendToken||jumpCount<4)return;trendTokenArmed=true;trendToken={x:Math.max(28,Math.min(W-28,platform.x+platform.w/2)),y:platform.y-54,collected:false,item:null,source:null};}
-async function collectTrendToken(){if(!trendToken||trendToken.collected)return;trendToken.collected=true;sndNotif();haptic([18,20,18]);jet(trendToken.x,trendToken.y,'#ffd700');const item=await getOneHeadline();if(state!=='playing')return;if(item&&!/^⚠/.test(item.title)){const saved=saveContentIdea(item,item.source);if(saved)runIdeasSaved++;toast('Trend saved: '+item.source,1200);}else{saveContentIdea({title:'Trend captured — check your Idea Locker later.',link:'#',source:'Trend Token'},'Trend Token');runIdeasSaved++;toast('Trend captured',1200);}}
+function drawStoryCard(tok,cfg,t){ctx.save();ctx.translate(tok.x,tok.y+Math.sin(t*4)*3);ctx.globalAlpha=.22;ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(0,0,24,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#f0f2ff';ctx.strokeStyle=cfg.color;ctx.lineWidth=2;if(ctx.roundRect)ctx.beginPath(),ctx.roundRect(-13,-15,26,30,4),ctx.fill(),ctx.stroke();else ctx.fillRect(-13,-15,26,30);ctx.fillStyle=cfg.color;ctx.fillRect(-8,-8,16,2);ctx.fillRect(-8,-2,13,2);ctx.fillRect(-8,4,10,2);ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(11,-12,5,0,Math.PI*2);ctx.fill();ctx.restore();}
+function maybeSpawnStoryCard(platform,cfg){if(storyCardArmed||storyCard||jumpCount<4)return;storyCardArmed=true;storyCard={x:Math.max(28,Math.min(W-28,platform.x+platform.w/2)),y:platform.y-54,collected:false,story:null};}
+function collectStoryCard(){if(!storyCard||storyCard.collected)return;storyCard.collected=true;sndNotif();haptic([18,20,18]);jet(storyCard.x,storyCard.y,'#ffd700');const story=getStoryForCard();storyCard.story=story;levelStories.push(story);runStories.push(story);maxAlt+=25;toast('Story found: '+story.source,1100);}
 // One-shot finish pad celebration: flash, particles, sound, and optional haptics.
 function doFanfare(cfg){
   const flash=$('screenFlash');flash.style.background=cfg.color||'#fff';flash.classList.add('show');setTimeout(()=>flash.classList.remove('show'),70);
@@ -1276,7 +1322,8 @@ function buildLevelGrid(){
     node.innerHTML=(completed?'<span class="lvl-check">\u2713</span>':'')+
       '<img src="'+getLogoDataUrl(cfg.id)+'" style="width:28px;height:28px;display:block;margin:0 auto 2px">'+
       '<span class="lvl-num">'+(i+1)+'</span>'+
-      '<span class="lvl-name">'+cfg.name+'</span>';
+      '<span class="lvl-name">'+cfg.name+'</span>'+
+      (save.getBest(i)?'<span class="lvl-name" style="color:var(--gold);opacity:.8">Best '+Math.floor(save.getBest(i)/10).toLocaleString()+'</span>':'');
     if(unlocked)node.addEventListener('pointerup',e=>{e.stopPropagation();sndClick();openIntro(i);});
     grid.appendChild(node);
   });
@@ -1351,9 +1398,9 @@ function completeLevel(){
     $('nextBtn').textContent='Next Platform →';
     document.getElementById('clearTitle').textContent=cfg.name+' CLEARED';
     const best=Math.floor(level<0?0:save.getBest(level)/10);
-    document.getElementById('clearStat').innerHTML='Current <b>'+gained.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b><br>Ideas saved this run <b>'+runIdeasSaved+'</b>';
+    document.getElementById('clearStat').innerHTML='Current <b>'+gained.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b><br>Stories found this level <b>'+levelStories.length+'</b>';
     document.getElementById('clearMeme').textContent=cfg.winMeme;
-    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);showBetweenHeadline();
+    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);showStoryBreak();
   }
 }
 
@@ -1385,16 +1432,22 @@ $('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('againBtn').onclick=()=>{sndClick();openIntro(0);};
 $('shootBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(state==='playing')shoot();});
 
-// Between-level headline card: opportunistic RSS value with graceful failure.
-async function getOneHeadline(){
-  try{const feed=userFeeds[activeFeedIdx]||userFeeds[0];const items=await loadFeed(feed);const item=(items||[]).find(i=>i.link&&i.link!=='#'&&!/^⚠/.test(i.title))||(items||[])[0];return item?{...item,source:feed.name,color:feed.color}:null;}catch(e){return null;}
-}
-async function showBetweenHeadline(){
+// Between-level story break: collected stories first, pool fallback always.
+function storyDesc(story){return story.desc||'A useful read for your next content idea.';}
+async function showStoryBreak(){
   const card=$('betweenHeadline');card.classList.add('hidden');card.innerHTML='';
-  const item=await getOneHeadline();if(state!=='clear'||!item||/^⚠/.test(item.title))return;
-  card.innerHTML='<div class="headline-source" style="color:'+escapeAttr(item.color||'#00e5a0')+'">'+escapeHtml(item.source)+'</div><div class="headline-title">'+escapeHtml(item.title)+'</div><div class="headline-actions"><button class="mini-btn save" id="betweenSaveBtn">SAVE IDEA</button>'+(item.link&&item.link!=='#'?'<a class="mini-btn" target="_blank" rel="noopener" href="'+escapeAttr(item.link)+'">READ ↗</a>':'')+'</div>';
+  const collected=levelStories.length>0;
+  const story=collected?levelStories[0]:getStoryForBreak();
+  if(!story)return;
+  const countLine=levelStories.length>1?'<div class="headline-source" style="color:var(--gold)">Stories found this level: '+levelStories.length+'</div>':'';
+  const note=collected?'':'<div class="headline-source" style="color:var(--gold)">No story card grabbed, but here’s one from the feed.</div>';
+  card.innerHTML='<div class="headline-source" style="color:var(--viral)">STORY BREAK</div>'+countLine+note+
+    '<div class="headline-source" style="color:'+escapeAttr(story.color||'#00e5a0')+'">'+escapeHtml(story.source)+'</div>'+ 
+    '<div class="headline-title">'+escapeHtml(story.title)+'</div>'+ 
+    '<div style="font-size:11px;line-height:1.55;opacity:.62;margin:-3px 0 10px">'+escapeHtml(storyDesc(story))+'</div>'+ 
+    '<div class="headline-actions">'+(story.url&&story.url!=='#'?'<a class="mini-btn" target="_blank" rel="noopener" href="'+escapeAttr(story.url)+'">READ ↗</a>':'<button class="mini-btn" disabled>READ</button>')+'<button class="mini-btn save" id="betweenSaveBtn">SAVE FOR LATER</button></div>';
   card.classList.remove('hidden');
-  $('betweenSaveBtn').onclick=e=>{const saved=saveContentIdea(item,item.source);if(saved)runIdeasSaved++;e.currentTarget.textContent=saved?'SAVED':'ALREADY SAVED';e.currentTarget.disabled=true;toast(saved?'Saved to Idea Locker':'Already in Locker',1000);};
+  $('betweenSaveBtn').onclick=e=>{const saved=saveContentIdea({title:story.title,link:story.url,source:story.source},story.source);e.currentTarget.textContent=saved?'SAVED FOR LATER':'ALREADY SAVED';e.currentTarget.disabled=true;toast(saved?'Saved for later':'Already saved',1000);};
 }
 // Native share first, then X intent, then clipboard/toast fallback.
 async function shareScore(cfg,reach,won){
