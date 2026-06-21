@@ -18,35 +18,26 @@
 html,body{height:100%;overflow:hidden;background:var(--ink);font-family:var(--mono);color:var(--paper);touch-action:manipulation;user-select:none;-webkit-user-select:none}
 #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 canvas{display:block}
-.overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;background:rgba(10,13,22,.93);backdrop-filter:blur(10px);z-index:10}
+
+/* ── OVERLAYS ── */
+.overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px 20px;text-align:center;background:rgba(10,13,22,.94);backdrop-filter:blur(12px);z-index:10;overflow-y:auto}
 .overlay.hidden{display:none}
-.eyebrow{font-size:10px;letter-spacing:.4em;color:var(--viral);text-transform:uppercase}
-.sub{font-size:12px;opacity:.7;max-width:290px;line-height:1.65}
-.btn{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);border:none;padding:14px 30px;min-width:210px;cursor:pointer;border-radius:4px;box-shadow:0 4px 0 rgba(0,0,0,.6);transition:transform .06s}
+.eyebrow{font-size:10px;letter-spacing:.4em;color:var(--viral);text-transform:uppercase;margin-bottom:-4px}
+.sub{font-size:12px;opacity:.7;max-width:300px;line-height:1.65}
+.btn{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);border:none;padding:13px 28px;min-width:200px;cursor:pointer;border-radius:4px;box-shadow:0 4px 0 rgba(0,0,0,.6);transition:transform .06s,box-shadow .06s;flex-shrink:0}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.6)}
 .btn.accent{background:var(--engage);color:#fff}
 .btn.viral{background:var(--viral);color:var(--ink)}
-.btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px rgba(240,242,255,.3)}
-.stat{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
-.stat b{color:var(--gold);font-size:17px}
-h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08em}
+.btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1px rgba(240,242,255,.25)}
+.btn.small{font-size:11px;padding:9px 18px;min-width:0}
+.stat{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;line-height:1.7}
+.stat b{color:var(--gold);font-size:16px}
+h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08em}
 
-/* ── BIG TITLE — CSS only, no rAF cost ── */
-#mainTitle{
-  font-family:var(--display);font-weight:700;
-  font-size:clamp(52px,15vw,88px);
-  letter-spacing:.04em;line-height:.95;
-  text-align:center;
-}
-#mainTitle .word-feed{
-  display:block;color:var(--engage);
-  animation:glitchA 9s steps(1) infinite;
-}
-#mainTitle .word-vel{
-  display:block;color:var(--paper);
-  animation:glitchB 11s steps(1) infinite;
-}
-/* Glitch: sits still 95% of the time, fires a fast flicker occasionally */
+/* ── MAIN TITLE ── */
+#mainTitle{font-family:var(--display);font-weight:700;font-size:clamp(48px,14vw,82px);letter-spacing:.04em;line-height:.92;text-align:center}
+#mainTitle .word-feed{display:block;color:var(--engage);animation:glitchA 9s steps(1) infinite}
+#mainTitle .word-vel{display:block;color:var(--paper);animation:glitchB 11s steps(1) infinite}
 @keyframes glitchA{
   0%,88%,89.5%,91%,100%{opacity:1;transform:none;clip-path:none}
   88.5%{opacity:.7;transform:translateX(-3px) skewX(-8deg);clip-path:inset(10% 0 60% 0)}
@@ -62,202 +53,211 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   78.5%{opacity:1;transform:translateX(2px) skewX(-3deg);clip-path:inset(25% 0 40% 0)}
 }
 
-/* ── Ben card ── */
-#benCard{
-  display:flex;align-items:center;gap:12px;
-  border:1px solid rgba(91,141,255,.3);border-left:3px solid var(--engage);
-  background:rgba(10,13,22,.7);border-radius:6px;
-  padding:11px 14px;max-width:290px;width:100%;
-  cursor:pointer;transition:border-color .15s, background .15s;
-  text-decoration:none;color:inherit;
-  backdrop-filter:blur(6px);
-}
-#benCard:hover{border-color:rgba(255,77,109,.7);background:rgba(255,77,109,.06)}
-#benAvatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--engage);flex-shrink:0}
-#benInfo{text-align:left;flex:1;min-width:0}
-#benName{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--paper)}
-#benTitle{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--viral);margin-top:1px}
-#benCta{font-family:var(--display);font-size:9px;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--engage);margin-top:4px;display:block}
+/* ── BEN CARD ── */
+.ben-card{display:flex;align-items:center;gap:12px;border:1px solid rgba(91,141,255,.3);border-left:3px solid var(--engage);background:rgba(10,13,22,.7);border-radius:6px;padding:11px 14px;max-width:290px;width:100%;cursor:pointer;transition:border-color .15s,background .15s;text-decoration:none;color:inherit;backdrop-filter:blur(6px)}
+.ben-card:hover{border-color:rgba(255,77,109,.7);background:rgba(255,77,109,.06)}
+.ben-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--engage);flex-shrink:0}
+.ben-info{text-align:left;flex:1;min-width:0}
+.ben-name{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--paper)}
+.ben-title{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--viral);margin-top:1px}
+.ben-cta{font-family:var(--display);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--engage);margin-top:4px;display:block}
 
-/* Fail attribution line */
-.fail-attr{font-size:10px;opacity:.38;letter-spacing:.06em;margin-top:2px}
-.fail-attr a{color:var(--viral);text-decoration:none;opacity:.7}
-.fail-attr a:hover{opacity:1}
-
-/* Win screen Ben card — bigger */
-#winBenCard{
-  display:flex;align-items:center;gap:14px;
-  border:1px solid rgba(0,229,160,.35);border-left:3px solid var(--viral);
-  background:rgba(0,229,160,.06);border-radius:8px;
-  padding:14px 18px;max-width:300px;width:100%;
-  cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;
-}
-#winBenCard:hover{background:rgba(0,229,160,.12);border-color:rgba(0,229,160,.7)}
-#winAvatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--viral);flex-shrink:0}
-
-
-
-/* HUD */
+/* ── HUD ── */
 #hud{position:fixed;inset:0;pointer-events:none;z-index:5;display:none}
 #hud.show{display:block}
-#hudTop{position:absolute;top:max(10px,env(safe-area-inset-top));left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:8px 14px}
-#lvlTag{font-family:var(--display);font-size:12px;letter-spacing:.15em;color:var(--viral)}
-#engageTag{font-size:11px;letter-spacing:.1em;color:var(--gold)}
-#comboTag{font-size:10px;letter-spacing:.12em;color:var(--viral);margin-top:2px}
-#comboTag.hidden{display:none}
-#pauseBtn{pointer-events:auto;width:40px;height:40px;border-radius:4px;border:2px solid rgba(240,242,255,.3);background:rgba(10,13,22,.6);color:var(--paper);font-size:14px;cursor:pointer;font-family:var(--display)}
-#progressWrap{position:absolute;top:max(58px,calc(env(safe-area-inset-top)+48px));left:14px;right:14px;height:6px;background:rgba(240,242,255,.12);border-radius:3px;overflow:hidden}
-#progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));border-radius:3px;transition:width .2s}
-#tapHint{position:absolute;bottom:calc(18%+80px);left:0;right:0;display:flex;justify-content:space-between;padding:0 10vw;font-size:10px;letter-spacing:.2em;opacity:.4;text-transform:uppercase}
+#hudTop{position:absolute;top:max(10px,env(safe-area-inset-top));left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:8px 14px}
+#lvlTag{font-family:var(--display);font-size:11px;letter-spacing:.15em;color:var(--viral)}
+#reachTag{font-size:11px;letter-spacing:.1em;color:var(--gold)}
+#comboTag{font-size:10px;letter-spacing:.12em;color:var(--paper);margin-top:2px;opacity:0;transition:opacity .2s}
+#comboTag.show{opacity:1}
+#pauseBtn{pointer-events:auto;width:38px;height:38px;border-radius:4px;border:1px solid rgba(240,242,255,.25);background:rgba(10,13,22,.6);color:var(--paper);font-size:13px;cursor:pointer;font-family:var(--display);backdrop-filter:blur(4px)}
+#progressWrap{position:absolute;top:max(56px,calc(env(safe-area-inset-top)+46px));left:14px;right:14px;height:5px;background:rgba(240,242,255,.1);border-radius:3px;overflow:hidden}
+#progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));border-radius:3px;transition:width .25s}
+#mechHint{position:absolute;top:max(70px,calc(env(safe-area-inset-top)+60px));left:14px;right:14px;text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.35;pointer-events:none}
 #shootZone{display:none;position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto}
 #hud.show #shootZone{display:flex}
-#shootBtn{width:72px;height:34px;border-radius:17px;border:1px solid rgba(240,242,255,.25);background:rgba(10,13,22,.4);color:rgba(240,242,255,.6);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;letter-spacing:.05em;backdrop-filter:blur(4px);touch-action:auto}
-#shootBtn:active{background:rgba(0,229,160,.12);border-color:var(--viral);color:var(--paper)}
-#shootBtn.danger{background:rgba(255,77,109,.22);border-color:var(--engage);color:#fff;animation:postDangerPulse .72s ease-in-out infinite alternate}
-@keyframes postDangerPulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+#shootBtn{width:80px;height:36px;border-radius:18px;border:1px solid rgba(240,242,255,.22);background:rgba(10,13,22,.5);color:rgba(240,242,255,.7);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;letter-spacing:.06em;backdrop-filter:blur(4px);touch-action:auto;transition:all .12s}
+#shootBtn:active{background:rgba(0,229,160,.15);border-color:var(--viral);color:var(--paper)}
+#shootBtn.danger{background:rgba(255,77,109,.25);border-color:var(--engage);color:#fff;animation:dangerPulse .7s ease-in-out infinite alternate}
+@keyframes dangerPulse{from{transform:scale(1)}to{transform:scale(1.07)}}
+#waveWarning{position:absolute;bottom:15%;left:0;right:0;text-align:center;font-family:var(--display);font-size:10px;letter-spacing:.2em;color:var(--engage);opacity:0;pointer-events:none;transition:opacity .3s}
+#waveWarning.show{opacity:1;animation:warnBlink .6s ease-in-out infinite alternate}
+@keyframes warnBlink{from{opacity:.5}to{opacity:1}}
 
-/* Toast */
-#toast{position:fixed;bottom:22%;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:12px;letter-spacing:.1em;color:var(--ink);background:var(--gold);padding:9px 20px;border-radius:4px;z-index:99;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;text-align:center;max-width:90vw}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:22%;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:11px;letter-spacing:.1em;color:var(--ink);background:var(--gold);padding:8px 18px;border-radius:4px;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;text-align:center;max-width:88vw}
 #toast.show{opacity:1}
-/* Win/share/install polish */
-#screenFlash{position:fixed;inset:0;background:#fff;z-index:80;opacity:0;pointer-events:none;transition:opacity .28s}
-#screenFlash.show{opacity:.72;transition:opacity .04s}
-.headline-card,.idea-board{border:1px solid rgba(0,229,160,.32);background:rgba(0,229,160,.055);border-radius:8px;padding:13px 14px;max-width:310px;width:100%;text-align:left}
-.headline-card.hidden,.idea-board.hidden,#installBanner.hidden{display:none}
-.headline-source{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--viral);margin-bottom:5px}
-.headline-title{font-family:var(--display);font-size:13px;line-height:1.45;color:var(--paper);margin-bottom:10px}
-.headline-actions{display:flex;gap:8px;flex-wrap:wrap}
-.mini-btn{font-family:var(--display);font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,242,255,.22);background:rgba(240,242,255,.06);color:var(--paper);border-radius:4px;padding:8px 10px;cursor:pointer;text-decoration:none}
-.mini-btn.save{border-color:rgba(0,229,160,.45);color:var(--viral)}
-.mini-btn.share{border-color:rgba(255,215,0,.35);color:rgba(255,215,0,.82)}
-.idea-board{max-height:52vh;overflow:auto;background:rgba(240,242,255,.04);border-color:rgba(91,141,255,.28)}
-.idea-item{border-bottom:1px solid rgba(240,242,255,.08);padding:9px 0}.idea-item:last-child{border-bottom:0}
-.idea-title{font-family:var(--display);font-size:12px;line-height:1.4}.idea-meta{font-size:9px;opacity:.5;margin-top:4px;letter-spacing:.08em;text-transform:uppercase}
-#installBanner{position:fixed;left:14px;right:14px;bottom:max(14px,env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(10,13,22,.9);border:1px solid rgba(91,141,255,.24);border-left:2px solid rgba(0,229,160,.7);border-radius:8px;padding:10px 12px;box-shadow:0 8px 22px rgba(0,0,0,.3)}
-#installBanner p{font-size:10px;line-height:1.45;opacity:.72;text-align:left}
-.install-actions{display:flex;gap:6px;flex-shrink:0}
-.install-actions button{min-width:0;padding:8px 10px;font-size:10px}
 
-/* RSS Panel */
-#rssPanel{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;background:rgba(10,13,22,.98);backdrop-filter:blur(14px)}
-#rssPanel.hidden{display:none}
-#rssPanelTop{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(91,141,255,.25);flex-shrink:0}
-#rssPanelTop h3{font-family:var(--display);font-size:15px;letter-spacing:.12em;color:var(--viral)}
-.rss-tabs{display:flex;gap:6px;padding:10px 14px 4px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
-.rss-tabs::-webkit-scrollbar{display:none}
-.rss-tab{font-family:var(--display);font-size:9px;letter-spacing:.1em;padding:6px 12px;border-radius:20px;border:1px solid rgba(240,242,255,.2);background:transparent;color:rgba(240,242,255,.5);cursor:pointer;white-space:nowrap;text-transform:uppercase;flex-shrink:0}
-.rss-tab.active{color:#fff;font-weight:700}
-.rss-add-row{display:flex;gap:8px;padding:6px 14px;flex-shrink:0}
-.rss-add-row input{flex:1;font-family:var(--mono);font-size:11px;background:rgba(240,242,255,.06);border:1px solid rgba(240,242,255,.15);border-radius:4px;color:var(--paper);padding:8px 12px;outline:none;min-width:0}
-.rss-add-row input:focus{border-color:var(--schedule)}
-.rss-add-row input::placeholder{color:rgba(240,242,255,.3)}
-.rss-add-row button{font-family:var(--display);font-size:10px;letter-spacing:.08em;padding:8px 14px;background:var(--schedule);color:#fff;border:none;border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-#rssItems{flex:1;overflow-y:auto;padding:6px 14px 14px;display:flex;flex-direction:column;gap:7px}
-.rss-item{background:rgba(240,242,255,.04);border:1px solid rgba(240,242,255,.09);border-radius:6px;padding:11px 13px;cursor:pointer;transition:border-color .12s}
-.rss-item:hover{border-color:rgba(91,141,255,.4)}
-.rss-item-source{font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
-.rss-item-title{font-size:13px;line-height:1.45;margin-bottom:4px;font-family:var(--display);color:var(--paper)}
-.rss-item-date{font-size:10px;opacity:.35;letter-spacing:.06em}
-.rss-item-body{font-size:11px;line-height:1.65;opacity:.6;margin-top:8px;border-top:1px solid rgba(240,242,255,.08);padding-top:8px;display:none}
-.rss-save-btn{margin-top:10px;font-family:var(--display);font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(0,229,160,.45);background:rgba(0,229,160,.08);color:var(--viral);border-radius:4px;padding:7px 9px;cursor:pointer}
-.rss-item.expanded .rss-item-body{display:block}
-.rss-empty{text-align:center;padding:40px 20px;opacity:.4;font-size:12px;line-height:1.9}
-.rss-loading{text-align:center;padding:30px 20px;font-size:11px;opacity:.45;letter-spacing:.1em}
-#rssContinueWrap{padding:12px 14px;border-top:1px solid rgba(91,141,255,.18);flex-shrink:0}
+/* ── SCREEN FLASH ── */
+#screenFlash{position:fixed;inset:0;background:#fff;z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
+#screenFlash.flash{opacity:.7;transition:opacity .05s}
+@keyframes crownFloat{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-8px) rotate(4deg)}}
+@keyframes cellPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
 
-/* Level select */
-#levelGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;max-width:330px;width:100%}
-.lvl-node{border:1px solid rgba(240,242,255,.14);border-radius:6px;padding:9px 4px;text-align:center;cursor:pointer;background:rgba(240,242,255,.03);transition:all .12s;position:relative}
-.lvl-node.unlocked:hover{background:rgba(91,141,255,.1)}
-.lvl-node.completed{border-color:rgba(0,229,160,.4);background:rgba(0,229,160,.05)}
-.lvl-node.locked{opacity:.3;cursor:default}
-.lvl-node .lvl-num{font-family:var(--display);font-size:13px;font-weight:700;display:block;color:var(--gold)}
-.lvl-node .lvl-icon{font-size:18px;display:block;margin-bottom:1px}
-.lvl-node .lvl-name{font-size:7px;letter-spacing:.04em;opacity:.45;text-transform:uppercase;line-height:1.3;margin-top:2px}
-.lvl-check{position:absolute;top:2px;right:4px;font-size:8px;color:var(--viral)}
-.card{border:1px solid rgba(91,141,255,.35);background:rgba(10,13,22,.75);padding:20px 22px;max-width:310px;width:100%;border-radius:8px}
-.how-row{display:flex;align-items:center;gap:11px;font-size:12px;line-height:1.45}.how-row span{font-size:20px;width:28px;text-align:center}.how-row p{margin:0;opacity:.82}
-.mechanic-tag{display:inline-block;background:rgba(0,229,160,.1);border:1px solid var(--viral);color:var(--viral);font-size:9px;letter-spacing:.2em;padding:3px 10px;border-radius:12px;margin-top:8px}
-.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.platform-tag{font-size:9px;letter-spacing:.1em;padding:3px 10px;border-radius:10px;border:1px solid;text-transform:uppercase}
+/* ── LEVEL SELECT ── */
+#levelGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:340px;width:100%}
+.lvl-node{border:1px solid rgba(240,242,255,.12);border-radius:6px;padding:8px 3px;text-align:center;cursor:pointer;background:rgba(240,242,255,.03);transition:all .12s;position:relative}
+.lvl-node.unlocked:hover{background:rgba(91,141,255,.1);border-color:rgba(91,141,255,.4)}
+.lvl-node.completed{border-color:rgba(0,229,160,.35);background:rgba(0,229,160,.04)}
+.lvl-node.locked{opacity:.28;cursor:default}
+.lvl-node .lvl-num{font-family:var(--display);font-size:12px;font-weight:700;display:block;color:var(--gold)}
+.lvl-node .lvl-name{font-size:6px;letter-spacing:.03em;opacity:.4;text-transform:uppercase;line-height:1.3;margin-top:1px}
+.lvl-check{position:absolute;top:2px;right:4px;font-size:7px;color:var(--viral)}
+.card{border:1px solid rgba(91,141,255,.3);background:rgba(10,13,22,.8);padding:16px 18px;max-width:300px;width:100%;border-radius:8px}
+
+/* ── STORIES PANEL ── */
+#storiesPanel{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;background:rgba(10,13,22,.98);backdrop-filter:blur(14px)}
+#storiesPanel.hidden{display:none}
+#storiesPanelTop{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(91,141,255,.2);flex-shrink:0}
+#storiesPanelTop h3{font-family:var(--display);font-size:14px;letter-spacing:.12em;color:var(--viral)}
+#storiesModeTabs{display:flex;flex-shrink:0}
+.stories-mode-tab{flex:1;font-family:var(--display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:11px 0;background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(240,242,255,.35);cursor:pointer;transition:all .15s;position:relative}
+.stories-mode-tab.active{color:var(--paper);border-bottom-color:var(--viral)}
+#savedBadge{display:none;position:absolute;top:8px;right:calc(50% - 24px);background:var(--viral);color:var(--ink);font-size:7px;font-weight:700;width:14px;height:14px;border-radius:50%;line-height:14px;text-align:center}
+#savedBadge.show{display:block}
+.rss-feed-tabs{display:flex;gap:5px;padding:8px 12px 4px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;border-bottom:1px solid rgba(91,141,255,.1)}
+.rss-feed-tabs::-webkit-scrollbar{display:none}
+.rss-tab{font-family:var(--display);font-size:8px;letter-spacing:.1em;padding:5px 10px;border-radius:16px;border:1px solid rgba(240,242,255,.18);background:transparent;color:rgba(240,242,255,.45);cursor:pointer;white-space:nowrap;text-transform:uppercase;flex-shrink:0;transition:all .12s}
+.rss-tab.active{color:#fff}
+/* Article reader view */
+#storiesContent{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0}
+.story-card{border-bottom:1px solid rgba(240,242,255,.07);padding:14px 16px;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent}
+.story-card:active{background:rgba(255,255,255,.04)}
+.story-card-source{font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+.story-card-title{font-size:13px;line-height:1.45;font-family:var(--display);color:var(--paper);margin-bottom:4px}
+.story-card-desc{font-size:11px;line-height:1.62;opacity:.58;margin-top:6px;display:none}
+.story-card.open .story-card-desc{display:block}
+.story-card-actions{display:none;gap:8px;margin-top:10px;flex-wrap:wrap}
+.story-card.open .story-card-actions{display:flex}
+.story-action-btn{font-family:var(--display);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:4px;border:1px solid;cursor:pointer;text-decoration:none;display:inline-block;background:transparent;transition:all .12s}
+.story-action-btn.read{border-color:var(--schedule);color:var(--schedule)}
+.story-action-btn.save{border-color:rgba(0,229,160,.5);color:var(--viral)}
+.story-action-btn.saved{border-color:rgba(0,229,160,.25);color:rgba(0,229,160,.4);cursor:default}
+.story-action-btn.remove{border-color:rgba(255,77,109,.3);color:rgba(255,77,109,.6)}
+.story-card-chevron{display:block;float:right;font-size:10px;opacity:.3;transition:transform .15s;margin-left:8px;margin-top:2px}
+.story-card.open .story-card-chevron{transform:rotate(180deg);opacity:.6}
+/* Empty / loading */
+.stories-empty{text-align:center;padding:48px 20px;opacity:.35;font-size:11px;line-height:1.9}
+#storiesContinueWrap{padding:10px 12px;border-top:1px solid rgba(91,141,255,.12);flex-shrink:0}
+
+/* ── BETWEEN-LEVEL STORY CARD ── */
+.story-break-card{border:1px solid rgba(0,229,160,.28);background:rgba(0,229,160,.05);border-radius:8px;padding:14px 16px;max-width:300px;width:100%;text-align:left}
+.story-break-card.hidden{display:none}
+.story-source{font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.story-title{font-family:var(--display);font-size:13px;line-height:1.4;color:var(--paper);margin-bottom:6px}
+.story-desc{font-size:10px;line-height:1.55;opacity:.6;margin-bottom:10px}
+.story-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mini-btn{font-family:var(--display);font-size:8px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,242,255,.2);background:rgba(240,242,255,.05);color:var(--paper);border-radius:4px;padding:7px 10px;cursor:pointer;text-decoration:none;display:inline-block}
+.mini-btn.save{border-color:rgba(0,229,160,.4);color:var(--viral)}
+
+/* ── PLATFORM INTRO TAGS ── */
+.tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.platform-tag{font-size:8px;letter-spacing:.08em;padding:3px 9px;border-radius:10px;border:1px solid;text-transform:uppercase}
+.how-row{display:flex;align-items:flex-start;gap:10px;font-size:11px;line-height:1.5}
+.how-row span{font-size:18px;width:26px;text-align:center;flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
 <div id="stage"><canvas id="game"></canvas></div>
 
+<!-- HUD -->
 <div id="hud">
   <div id="hudTop">
-    <div><div id="lvlTag">LV 1</div><div id="engageTag">Reach: 0</div><div id="comboTag" class="hidden">Combo x0</div></div>
-    <button id="pauseBtn">| |</button>
+    <div>
+      <div id="lvlTag">LINKEDIN</div>
+      <div id="reachTag">Reach: 0</div>
+      <div id="comboTag">Combo x0</div>
+    </div>
+    <button id="pauseBtn">⏸</button>
   </div>
   <div id="progressWrap"><div id="progressBar"></div></div>
-  <div id="tapHint"><span>&#9664; hold</span><span>hold &#9654;</span></div>
+  <div id="mechHint"></div>
+  <div id="waveWarning">⚠ DEMONETIZATION RISING</div>
   <div id="shootZone"><button id="shootBtn">POST</button></div>
 </div>
 
 <!-- MAIN MENU -->
-<div class="overlay" id="menuScreen">
-  <div class="eyebrow">Nobody Creative presents</div>
-  <div id="mainTitle">
-    <span class="word-feed">FEED</span>
-    <span class="word-vel">VELOCITY</span>
-  </div>
-  <div style="height:44px;display:flex;align-items:center;justify-content:center;width:100%;max-width:290px"><p class="sub" id="menuTagline" style="margin:0;font-size:12px;opacity:.7;line-height:1.55;text-align:center"></p></div>
-  <button class="btn accent" id="startBtn">Start Posting</button>
-  <button class="btn ghost" id="howBtn">How to Play</button>
-  <button class="btn ghost" id="lvlSelBtn">Level Select</button>
-  <button class="btn ghost" id="feedBtn">&#128240; Stories</button>
-  <p class="sub" style="opacity:.3;font-size:10px;margin-top:2px">WASD / Arrows &middot; Space to post</p>
-  <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:-4px">Built by</div>
-  <a id="benCard" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">
-    <img id="benAvatar" src="https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg" alt="Ben Campbell" />
-    <div id="benInfo">
-      <div id="benName">Ben Campbell</div>
-      <div id="benTitle">Social Strategist &middot; Nobody Creative</div>
-      <span id="benCta">bencampbell.netlify.app &#8599;</span>
+<div class="overlay" id="menuScreen" style="gap:0;justify-content:center">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:300px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div class="eyebrow">Nobody Creative</div>
+      <div id="mainTitle">
+        <span class="word-feed">FEED</span>
+        <span class="word-vel">VELOCITY</span>
+      </div>
+      <div style="height:34px;display:flex;align-items:center;justify-content:center;width:100%">
+        <p id="menuTagline" style="font-size:11px;opacity:.45;text-align:center;line-height:1.5;max-width:260px"></p>
+      </div>
     </div>
-  </a>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+      <button class="btn accent" id="startBtn" style="width:100%">Start Posting</button>
+      <div style="display:flex;gap:8px;width:100%">
+        <button class="btn ghost" id="howBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px">How to Play</button>
+        <button class="btn ghost" id="lvlSelBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px">Levels</button>
+        <button class="btn ghost" id="feedBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px;position:relative">📰 Stories<span id="menuSavedBadge" style="display:none;position:absolute;top:6px;right:5px;background:var(--viral);color:var(--ink);font-size:7px;font-weight:700;width:14px;height:14px;border-radius:50%;line-height:14px;text-align:center"></span></button>
+      </div>
+    </div>
+    <!-- Ben card = sole portfolio touchpoint. About opens separately below. -->
+    <a class="ben-card" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="max-width:100%">
+      <img class="ben-avatar" src="https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg" alt="Ben Campbell">
+      <div class="ben-info">
+        <div class="ben-name">Ben Campbell</div>
+        <div class="ben-title">Social Media Strategist · Nobody Creative</div>
+        <span class="ben-cta">View Portfolio ↗</span>
+      </div>
+    </a>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button id="aboutBtn" style="background:none;border:none;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(240,242,255,.28);cursor:pointer;font-family:var(--mono);padding:4px 0">About this game</button>
+      <span style="opacity:.15;font-size:9px">·</span>
+      <p style="font-size:8px;opacity:.2;letter-spacing:.15em;text-transform:uppercase">WASD · Space to post</p>
+    </div>
+  </div>
 </div>
-
 
 <!-- HOW TO PLAY -->
 <div class="overlay hidden" id="howScreen">
   <div class="eyebrow">Quick start</div>
   <h2>HOW TO PLAY</h2>
-  <div class="card" style="display:grid;gap:10px;text-align:left">
-    <div class="how-row"><span>↔️</span><p>Hold left/right to steer.</p></div>
-    <div class="how-row"><span>🧱</span><p>Land on posts to climb.</p></div>
-    <div class="how-row"><span>🚀</span><p>Tap POST to clear bad takes.</p></div>
-    <div class="how-row"><span>📰</span><p>Grab story cards, then choose what to save between levels.</p></div>
-    <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to win.</p></div>
+  <div class="card" style="display:grid;gap:11px;text-align:left">
+    <div class="how-row"><span>↔️</span><p>Hold left/right to steer. Wrap around edges.</p></div>
+    <div class="how-row"><span>🧱</span><p>Land on posts to bounce up. Each platform = a post.</p></div>
+    <div class="how-row"><span>🚀</span><p>Tap POST to fire back at trolls, bots, and bad takes.</p></div>
+    <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to clear the level.</p></div>
+    <div class="how-row"><span>📰</span><p>Between levels, read a real marketing story from the feed.</p></div>
+    <div class="how-row"><span>⚠️</span><p>Every platform has its own chaos. Read the intro.</p></div>
   </div>
-  <button class="btn viral" id="practiceBtn">Practice</button>
+  <button class="btn viral" id="practiceBtn">Practice Run</button>
   <button class="btn accent" id="howStartBtn">Start Game</button>
   <button class="btn ghost" id="howBackBtn">Back</button>
 </div>
 
 <!-- LEVEL SELECT -->
 <div class="overlay hidden" id="levelSelectScreen">
-  <div class="eyebrow">Choose your platform</div>
-  <h2 style="font-size:20px;margin-bottom:8px">CONTENT CALENDAR</h2>
+  <div class="eyebrow">Content Calendar</div>
+  <h2 style="font-size:18px;margin-bottom:6px">CHOOSE YOUR PLATFORM</h2>
   <div id="levelGrid"></div>
-  <button class="btn ghost" id="lvlSelBack" style="min-width:160px;margin-top:8px;font-size:13px">Back</button>
+  <button class="btn ghost small" id="lvlSelBack" style="margin-top:10px">← Back</button>
 </div>
 
 <!-- INTRO -->
-<div class="overlay hidden" id="introScreen">
-  <div class="card">
+<div class="overlay hidden" id="introScreen" style="gap:16px">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;max-width:300px">
     <div class="eyebrow" id="introEyebrow">Platform 1 of 10</div>
-    <h2 id="introName" style="font-size:20px;margin-top:4px">LINKEDIN</h2>
-    <p style="font-size:10px;opacity:.55;margin-top:5px;letter-spacing:.12em;text-transform:uppercase" id="introCampaign"></p>
-    <div class="mechanic-tag" id="introMechanic">NORMAL ALGORITHM</div>
-    <div class="tag-row" id="introTags"></div>
-    <p style="font-size:11px;opacity:.6;margin-top:10px;line-height:1.65" id="introDesc"></p>
-    <p style="font-size:10px;opacity:.45;margin-top:8px;font-style:italic;line-height:1.6" id="introMeme"></p>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+      <img id="introLogo" style="width:32px;height:32px" alt="">
+      <h2 id="introName" style="font-size:24px;letter-spacing:.06em">LINKEDIN</h2>
+    </div>
+    <p style="font-size:8px;opacity:.38;letter-spacing:.14em;text-transform:uppercase;margin-top:1px" id="introCampaign"></p>
+    <div style="display:inline-block;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.4);color:var(--viral);font-size:8px;letter-spacing:.2em;padding:3px 12px;border-radius:10px;margin-top:4px" id="introMechanic">MECHANIC</div>
   </div>
-  <button class="btn accent" id="introGo">Post It</button>
-  <button class="btn ghost" id="introFeedBtn" style="min-width:0;font-size:12px;padding:10px 20px">&#128240; Read Stories</button>
+  <div style="width:100%;max-width:300px;border:1px solid rgba(91,141,255,.22);background:rgba(255,255,255,.03);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+    <p style="font-size:11px;opacity:.72;line-height:1.62;text-align:center" id="introDesc"></p>
+    <p style="font-size:10px;opacity:.38;font-style:italic;line-height:1.5;text-align:center;border-top:1px solid rgba(255,255,255,.07);padding-top:10px" id="introMeme"></p>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:300px">
+    <button class="btn accent" id="introGo" style="width:100%">Let's Post</button>
+    <button class="btn ghost small" id="introBack" style="opacity:.6">← Back</button>
+  </div>
 </div>
 
 <!-- PAUSED -->
@@ -265,526 +265,642 @@ h2{font-family:var(--display);font-size:clamp(20px,5vw,30px);letter-spacing:.08e
   <h2>PAUSED</h2>
   <div class="stat" id="pauseStat"></div>
   <button class="btn accent" id="resumeBtn">Resume</button>
-  <button class="btn ghost" id="pauseFeedBtn">&#128240; Stories</button>
-  <button class="btn ghost" id="ideaBoardBtn">Idea Locker</button>
+  <button class="btn ghost" id="pauseFeedBtn">📰 Stories</button>
   <button class="btn ghost" id="pauseMenuBtn">Main Menu</button>
-</div>
-
-<!-- IDEA BOARD -->
-<div class="overlay hidden" id="ideaScreen">
-  <div class="eyebrow">Idea Locker</div>
-  <h2>IDEA LOCKER</h2>
-  <div class="idea-board" id="ideaList"></div>
-  <button class="btn ghost" id="ideaBackBtn">Back</button>
 </div>
 
 <!-- FAIL -->
 <div class="overlay hidden" id="failScreen">
-  <div class="eyebrow" id="failEyebrow">&#128128; Ratio&#39;d</div>
-  <h2 id="failTitle">ACCOUNT<br>SUSPENDED</h2>
+  <div class="eyebrow" id="failEyebrow">💀 Signal Lost</div>
+  <h2 id="failTitle" style="line-height:1.1">ACCOUNT<br>SUSPENDED</h2>
   <div class="stat" id="failStat"></div>
-  <p style="font-size:11px;opacity:.6;font-style:italic;max-width:270px;line-height:1.7;margin-top:-2px" id="failQuote"></p>
+  <p style="font-size:11px;opacity:.55;font-style:italic;max-width:270px;line-height:1.65;margin-top:-2px" id="failQuote"></p>
   <button class="btn accent" id="retryBtn">Try Again</button>
-  <button class="btn ghost" id="failFeedBtn">&#128240; Read Stories</button>
   <button class="btn ghost" id="failMenuBtn">Main Menu</button>
-  <p class="fail-attr">Made by someone who actually beats the algorithm. &nbsp;<a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">Ben Campbell &#8599;</a></p>
+  <p style="font-size:9px;opacity:.32;letter-spacing:.04em;margin-top:4px">Made by someone who actually beats the algorithm. &nbsp;<a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="color:var(--viral);text-decoration:none">Ben Campbell ↗</a></p>
 </div>
 
 <!-- LEVEL CLEAR -->
 <div class="overlay hidden" id="clearScreen">
-  <div class="eyebrow">&#10022; Post Went Viral</div>
-  <h2 id="clearTitle">POST CLEARED</h2>
+  <div class="eyebrow">✦ Post Went Viral</div>
+  <h2 id="clearTitle">CLEARED</h2>
   <div class="stat" id="clearStat"></div>
-  <p style="font-size:11px;opacity:.55;font-style:italic;max-width:260px;line-height:1.6" id="clearMeme"></p>
-  <div class="headline-card hidden" id="betweenHeadline"></div>
-  <button class="btn accent" id="nextBtn">Next Platform &#8594;</button>
-  <button class="btn ghost" id="clearShareBtn">Share Score</button>
-  <button class="btn ghost" id="clearFeedBtn">&#128240; Stories</button>
-  <button class="btn ghost" id="clearMenuBtn">Main Menu</button>
+  <p style="font-size:11px;opacity:.45;font-style:italic;max-width:260px;line-height:1.55" id="clearMeme"></p>
+  <!-- Between-level story break -->
+  <div class="story-break-card hidden" id="storyBreakCard">
+    <div class="story-source" id="storyBreakSource"></div>
+    <div class="story-title" id="storyBreakTitle"></div>
+    <div class="story-desc" id="storyBreakDesc"></div>
+    <div class="story-actions">
+      <a class="mini-btn" id="storyBreakRead" target="_blank" rel="noopener" href="#">READ ↗</a>
+      <button class="mini-btn save" id="storyBreakSave">SAVE FOR LATER</button>
+    </div>
+  </div>
+  <button class="btn accent" id="nextBtn">Next Platform →</button>
+  <button class="btn ghost small" id="clearShareBtn">Share Score</button>
+  <button class="btn ghost small" id="clearMenuBtn">Main Menu</button>
 </div>
 
 <!-- WIN -->
-<div class="overlay hidden" id="winScreen">
-  <div class="eyebrow">&#10022; All 10 platforms. Algorithm: defeated.</div>
-  <h2 style="font-size:clamp(26px,7vw,38px)">CONTENT<br>KING</h2>
-  <div class="stat" id="winStat"></div>
-  <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:-4px">Built by</div>
-  <a id="winBenCard" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener">
-    <img id="winAvatar" src="https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg" alt="Ben Campbell" />
-    <div style="text-align:left">
-      <div style="font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--paper)">Ben Campbell</div>
-      <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--viral);margin-top:2px">Social Strategist &middot; Nobody Creative</div>
-      <div style="font-family:var(--display);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--engage);margin-top:5px">bencampbell.netlify.app &#8599;</div>
+<div class="overlay hidden" id="winScreen" style="gap:0;justify-content:center;padding:20px">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:320px">
+
+    <!-- Crown moment -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:36px;line-height:1;animation:crownFloat 2.2s ease-in-out infinite alternate">👑</div>
+      <div class="eyebrow" style="color:var(--gold);letter-spacing:.3em">Algorithm Defeated</div>
+      <h2 style="font-family:var(--display);font-size:clamp(28px,8vw,42px);letter-spacing:.06em;line-height:.95;text-align:center">CONTENT<br>KING</h2>
+      <div class="stat" id="winStat" style="margin-top:4px"></div>
     </div>
-  </a>
-  <button class="btn accent" id="againBtn">Play Again</button>
-  <button class="btn ghost" id="winShareBtn">Share the Crown</button>
-  <button class="btn ghost" id="winMenuBtn">Main Menu</button>
+
+    <!-- 10 defeated platforms -->
+    <div style="width:100%">
+      <p style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;opacity:.35;text-align:center;margin-bottom:8px">Platforms Defeated</p>
+      <div id="winPlatformGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px"></div>
+    </div>
+
+    <!-- Win meme -->
+    <p id="winMeme" style="font-size:10px;opacity:.38;font-style:italic;text-align:center;line-height:1.55;max-width:270px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px;width:100%"></p>
+
+    <!-- Actions -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+      <button class="btn accent" id="againBtn" style="width:100%">Play Again</button>
+      <div style="display:flex;gap:8px;width:100%">
+        <button class="btn ghost small" id="winShareBtn" style="flex:1;min-width:0">Share 👑</button>
+        <button class="btn ghost small" id="winMenuBtn" style="flex:1;min-width:0">Main Menu</button>
+      </div>
+    </div>
+
+    <p style="font-size:9px;opacity:.25;letter-spacing:.08em;text-align:center">Built by <a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="color:var(--viral);text-decoration:none;opacity:1">Ben Campbell</a></p>
+
+  </div>
 </div>
 
-<!-- RSS PANEL -->
-<div id="rssPanel" class="hidden">
-  <div id="rssPanelTop">
-    <h3>&#9889; STORIES</h3>
-    <button class="btn ghost" id="rssPanelClose" style="min-width:0;padding:8px 16px;font-size:11px">&#10005; Close</button>
+<!-- ABOUT -->
+<div class="overlay hidden" id="aboutScreen" style="gap:0;justify-content:center;padding:20px">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:300px">
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div class="eyebrow">Why This Exists</div>
+      <h2 style="font-size:22px">ABOUT</h2>
+    </div>
+
+    <div style="width:100%;border:1px solid rgba(91,141,255,.22);background:rgba(255,255,255,.03);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+      <p style="font-size:11px;line-height:1.7;opacity:.78">Each level is designed around how that platform actually behaves — not as metaphor, but as mechanic.</p>
+      <p style="font-size:11px;line-height:1.7;opacity:.78">TikTok platforms vanish because trends expire. Instagram posts ghost because reach is unreliable. YouTube has a rising demonetization wave because the pressure to keep climbing never stops. Reddit platforms are labelled with subreddits because where you post changes everything.</p>
+      <p style="font-size:11px;line-height:1.7;opacity:.78">This is how I think about social — not channels to post into, but systems with distinct rhythms, failure modes, and moments of unexpected virality.</p>
+      <p style="font-size:10px;opacity:.38;font-style:italic;line-height:1.55;border-top:1px solid rgba(255,255,255,.07);padding-top:10px">Built in vanilla JS. No framework. No build step. Deployed via Netlify drag-and-drop.</p>
+    </div>
+
+    <button class="btn ghost small" id="aboutBack" style="opacity:.6">← Back</button>
+
   </div>
-  <div class="rss-tabs" id="rssTabs"></div>
-  <div class="rss-add-row">
-    <input type="text" id="rssUrlInput" placeholder="Paste any RSS feed URL..." />
-    <button id="rssAddBtn">+ Add</button>
+</div>
+
+<!-- UNIFIED STORIES PANEL -->
+<div id="storiesPanel" class="hidden">
+  <div id="storiesPanelTop">
+    <h3>📰 STORIES</h3>
+    <button class="btn ghost small" id="storiesPanelClose">✕ Close</button>
   </div>
-  <div id="rssItems"><div class="rss-empty">Loading stories…</div></div>
-  <div id="rssContinueWrap">
-    <button class="btn accent" id="rssContinueBtn" style="min-width:0;width:100%;font-size:14px">Back to Game</button>
+  <!-- Mode tabs: Feed | Saved -->
+  <div id="storiesModeTabs">
+    <button class="stories-mode-tab active" id="tabFeed">Feed</button>
+    <button class="stories-mode-tab" id="tabSaved">Saved<span id="savedBadge"></span></button>
+  </div>
+  <!-- Feed sub-tabs (sources) — only shown in Feed mode -->
+  <div class="rss-feed-tabs hidden" id="rssTabs"></div>
+  <!-- Scrollable content area -->
+  <div id="storiesContent"><div class="rss-empty">Loading…</div></div>
+  <div id="storiesContinueWrap">
+    <button class="btn accent" id="storiesContinueBtn" style="width:100%;min-width:0">Back to Game</button>
   </div>
 </div>
 
 <div id="screenFlash"></div>
-<div id="installBanner" class="hidden"><p><b>Install Feed Velocity?</b><br>Launch from your home screen like a tiny content gremlin.</p><div class="install-actions"><button class="btn viral" id="installAccept">Install</button><button class="btn ghost" id="installDismiss">Not now</button></div></div>
 <div id="toast"></div>
+
 <script>
-/* =========================================================
-   FEED VELOCITY — Social Media Manager Edition v2
-   Nobody Studios · Hand-drawn logos · Platform memes
-   ========================================================= */
+/* =====================================================================
+   FEED VELOCITY v3 — Nobody Studios
+   Meme-first platform mechanics. One joke per level, executed crisply.
+   ===================================================================== */
+
 const W=390,H=680;
-// One canonical game URL for all share surfaces.
 const GAME_URL='https://feed-velocity.netlify.app/';
 const cvs=document.getElementById('game');
 const ctx=cvs.getContext('2d');
 let viewScale=1;
+
 function fit(){
   const vw=window.innerWidth,vh=window.innerHeight;
   viewScale=Math.min(vw/W,vh/H);
   cvs.width=Math.floor(W*viewScale*devicePixelRatio);
   cvs.height=Math.floor(H*viewScale*devicePixelRatio);
-  cvs.style.width=(W*viewScale)+'px';cvs.style.height=(H*viewScale)+'px';
+  cvs.style.width=(W*viewScale)+'px';
+  cvs.style.height=(H*viewScale)+'px';
   ctx.setTransform(viewScale*devicePixelRatio,0,0,viewScale*devicePixelRatio,0,0);
 }
 addEventListener('resize',fit);fit();
-const rand=(a,b)=>a+Math.random()*(b-a);
 
-/* ── Platform-drawn logo functions ──
-   Each draws a simplified brand mark centered at (0,0), size ~20px
-   Pure canvas shapes — no external deps, works offline
-*/
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const $=id=>document.getElementById(id);
+
+/* ─────────────────────────────────────────────
+   PLATFORM CONFIGS
+   Each platform: one defining mechanic + memes
+───────────────────────────────────────────── */
+const PLATFORMS=[
+  {
+    id:'linkedin', name:'LINKEDIN', campaign:'The Humble Brag Climb',
+    color:'#0077b5', star:'#93c5fd', bg:'#040e1f',
+    mechanic:'humble-brag',
+    mechHint:'Land HUMBLE BRAG posts for mega-boost · Dodge Open To Work banners',
+    desc:'Thought leadership. Humble brags disguised as life lessons. Every post starts with "I was today years old when I learned..." and ends with 47,000 reactions.',
+    meme:'"Just got rejected by 47 companies. Here\'s what I learned about RESILIENCE. 💪 47,000 likes."',
+    winMeme:'"Excited to announce I\'m thriving in this space and pivoting my journey forward."',
+    failLabel:'Ratio\'d on LinkedIn',
+    failQuote:'"Going viral was never in the Q3 content calendar." — every SM manager, ever',
+    shootLabel:'POST',
+    goal:14, gap:[42,62], spring:.06, moving:.00, brittle:.00, grav:1.0,
+  },
+  {
+    id:'twitter', name:'X / TWITTER', campaign:'Ratio Canyon',
+    color:'#1da1f2', star:'#7dd3fc', bg:'#020810',
+    mechanic:'ratio-drop',
+    mechHint:'Shoot RATIO bombs from above · Narrow posts, fast takes',
+    desc:'Hot takes. Quote-tweets of hot takes. Threads about why hot takes are ruining discourse. The site is on fire. This is fine.',
+    meme:'"This website is terrible." *has been on it for 11 years*',
+    winMeme:'"Post went viral. 847k impressions. Followers gained: 3. Makes sense."',
+    failLabel:'Ratio\'d',
+    failQuote:'"Have you tried posting at 6am on a Tuesday?" — some LinkedIn guru',
+    shootLabel:'POST',
+    goal:18, gap:[50,70], spring:.10, moving:.12, brittle:.08, grav:1.25,
+  },
+  {
+    id:'tiktok', name:'TIKTOK', campaign:'Hook Speed Run',
+    color:'#69c9d0', star:'#a5f3ef', bg:'#040e10',
+    mechanic:'trend-cycle',
+    mechHint:'Posts vanish · FYP pads boost big · Dodge Oracle & dancing silhouettes',
+    desc:'You have 0.3 seconds to hook them or they scroll to a raccoon eating a hot dog. Low gravity. High chaos. The trend expires before you land.',
+    meme:'"Let me show you how to make content in 2025." *does trend from 2021*',
+    winMeme:'"Went viral. 2.3M views. You made $11.40."',
+    failLabel:'Trend Expired',
+    failQuote:'"I should have just posted a raccoon eating a hot dog." — correct',
+    shootLabel:'POST',
+    goal:16, gap:[54,74], spring:.06, moving:.08, brittle:.00, grav:0.44,
+  },
+  {
+    id:'instagram', name:'INSTAGRAM', campaign:'Ghost Reach Gulch',
+    color:'#e1306c', star:'#fda4af', bg:'#130407',
+    mechanic:'ghost-reach',
+    mechHint:'Posts phase in and out · Watch the signal bar above each post',
+    desc:'Your reach died in 2019 and nobody told you. Try Reels. No wait, try carousels. No wait — try going Live at 6am. Platforms appear and disappear like organic reach.',
+    meme:'"Authentic, unfiltered." *45 minutes of editing*',
+    winMeme:'"Engagement spiked! A bot liked 47 of your posts from 2018. The bot has left."',
+    failLabel:'Ghost Posted',
+    failQuote:'"Your post reached 4 people. Two were you. We can\'t explain the other two."',
+    shootLabel:'POST',
+    goal:26, gap:[52,72], spring:.08, moving:.06, brittle:.00, grav:1.0,
+  },
+  {
+    id:'youtube', name:'YOUTUBE', campaign:'Subscribe or Fall',
+    color:'#ff0000', star:'#fca5a5', bg:'#100101',
+    mechanic:'demonetize-wave',
+    mechHint:'Demonetization rises from below · Hit Sponsorship pads for double jump',
+    desc:'A demonetization wave rises from the bottom. Keep climbing or it catches you. Sponsor platforms are bright yellow and give you a double jump. The POST button fires Copyright Strikes.',
+    meme:'"Please like and subscribe I am literally begging you I have a family."',
+    winMeme:'"Monetized! Your revenue for 1.2M views: $4.18. Congrats, champ."',
+    failLabel:'Demonetized',
+    failQuote:'"Your video was flagged for saying the word \'gun\' in a cooking video."',
+    shootLabel:'STRIKE',
+    goal:30, gap:[56,76], spring:.08, moving:.10, brittle:.06, grav:1.0,
+  },
+  {
+    id:'threads', name:'THREADS', campaign:'Is This Thing On?',
+    color:'#aaaaaa', star:'#d1d5db', bg:'#0c0c0c',
+    mechanic:'meta-shift',
+    mechHint:'Meta pushes updates every 8s — all posts slide sideways',
+    desc:'Nobody knows what this is for. Not even Meta. Mark Zuckerberg posts here like a bot learning to be human. Every 8 seconds Meta pushes an update and all the platforms shift.',
+    meme:'"I love this platform. It is very good for the humans." — Mark Zuckerberg, probably',
+    winMeme:'"3 likes. One was you. One was your mom. One is a mystery and always will be."',
+    failLabel:'Update Pushed',
+    failQuote:'"Your post was removed for Community Guidelines. The post was: \'Good morning.\'"',
+    shootLabel:'POST',
+    goal:34, gap:[58,78], spring:.08, moving:.14, brittle:.10, grav:1.0,
+  },
+  {
+    id:'bluesky', name:'BLUESKY', campaign:'Chronological Chaos',
+    color:'#0085ff', star:'#bae6fd', bg:'#020d1a',
+    mechanic:'promised-land',
+    mechHint:'No hazards — but posts are far apart. It\'s fine. Everything is fine.',
+    desc:'The promised land. No algorithm. Chronological feed. Everyone left Twitter for this. Now they post the same stuff here AND on Twitter. No hazards. Just peace. And distance.',
+    meme:'"Finally, a platform with no toxicity." *has been here 48 hours* "Anyway—"',
+    winMeme:'"The chronological feed showed your post to everyone! All 40 of them. It was lovely."',
+    failLabel:'Fell Off The Feed',
+    failQuote:'"Someone is explaining what federation means again. It has been 3 hours."',
+    shootLabel:'SKY',
+    goal:38, gap:[72,96], spring:.10, moving:.00, brittle:.00, grav:1.0,
+  },
+  {
+    id:'reddit', name:'REDDIT', campaign:'Mod Queue Mountain',
+    color:'#ff4500', star:'#fca5a5', bg:'#0a0200',
+    mechanic:'subreddit-chaos',
+    mechHint:'Subreddits behave differently · Mods remove platforms from above',
+    desc:'Post something earnest, get destroyed. Post something stupid, get 40k upvotes. Your post was removed. Read Rule 7. Not THAT Rule 7. The OTHER Rule 7.',
+    meme:'"Your post was removed for being too helpful. This is Rule 7. No, not that Rule 7."',
+    winMeme:'"Awarded! A stranger spent real money on a digital trophy for you. This is normal."',
+    failLabel:'Post Removed',
+    failQuote:'"Reminder: Rule 4 says no Rule 4 violations. See also: Rule 4."',
+    shootLabel:'POST',
+    goal:42, gap:[56,76], spring:.08, moving:.16, brittle:.22, grav:1.1,
+  },
+  {
+    id:'pinterest', name:'PINTEREST', campaign:'Recipe Rabbit Hole',
+    color:'#e60023', star:'#fda4af', bg:'#0e0001',
+    mechanic:'heavy-pins',
+    mechHint:'Heavy gravity · POST pins a platform in place',
+    desc:'You came here for one recipe. It\'s 4am. You have 847 pins. You will make none of them. Heavy gravity. Narrow pin cards. The POST button pins a platform so it stops moving.',
+    meme:'"DIY barn door for $12." *actually costs $847 and 3 hospital visits*',
+    winMeme:'"Your pin reached 1M people. Zero clicked. Repinned 40,000 times. No one will ever make it."',
+    failLabel:'Down The Rabbit Hole',
+    failQuote:'"The recipe is below 4,000 words about my grandmother\'s journey. Scroll down."',
+    shootLabel:'PIN',
+    goal:46, gap:[54,72], spring:.10, moving:.18, brittle:.10, grav:1.55,
+  },
+  {
+    id:'mastodon', name:'MASTODON', campaign:'Federated Final Boss',
+    color:'#6364ff', star:'#c4b5fd', bg:'#060614',
+    mechanic:'federation',
+    mechHint:'Greatest hits from all platforms · BOOST to clear hazards · Finish pad moves',
+    desc:'The final boss. Federated. Righteous. The finish pad slowly moves. Hazards from every previous platform appear. Someone is explaining what \'federated\' means in real time. The POST button is labeled BOOST.',
+    meme:'"Just boost this toot." *someone actually said this in 2024*',
+    winMeme:'"You escaped the algorithm! You are free! ...You miss the algorithm, don\'t you. It\'s okay."',
+    failLabel:'Defederated',
+    failQuote:'"Your instance has been defederated from the instance explaining what defederation means."',
+    shootLabel:'BOOST',
+    goal:50, gap:[60,82], spring:.10, moving:.22, brittle:.16, grav:1.15,
+  },
+];
+
+const PRACTICE={
+  id:'practice', name:'PRACTICE RUN', campaign:'Warm-Up Feed',
+  color:'#00e5a0', star:'#b9ffe9', bg:'#040f0b',
+  mechanic:'practice', mechHint:'No-fail practice · Learn the rhythm',
+  desc:'A chill no-fail climb to learn the controls. You cannot die here. The algorithm has not found you yet.',
+  meme:'', winMeme:'You\'re ready. The algorithm awaits.',
+  failLabel:'Practice', failQuote:'',
+  shootLabel:'POST',
+  goal:8, gap:[40,54], spring:.04, moving:.00, brittle:.00, grav:1.0,
+  practice:true,
+};
+
+function getCfg(){ return level<0?PRACTICE:PLATFORMS[level]; }
+
+/* ─────────────────────────────────────────────
+   HAND-DRAWN PLATFORM LOGOS (canvas only)
+───────────────────────────────────────────── */
 function drawLogoLinkedIn(c,sz){
-  sz=sz||10;
-  c.fillStyle='#0077b5';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+  c.fillStyle='#0077b5';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
   c.fillStyle='#fff';
-  c.fillRect(-sz*.55,-sz*.55,sz*.35,sz*.35); // dot
-  c.fillRect(-sz*.55,-sz*.05,sz*.35,sz*.75); // left bar
-  c.fillRect(-sz*.05,-sz*.3,sz*.65,sz*.25);  // top right
-  c.fillRect(sz*.2,-sz*.05,sz*.35,sz*.75);   // right bar
+  c.fillRect(-sz*.55,-sz*.55,sz*.35,sz*.35);
+  c.fillRect(-sz*.55,-sz*.05,sz*.35,sz*.75);
+  c.fillRect(-sz*.05,-sz*.32,sz*.65,sz*.24);
+  c.fillRect(sz*.2,-sz*.06,sz*.36,sz*.76);
 }
-function drawLogoTwitterX(c,sz){
-  sz=sz||10;
-  c.fillStyle='#000';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+function drawLogoTwitter(c,sz){
+  c.fillStyle='#000';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
   c.strokeStyle='#fff';c.lineWidth=sz*.22;c.lineCap='round';
   c.beginPath();c.moveTo(-sz*.6,sz*.6);c.lineTo(sz*.6,-sz*.6);c.stroke();
   c.beginPath();c.moveTo(-sz*.6,-sz*.6);c.lineTo(sz*.2,sz*.6);c.stroke();
   c.beginPath();c.moveTo(sz*.6,sz*.6);c.lineTo(-sz*.1,-sz*.6);c.stroke();
 }
 function drawLogoTikTok(c,sz){
-  sz=sz||10;
-  c.fillStyle='#010101';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
-  // musical note shape
-  c.fillStyle='#ff0050';c.beginPath();c.arc(sz*.25,sz*.35,sz*.28,0,Math.PI*2);c.fill();
-  c.fillStyle='#00f2ea';c.beginPath();c.arc(sz*.15,sz*.35,sz*.28,0,Math.PI*2);c.fill();
-  c.fillStyle='#fff';c.beginPath();c.arc(sz*.2,sz*.35,sz*.22,0,Math.PI*2);c.fill();
-  // stem
-  c.fillStyle='#ff0050';c.fillRect(sz*.32,-sz*.55,sz*.18,sz*.65);
-  c.fillStyle='#00f2ea';c.fillRect(sz*.22,-sz*.55,sz*.18,sz*.65);
-  c.fillStyle='#fff';c.fillRect(sz*.28,-sz*.55,sz*.12,sz*.55);
-  // top curve
-  c.fillStyle='#fff';c.beginPath();c.arc(sz*.5,-sz*.22,sz*.25,Math.PI*1.5,0);c.fill();
+  c.fillStyle='#010101';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+  c.fillStyle='#ff0050';c.beginPath();c.arc(sz*.22,sz*.32,sz*.28,0,Math.PI*2);c.fill();
+  c.fillStyle='#00f2ea';c.beginPath();c.arc(sz*.12,sz*.32,sz*.28,0,Math.PI*2);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.arc(sz*.17,sz*.32,sz*.22,0,Math.PI*2);c.fill();
+  c.fillStyle='#ff0050';c.fillRect(sz*.3,-sz*.55,sz*.18,sz*.62);
+  c.fillStyle='#00f2ea';c.fillRect(sz*.2,-sz*.55,sz*.18,sz*.62);
+  c.fillStyle='#fff';c.fillRect(sz*.26,-sz*.55,sz*.12,sz*.52);
+  c.fillStyle='#fff';c.beginPath();c.arc(sz*.5,-sz*.2,sz*.24,Math.PI*1.5,0);c.fill();
 }
 function drawLogoInstagram(c,sz){
-  sz=sz||10;
-  const g=c.createLinearGradient(-sz,sz,-sz*.3,-sz);
-  g.addColorStop(0,'#f09433');g.addColorStop(.25,'#e6683c');g.addColorStop(.5,'#dc2743');
-  g.addColorStop(.75,'#cc2366');g.addColorStop(1,'#bc1888');
-  c.fillStyle=g;c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.4);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
-  c.strokeStyle='#fff';c.lineWidth=sz*.2;c.fillStyle='transparent';
-  c.beginPath();if(c.roundRect)c.roundRect(-sz*.55,-sz*.55,sz*1.1,sz*1.1,sz*.28);else c.rect(-sz*.55,-sz*.55,sz*1.1,sz*1.1);c.stroke();
-  c.beginPath();c.arc(0,0,sz*.35,0,Math.PI*2);c.stroke();
-  c.fillStyle='#fff';c.beginPath();c.arc(sz*.42,-sz*.42,sz*.14,0,Math.PI*2);c.fill();
+  const g=c.createLinearGradient(-sz,sz,-sz*.2,-sz);
+  g.addColorStop(0,'#f09433');g.addColorStop(.3,'#e6683c');g.addColorStop(.6,'#dc2743');g.addColorStop(.9,'#cc2366');g.addColorStop(1,'#bc1888');
+  c.fillStyle=g;c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.38);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=sz*.2;
+  c.beginPath();if(c.roundRect)c.roundRect(-sz*.56,-sz*.56,sz*1.12,sz*1.12,sz*.28);else c.rect(-sz*.56,-sz*.56,sz*1.12,sz*1.12);c.stroke();
+  c.beginPath();c.arc(0,0,sz*.34,0,Math.PI*2);c.stroke();
+  c.fillStyle='#fff';c.beginPath();c.arc(sz*.42,-sz*.42,sz*.13,0,Math.PI*2);c.fill();
 }
 function drawLogoYouTube(c,sz){
-  sz=sz||10;
-  c.fillStyle='#ff0000';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz*.65,sz*2,sz*1.3,sz*.2);else c.rect(-sz,-sz*.65,sz*2,sz*1.3);c.fill();
-  c.fillStyle='#fff';c.beginPath();c.moveTo(-sz*.25,-sz*.38);c.lineTo(sz*.55,0);c.lineTo(-sz*.25,sz*.38);c.closePath();c.fill();
+  c.fillStyle='#ff0000';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz*.62,sz*2,sz*1.24,sz*.18);else c.rect(-sz,-sz*.62,sz*2,sz*1.24);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.moveTo(-sz*.22,-sz*.36);c.lineTo(sz*.52,0);c.lineTo(-sz*.22,sz*.36);c.closePath();c.fill();
 }
 function drawLogoThreads(c,sz){
-  sz=sz||10;
-  c.fillStyle='#101010';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
-  c.strokeStyle='#fff';c.lineWidth=sz*.2;c.fillStyle='transparent';c.lineCap='round';
-  // @ spiral approximation
+  c.fillStyle='#101010';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=sz*.2;c.lineCap='round';
   c.beginPath();c.arc(0,-sz*.1,sz*.38,Math.PI*.2,Math.PI*1.9);c.stroke();
   c.beginPath();c.moveTo(sz*.38,-sz*.1);c.quadraticCurveTo(sz*.55,sz*.7,-sz*.1,sz*.65);c.stroke();
   c.beginPath();c.moveTo(-sz*.05,-sz*.55);c.lineTo(-sz*.05,sz*.55);c.stroke();
 }
 function drawLogoBluesky(c,sz){
-  sz=sz||10;
-  c.fillStyle='#0085ff';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
-  // butterfly / cloud shape
+  c.fillStyle='#0085ff';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
   c.fillStyle='#fff';
   c.beginPath();c.ellipse(-sz*.3,-sz*.1,sz*.4,sz*.28,Math.PI*.3,0,Math.PI*2);c.fill();
   c.beginPath();c.ellipse(sz*.3,-sz*.1,sz*.4,sz*.28,-Math.PI*.3,0,Math.PI*2);c.fill();
-  c.beginPath();c.ellipse(-sz*.28,sz*.25,sz*.32,sz*.22,-Math.PI*.2,0,Math.PI*2);c.fill();
-  c.beginPath();c.ellipse(sz*.28,sz*.25,sz*.32,sz*.22,Math.PI*.2,0,Math.PI*2);c.fill();
+  c.beginPath();c.ellipse(-sz*.28,sz*.26,sz*.32,sz*.22,-Math.PI*.2,0,Math.PI*2);c.fill();
+  c.beginPath();c.ellipse(sz*.28,sz*.26,sz*.32,sz*.22,Math.PI*.2,0,Math.PI*2);c.fill();
 }
 function drawLogoReddit(c,sz){
-  sz=sz||10;
   c.fillStyle='#ff4500';c.beginPath();c.arc(0,0,sz,0,Math.PI*2);c.fill();
-  // alien face
   c.fillStyle='#fff';c.beginPath();c.arc(0,-sz*.05,sz*.52,0,Math.PI*2);c.fill();
   c.fillStyle='#ff4500';
-  c.beginPath();c.arc(-sz*.22,-sz*.08,sz*.18,0,Math.PI*2);c.fill(); // left eye hole
+  c.beginPath();c.arc(-sz*.22,-sz*.08,sz*.18,0,Math.PI*2);c.fill();
   c.beginPath();c.arc(sz*.22,-sz*.08,sz*.18,0,Math.PI*2);c.fill();
   c.fillStyle='#fff';
-  c.beginPath();c.arc(-sz*.22,-sz*.08,sz*.1,0,Math.PI*2);c.fill(); // eyes
+  c.beginPath();c.arc(-sz*.22,-sz*.08,sz*.1,0,Math.PI*2);c.fill();
   c.beginPath();c.arc(sz*.22,-sz*.08,sz*.1,0,Math.PI*2);c.fill();
-  // antenna
-  c.fillStyle='#fff';c.fillRect(-sz*.04,-sz*1.1,sz*.08,sz*.4);
+  c.fillStyle='#fff';c.fillRect(-sz*.04,-sz*1.1,sz*.08,sz*.38);
   c.beginPath();c.arc(sz*.28,-sz*1.05,sz*.15,0,Math.PI*2);c.fill();
-  // smile
   c.strokeStyle='#ff4500';c.lineWidth=sz*.1;c.lineCap='round';
-  c.beginPath();c.arc(0,-sz*.05,sz*.25,Math.PI*.15,Math.PI*.85);c.stroke();
+  c.beginPath();c.arc(0,-sz*.05,sz*.25,Math.PI*.18,Math.PI*.82);c.stroke();
 }
 function drawLogoPinterest(c,sz){
-  sz=sz||10;
   c.fillStyle='#e60023';c.beginPath();c.arc(0,0,sz,0,Math.PI*2);c.fill();
-  c.fillStyle='#fff';
-  c.beginPath();c.arc(0,-sz*.1,sz*.42,0,Math.PI*2);c.fill();
-  // P shape
+  c.fillStyle='#fff';c.beginPath();c.arc(0,-sz*.08,sz*.44,0,Math.PI*2);c.fill();
   c.fillStyle='#e60023';
-  c.fillRect(-sz*.14,-sz*.52,sz*.28,sz*.7);
-  c.beginPath();c.arc(sz*.08,-sz*.28,sz*.2,0,Math.PI*2);c.fill();
-  c.fillStyle='#fff';c.beginPath();c.arc(sz*.08,-sz*.28,sz*.11,0,Math.PI*2);c.fill();
-  // pin drop
-  c.fillStyle='#fff';c.fillRect(-sz*.06,sz*.08,sz*.12,sz*.48);
+  c.fillRect(-sz*.14,-sz*.52,sz*.28,sz*.68);
+  c.beginPath();c.arc(sz*.08,-sz*.26,sz*.2,0,Math.PI*2);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.arc(sz*.08,-sz*.26,sz*.11,0,Math.PI*2);c.fill();
+  c.fillStyle='#fff';c.fillRect(-sz*.05,sz*.08,sz*.1,sz*.5);
 }
 function drawLogoMastodon(c,sz){
-  sz=sz||10;
-  c.fillStyle='#6364ff';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.3);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
-  // elephant silhouette simplified
-  c.fillStyle='#fff';
-  c.beginPath();c.ellipse(0,sz*.05,sz*.52,sz*.48,0,0,Math.PI*2);c.fill(); // head/body
-  c.beginPath();c.ellipse(-sz*.55,sz*.2,sz*.2,sz*.14,Math.PI*.3,0,Math.PI*2);c.fill(); // ear
-  // trunk
-  c.strokeStyle='#fff';c.lineWidth=sz*.18;c.lineCap='round';
-  c.beginPath();c.moveTo(-sz*.3,sz*.3);c.quadraticCurveTo(-sz*.65,sz*.55,-sz*.5,sz*.8);c.stroke();
-  c.fillStyle='#6364ff';
-  c.beginPath();c.arc(-sz*.18,sz*.0,sz*.12,0,Math.PI*2);c.fill(); // eye
+  c.fillStyle='#6364ff';c.beginPath();if(c.roundRect)c.roundRect(-sz,-sz,sz*2,sz*2,sz*.28);else c.rect(-sz,-sz,sz*2,sz*2);c.fill();
+  c.fillStyle='#fff';c.beginPath();c.ellipse(0,sz*.05,sz*.52,sz*.48,0,0,Math.PI*2);c.fill();
+  c.fillStyle='#6364ff';c.beginPath();c.arc(-sz*.18,sz*.0,sz*.12,0,Math.PI*2);c.fill();
   c.fillStyle='#fff';c.beginPath();c.arc(-sz*.18,sz*.0,sz*.06,0,Math.PI*2);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=sz*.17;c.lineCap='round';
+  c.beginPath();c.moveTo(-sz*.28,sz*.3);c.quadraticCurveTo(-sz*.62,sz*.52,-sz*.48,sz*.78);c.stroke();
+  c.fillStyle='#fff';c.beginPath();c.ellipse(-sz*.54,sz*.2,sz*.2,sz*.13,Math.PI*.28,0,Math.PI*2);c.fill();
 }
 
-// Map id -> draw function
 const LOGO_FNS={
-  linkedin:drawLogoLinkedIn, twitter:drawLogoTwitterX, tiktok:drawLogoTikTok,
+  linkedin:drawLogoLinkedIn, twitter:drawLogoTwitter, tiktok:drawLogoTikTok,
   instagram:drawLogoInstagram, youtube:drawLogoYouTube, threads:drawLogoThreads,
   bluesky:drawLogoBluesky, reddit:drawLogoReddit, pinterest:drawLogoPinterest,
   mastodon:drawLogoMastodon,
 };
-const LOGO_DATA_URLS={};
-function getLogoDataUrl(id){
-  if(LOGO_DATA_URLS[id])return LOGO_DATA_URLS[id];
+const LOGO_CACHE={};
+function getLogoUrl(id){
+  if(LOGO_CACHE[id])return LOGO_CACHE[id];
   const mc=document.createElement('canvas');mc.width=36;mc.height=36;
   const mx=mc.getContext('2d');mx.translate(18,18);
-  const fn=LOGO_FNS[id];if(fn){try{fn(mx,14);}catch(e){}}
-  return LOGO_DATA_URLS[id]=mc.toDataURL();
+  const fn=LOGO_FNS[id];if(fn)try{fn(mx,14);}catch(e){}
+  return LOGO_CACHE[id]=mc.toDataURL();
 }
 
-/* ── Platform metadata ── */
-const PLATFORMS_META=[
-  {id:'linkedin', name:'LINKEDIN', campaign:'The Humblebrag Climb',
-   color:'#0077b5',star:'#a8c8ff',bg:'#061525',
-   desc:'Thought leadership. Humble brags disguised as life lessons. Every post starts with "I was today years old when..."',
-   meme:'"Just got rejected by 47 companies. Here\'s what I learned about RESILIENCE. \uD83D\uDCAA 47,000 likes."',
-   winMeme:'"Excited to announce I\'m thriving in this space and pivoting my journey!"',
-   mechanic:'normal',        hazType:'algorithm', spring:.08,moving:.00,brittle:.00,bh:0, hazard:.006, goal:12,gap:[38,54],earlyWidth:112},
-  {id:'twitter', name:'X / TWITTER', campaign:'Ratio Canyon',
-   color:'#1da1f2',star:'#7dd3fc',bg:'#040d14',
-   desc:'Hot takes, quote-tweets of hot takes, and threads about why hot takes are ruining discourse. Heavy gravity.',
-   meme:'"This website is terrible." *has been on it for 11 years*',
-   winMeme:'"Congrats on not getting ratio\'d. Today, anyway."',
-   mechanic:'heavy-grav',    hazType:'ratio',     spring:.14,moving:.08,brittle:.06,bh:0,   goal:20,gap:[48,66],earlyWidth:88},
-  {id:'tiktok', name:'TIKTOK', campaign:'Hook Speed Run',
-   color:'#69c9d0',star:'#a5f3ef',bg:'#040e10',
-   desc:'Low gravity but ruthless. You have 0.3 seconds to hook them or they scroll to a raccoon eating a hot dog.',
-   meme:'"Let me show you how to make content in 2024." *proceeds to do the same trend from 2021*',
-   winMeme:'"You went viral! The algorithm has chosen you. For now. For today."',
-   mechanic:'low-grav',      hazType:'trend',     spring:.08,moving:.12,brittle:.05,bh:0,   goal:25,gap:[56,78],earlyWidth:84},
-  {id:'instagram', name:'INSTAGRAM', campaign:'Ghost Reach Gulch',
-   color:'#e1306c',star:'#fda4af',bg:'#150609',
-   desc:'Ghost posts. Your reach died in 2019 and nobody told you. Try Reels. No wait, try carousels. No wait—',
-   meme:'"Authentic, unfiltered." *45 minutes of editing*',
-   winMeme:'"Your engagement spiked! It was a bot. The bot has left."',
-   mechanic:'ghost',         hazType:'algorithm', spring:.08,moving:.10,brittle:.08,bh:0,   goal:30,gap:[54,74]},
-  {id:'youtube', name:'YOUTUBE', campaign:'Subscribe or Fall',
-   color:'#ff0000',star:'#fca5a5',bg:'#150202',
-   desc:'Recommendation ring bands will sweep you into "15-Hour Fireplace Video" territory. Demonetization awaits.',
-   meme:'"Please like and subscribe I am literally begging you I have a family"',
-   winMeme:'"You got monetized! Congrats on your $0.003 per view."',
-   mechanic:'ring-bands',    hazType:'demonetize',spring:.09,moving:.14,brittle:.10,bh:0,   goal:34,gap:[56,76]},
-  {id:'threads', name:'THREADS', campaign:'Is This Thing On?',
-   color:'#aaaaaa',star:'#d1d5db',bg:'#0e0e0e',
-   desc:'Nobody knows what this is for. Not even Meta. Wormholes of content appear. Posts vanish. Engagement is a myth.',
-   meme:'"Is this thing on?" *crickets* "Nice." *posts again tomorrow*',
-   winMeme:'"You got 3 likes! One was you. One was your mom. One is a mystery."',
-   mechanic:'wormhole',      hazType:'ratio',     spring:.09,moving:.18,brittle:.12,bh:.02, goal:38,gap:[58,80]},
-  {id:'bluesky', name:'BLUESKY', campaign:'Chronological Chaos',
-   color:'#0085ff',star:'#bae6fd',bg:'#020d1a',
-   desc:'The promised land. Everyone left Twitter for this. Now they post the same stuff here AND Twitter. Full chaos.',
-   meme:'"Finally, a platform with no toxicity." *has been here 48 hours*',
-   winMeme:'"The chronological feed shows your post to everyone! All 40 of them."',
-   mechanic:'event-horizon', hazType:'trend',     spring:.08,moving:.22,brittle:.16,bh:.04, goal:42,gap:[62,84]},
-  {id:'reddit', name:'REDDIT', campaign:'Mod Queue Mountain',
-   color:'#ff4500',star:'#fca5a5',bg:'#0f0500',
-   desc:'Black holes of discourse. Post something earnest and get destroyed. Post something stupid and get 40k upvotes.',
-   meme:'"Your post was removed for being too helpful. Read the rules. Rule 7. No, not that rule 7. The other rule 7."',
-   winMeme:'"Awarded! A stranger spent real money on a digital trophy for you. Normal."',
-   mechanic:'ghost',         hazType:'downvote',  spring:.10,moving:.20,brittle:.18,bh:.05, goal:46,gap:[62,84]},
-  {id:'pinterest', name:'PINTEREST', campaign:'Recipe Rabbit Hole',
-   color:'#e60023',star:'#fda4af',bg:'#140102',
-   desc:'Heavy gravity. Nobody is here to buy anything. They are here to pin 200 recipes they will never make.',
-   meme:'"DIY barn door for $12." *actually costs $847 and 3 hospital visits*',
-   winMeme:'"Your pin reached 1M people! Zero of them clicked. It\'s art."',
-   mechanic:'heavy-grav',    hazType:'algorithm', spring:.14,moving:.22,brittle:.16,bh:.04, goal:50,gap:[55,76]},
-  {id:'mastodon', name:'MASTODON', campaign:'Federated Final Boss',
-   color:'#6364ff',star:'#c4b5fd',bg:'#08081a',
-   desc:'The final boss. Federated, righteous, and perpetually explaining what federated means. Wormholes everywhere.',
-   meme:'"Just boost this toot." *someone in 2024 actually said this*',
-   winMeme:'"You escaped the algorithm! You are free! ...You miss the algorithm, don\'t you."',
-   mechanic:'event-horizon', hazType:'trend',     spring:.07,moving:.28,brittle:.22,bh:.07, goal:55,gap:[66,90]},
-];
-const PRACTICE_META={id:'practice', name:'PRACTICE RUN', campaign:'Warm-Up Feed', color:'#00e5a0',star:'#b9ffe9',bg:'#061512',desc:'A no-fail climb to learn the rhythm.',meme:'',winMeme:'You’re ready. Now go fight the algorithm.',mechanic:'practice',hazType:'algorithm',spring:.04,moving:.00,brittle:.00,bh:0,hazard:0,goal:9,gap:[44,56],earlyWidth:118,practice:true};
-function getCfg(){return level<0?PRACTICE_META:PLATFORMS_META[level];}
-
-const TUTORIAL_TIPS=[];
-const REACTION_TOASTS=[];
-const PLATFORM_START_TOASTS={};
-let shownTutorialTips={};
-function showTutorialTip(){}
-function randomReactionToast(){}
-function getPlatformStartToast(cfg){return '';}
-
-const HAZ_CFG={
-  algorithm: {label:'Algorithm Update'},
-  ratio:     {label:"Ratio'd"},
-  trend:     {label:'Hot Topic'},
-  demonetize:{label:'Demonetized'},
-  downvote:  {label:'Downvoted'},
-};
-
-// Rotating taglines on menu
-const TAGLINES=[
-  'Jump the algorithm. Dodge ratio\u2019d posts. Land viral.',
-  'Your content calendar is on fire. Literally.',
-  'The algorithm changed again. Of course it did.',
-  'Engagement is down 90%. My LinkedIn is fine.',
-  '10 platforms. Zero mercy. Trust Nobody.',
-  'Please like and subscribe I am begging you.',
-  'This is a game about social media. We are so sorry.',
-];
-let taglineIdx=0;
-function rotateTagline(){
-  taglineIdx=(taglineIdx+1)%TAGLINES.length;
-  document.getElementById('menuTagline').textContent=TAGLINES[taglineIdx];
-}
-document.getElementById('menuTagline').textContent=TAGLINES[0];
-setInterval(rotateTagline,3200);
-
-/* ── RSS ── */
-// RSS2JSON api — reliable free tier, no API key needed for public feeds
+/* ─────────────────────────────────────────────
+   RSS / STORIES
+───────────────────────────────────────────── */
 const RSS2JSON='https://api.rss2json.com/v1/api.json?rss_url=';
-// Fallback raw-xml proxies tried if rss2json fails
-const XML_PROXIES=[
-  u=>'https://corsproxy.io/?'+encodeURIComponent(u),
-  u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
-  u=>u,
-];
-
 const DEFAULT_FEEDS=[
-  {name:'Social Media Today',rss:'https://socialmediatoday.com/rss.xml',       color:'#0077b5'},
-  {name:'Buffer Blog',       rss:'https://buffer.com/resources/rss/',          color:'#00e5a0'},
-  {name:'Marketing Brew',    rss:'https://www.marketingbrew.com/feeds/latest', color:'#ffd700'},
-  {name:'Later Blog',        rss:'https://later.com/blog/feed/',               color:'#ff4d6d'},
-  {name:'HubSpot Blog',      rss:'https://blog.hubspot.com/marketing/rss.xml', color:'#ff7a59'},
-  {name:'Sprout Social',     rss:'https://sproutsocial.com/insights/feed/',    color:'#59cb59'},
+  {name:'Social Media Today', rss:'https://socialmediatoday.com/rss.xml',       color:'#0077b5'},
+  {name:'Buffer Blog',        rss:'https://buffer.com/resources/rss/',           color:'#00e5a0'},
+  {name:'Marketing Brew',     rss:'https://www.marketingbrew.com/feeds/latest',  color:'#ffd700'},
+  {name:'Later Blog',         rss:'https://later.com/blog/feed/',                color:'#ff4d6d'},
+  {name:'HubSpot Marketing',  rss:'https://blog.hubspot.com/marketing/rss.xml',  color:'#ff7a59'},
+  {name:'Sprout Social',      rss:'https://sproutsocial.com/insights/feed/',     color:'#59cb59'},
 ];
 const FALLBACK_STORIES=[
-  {title:'How to turn one strong post into a week of content',source:'Buffer Blog',url:'#',date:'',desc:'A practical framework for repurposing one useful idea across short posts, carousels, videos, and newsletters.',color:'#00e5a0'},
-  {title:'What social teams should measure before chasing reach',source:'Social Media Today',url:'#',date:'',desc:'A simple reminder to connect awareness, engagement, saves, clicks, and conversions before calling a post a win.',color:'#0077b5'},
-  {title:'Why brand voice matters more when every feed looks the same',source:'Marketing Brew',url:'#',date:'',desc:'As formats converge, recognizable language and point of view help social content feel worth stopping for.',color:'#ffd700'},
-  {title:'A calmer planning system for always-on social calendars',source:'Later Blog',url:'#',date:'',desc:'Batch evergreen ideas, timely hooks, and community replies so the calendar supports the team instead of running it.',color:'#ff4d6d'},
-  {title:'How to write hooks that do not sound like engagement bait',source:'HubSpot',url:'#',date:'',desc:'Lead with the reader problem, make a clear promise, and skip the fake urgency that teaches audiences to scroll past.',color:'#ff7a59'},
-  {title:'Community management lessons from high-volume comment threads',source:'Sprout Social',url:'#',date:'',desc:'Fast replies help, but consistent tone, escalation rules, and saved responses keep support moments from becoming chaos.',color:'#59cb59'},
-  {title:'Short-form video ideas that start with customer questions',source:'Buffer Blog',url:'#',date:'',desc:'Mine FAQs, sales objections, and support tickets for video prompts that answer real needs instead of chasing random topics.',color:'#00e5a0'},
-  {title:'The difference between a timely topic and a useful angle',source:'Social Media Today',url:'#',date:'',desc:'A timely topic becomes valuable when it connects to your audience, your expertise, and a takeaway people can use.',color:'#0077b5'},
-  {title:'Why marketers are rebuilding owned audience habits',source:'Marketing Brew',url:'#',date:'',desc:'Social discovery is powerful, but newsletters, communities, and websites give strong stories a longer shelf life.',color:'#ffd700'},
-  {title:'A lightweight checklist before publishing a campaign post',source:'Later Blog',url:'#',date:'',desc:'Check the hook, asset crop, accessibility, destination link, comment plan, and save-worthy takeaway before launch.',color:'#ff4d6d'},
-  {title:'How social listening can shape better content briefs',source:'HubSpot',url:'#',date:'',desc:'Recurring phrases, questions, and complaints can become sharper briefs than a blank calendar brainstorm.',color:'#ff7a59'},
-  {title:'What saved posts can reveal about audience intent',source:'Sprout Social',url:'#',date:'',desc:'Saves often point to future intent: tutorials, templates, checklists, and research people want to revisit.',color:'#59cb59'},
+  {title:'Turn one strong post into a week of content',source:'Buffer Blog',url:'https://buffer.com/resources/repurposing-content/',date:'',desc:'A practical framework for repurposing one useful idea across short posts, carousels, videos, and newsletters.',color:'#00e5a0'},
+  {title:'What social teams should measure before chasing reach',source:'Social Media Today',url:'https://www.socialmediatoday.com/news/social-media-metrics-guide/617234/',date:'',desc:'Connect awareness, engagement, saves, clicks, and conversions before calling a post a win.',color:'#0077b5'},
+  {title:'Why brand voice matters more when every feed looks the same',source:'Marketing Brew',url:'https://www.marketingbrew.com/stories/2024/01/10/brand-voice-social-media',date:'',desc:'As formats converge, recognizable language and point of view help content feel worth stopping for.',color:'#ffd700'},
+  {title:'A calmer planning system for always-on social calendars',source:'Later Blog',url:'https://later.com/blog/social-media-content-calendar/',date:'',desc:'Batch evergreen ideas, timely hooks, and community replies so the calendar supports the team.',color:'#ff4d6d'},
+  {title:'How to write hooks that don\'t sound like engagement bait',source:'HubSpot Marketing',url:'https://blog.hubspot.com/marketing/how-to-write-social-media-hooks',date:'',desc:'Lead with the reader problem, make a clear promise, and skip the fake urgency.',color:'#ff7a59'},
+  {title:'Community management lessons from high-volume comment threads',source:'Sprout Social',url:'https://sproutsocial.com/insights/community-management/',date:'',desc:'Fast replies help, but consistent tone and escalation rules keep support moments from becoming chaos.',color:'#59cb59'},
 ];
-function normalizeStory(rawItem,feed){
-  if(!rawItem||!rawItem.title||/^⚠/.test(rawItem.title))return null;
-  const url=(rawItem.link||rawItem.url||'#').trim();
-  const source=rawItem.source||feed?.name||'Stories';
-  const id=ideaKey(rawItem.title,url)||String(Math.random());
-  return {id,title:(rawItem.title||'Untitled').trim(),source,url,date:rawItem.date||'',desc:(rawItem.desc||'').replace(/\s+/g,' ').trim().slice(0,220),color:rawItem.color||feed?.color||'#00e5a0'};
-}
-function fallbackStories(){return FALLBACK_STORIES.map((it,i)=>normalizeStory({...it,link:it.url}, {name:it.source,color:it.color})||{...it,id:'fallback-'+i});}
-function getCachedStories(){const cached=safeJson('fv_story_pool',[]);return Array.isArray(cached)&&cached.length?cached:fallbackStories();}
-async function preloadStories(){
-  if(storyPoolLoaded)return storyPool;
-  const found=[];
-  await Promise.all(userFeeds.map(async feed=>{try{const items=await loadFeed(feed,true);(items||[]).forEach(it=>{const story=normalizeStory(it,feed);if(story)found.push(story);});}catch(e){}}));
-  const unique=[];const seen=new Set();
-  found.forEach(st=>{if(!seen.has(st.id)){seen.add(st.id);unique.push(st);}});
-  if(unique.length){storyPool=unique.slice(0,80);safeSet('fv_story_pool',JSON.stringify(storyPool));}
-  else storyPool=getCachedStories();
-  storyPoolLoaded=true;return storyPool;
-}
-function getStoryPool(){
-  if(storyPool.length)return storyPool;
-  storyPool=getCachedStories();return storyPool;
-}
-function getStoryForCard(){const pool=getStoryPool();const story=pool[storyCursor++%pool.length];return {...story};}
-function getStoryForBreak(){return getStoryForCard();}
-setTimeout(()=>preloadStories(),0);
 
-// Safe localStorage JSON helpers keep corrupt saves from crashing the game.
-function safeJson(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback;}catch(e){return fallback;}}
+function safeJson(k,fb){try{const r=localStorage.getItem(k);return r?JSON.parse(r):fb;}catch(e){return fb;}}
+function safeSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
+function escHtml(s){return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function escAttr(s){return escHtml(s).replace(/'/g,'&#39;');}
+
 let userFeeds=safeJson('fv_feeds',null)||DEFAULT_FEEDS;
 let rssCache={};let activeFeedIdx=0;let rssReturnAction=null;
-let storyPool=[];let storyPoolLoaded=false;let runStories=[];let levelStories=[];let storyCursor=0;
-function safeSet(key,value){try{localStorage.setItem(key,value);return true;}catch(e){return false;}}
-function saveFeeds(){safeSet('fv_feeds',JSON.stringify(userFeeds));}
+let storyPool=[];let storyCursor=0;
 
-// Strategy 1: rss2json returns clean JSON — fast and reliable
-async function fetchViaRss2Json(rawUrl){
+function fallbackPool(){return FALLBACK_STORIES.map((s,i)=>({...s,id:'fb'+i}));}
+
+async function loadFeed(feed){
+  const key=feed.rss;
+  if(rssCache[key])return rssCache[key];
   try{
-    const res=await fetch(RSS2JSON+encodeURIComponent(rawUrl),{signal:AbortSignal.timeout(8000)});
+    const controller=new AbortController();
+    const tm=setTimeout(()=>controller.abort(),8000);
+    const res=await fetch(RSS2JSON+encodeURIComponent(feed.rss),{signal:controller.signal});
+    clearTimeout(tm);
     if(!res.ok)return null;
-    const data=await res.json();
-    if(data.status!=='ok'||!data.items?.length)return null;
-    return data.items.map(it=>({
+    const d=await res.json();
+    if(d.status!=='ok'||!d.items||!d.items.length)return null;
+    const items=d.items.map(it=>({
+      id:it.link||it.title,
       title:(it.title||'Untitled').trim(),
-      link:(it.link||'#').trim(),
+      source:feed.name,
+      url:(it.link||'#').trim(),
       date:it.pubDate||'',
-      desc:(it.description||it.content||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().slice(0,320),
+      desc:(it.description||it.content||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().slice(0,220),
+      color:feed.color||'#00e5a0',
     }));
+    rssCache[key]=items;return items;
   }catch(e){return null;}
 }
 
-// Strategy 2: raw XML via CORS proxies (fallback)
-async function fetchViaProxy(rawUrl){
-  for(const proxy of XML_PROXIES){
-    try{
-      const res=await fetch(proxy(rawUrl),{signal:AbortSignal.timeout(7000)});
-      if(!res.ok)continue;
-      const text=await res.text();
-      if(!text.includes('<item')&&!text.includes('<entry'))continue;
-      const parser=new DOMParser();
-      const xml=parser.parseFromString(text,'text/xml');
-      const nodes=[...xml.querySelectorAll('item,entry')].slice(0,25);
-      if(!nodes.length)continue;
-      return nodes.map(el=>({
-        title:el.querySelector('title')?.textContent?.trim()||'Untitled',
-        link:(el.querySelector('link')?.textContent?.trim()||el.querySelector('link')?.getAttribute('href')||'#').trim(),
-        date:el.querySelector('pubDate,published,updated')?.textContent?.trim()||'',
-        desc:(el.querySelector('description,summary,content')?.textContent||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().slice(0,320),
-      }));
-    }catch(e){}
-  }
-  return null;
+async function preloadStories(){
+  const found=[];
+  await Promise.all(userFeeds.map(async feed=>{
+    try{const items=await loadFeed(feed);if(items)found.push(...items);}catch(e){}
+  }));
+  storyPool=found.length?found.slice(0,80):fallbackPool();
+}
+setTimeout(preloadStories,200);
+
+function getNextStory(){
+  if(!storyPool.length)storyPool=fallbackPool();
+  return storyPool[storyCursor++%storyPool.length];
 }
 
-async function loadFeed(feed,quiet){
-  const key=feed.rss||feed.url||feed.name;
-  if(rssCache[key])return rssCache[key];
-  if(!quiet&&!loadFeed.quiet)document.getElementById('rssItems').innerHTML='<div class="rss-loading">Loading '+feed.name+'\u2026</div>';
-  const rawUrl=feed.rss||feed.url;
-  // Try rss2json first, fall back to raw XML proxy
-  let items=await fetchViaRss2Json(rawUrl);
-  if(!items)items=await fetchViaProxy(rawUrl);
-  if(!items){return [];}
-  rssCache[key]=items;return items;
+function ideaKey(title,url){
+  // Use URL if it's a real one, otherwise fall back to normalised title
+  const u=(url||'').trim();
+  const t=(title||'').trim().toLowerCase();
+  return(u&&u!=='#')?u:t;
 }
-// Local content idea board shared by Stories and between-level story breaks.
-function getContentIdeas(){const ideas=safeJson('fv_content_ideas',[]);return Array.isArray(ideas)?ideas:[];}
-function ideaKey(title,link){return ((link&&link!=='#')?link:title||'').trim().toLowerCase();}
-function saveContentIdea(item,feedName){
-  const ideas=getContentIdeas();const key=ideaKey(item.title,item.link);
-  if(ideas.some(i=>ideaKey(i.title,i.url||i.link)===key))return false;
-  ideas.unshift({title:item.title||'Untitled',source:feedName||item.source||'Stories',url:item.link||item.url||'#',savedAt:new Date().toISOString()});
-  return safeSet('fv_content_ideas',JSON.stringify(ideas.slice(0,50)));
+function getIdeas(){const r=safeJson('fv_ideas',[]);return Array.isArray(r)?r:[];}
+function saveIdea(story){
+  const ideas=getIdeas();
+  const key=ideaKey(story.title,story.url||story.link);
+  if(!key)return false;
+  if(ideas.some(i=>ideaKey(i.title,i.url)===key))return false;
+  ideas.unshift({title:(story.title||'Untitled').trim(),source:story.source||'Stories',url:(story.url||story.link||'#').trim(),savedAt:new Date().toISOString()});
+  return safeSet('fv_ideas',JSON.stringify(ideas.slice(0,60)));
 }
-function setSaveButtonState(btn,saved){btn.textContent=saved?'SAVED':'ALREADY SAVED';btn.disabled=true;}
-function renderIdeaBoard(){
-  const box=$('ideaList');const ideas=getContentIdeas();
-  if(!ideas.length){box.innerHTML='<div class="rss-empty">No ideas in the locker yet.<br>Quiet genius takes time.</div>';return;}
-  box.innerHTML=ideas.map(i=>'<div class="idea-item"><div class="idea-title">'+escapeHtml(i.title||'Untitled')+'</div><div class="idea-meta">'+escapeHtml(i.source||'Stories')+' · '+new Date(i.savedAt||Date.now()).toLocaleDateString()+'</div>'+(i.url&&i.url!=='#'?'<a class="mini-btn" style="display:inline-block;margin-top:7px" target="_blank" rel="noopener" href="'+escapeAttr(i.url)+'">READ ↗</a>':'')+'</div>').join('');
+function isIdeaSaved(story){
+  const key=ideaKey(story.title,story.url||story.link);
+  return getIdeas().some(i=>ideaKey(i.title,i.url)===key);
 }
-function escapeHtml(str){return String(str).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
-function escapeAttr(str){return escapeHtml(str).replace(/'/g,'&#39;');}
-function renderFeedItems(items,feedName,feedColor){
-  const container=document.getElementById('rssItems');
-  if(!items||!items.length){items=getStoryPool();feedName='Stories';feedColor='#00e5a0';}
+function removeIdea(key){
+  const ideas=getIdeas().filter(i=>ideaKey(i.title,i.url)!==key);
+  safeSet('fv_ideas',JSON.stringify(ideas));
+}
+
+function updateSavedBadge(){
+  const count=getIdeas().length;
+  const mb=$('menuSavedBadge');
+  if(mb){mb.textContent=count>0?count:'';mb.style.display=count>0?'block':'none';}
+  const sb=$('savedBadge');
+  if(sb){sb.textContent=count>0?count:'';sb.classList.toggle('show',count>0);}
+}
+
+let storiesModeTab='feed';
+
+function makeStoryCard(item,opts){
+  opts=opts||{};
+  const el=document.createElement('div');
+  el.className='story-card';
+  const already=isIdeaSaved(item);
+  const url=(item.url||item.link||'#').trim();
+  const hasUrl=url&&url!=='#';
+  const dateStr=item.date||item.savedAt?new Date(item.date||item.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}):null;
+
+  el.innerHTML=`
+<span class="story-card-chevron">&#9660;</span>
+<div class="story-card-source" style="color:${escAttr(item.color||'#00e5a0')}">${escHtml(item.source||'Stories')}${dateStr?' \xb7 '+dateStr:''}</div>
+<div class="story-card-title">${escHtml(item.title||'Untitled')}</div>
+<div class="story-card-desc">${escHtml(item.desc||'')}</div>
+<div class="story-card-actions">
+  ${hasUrl
+    ?`<a class="story-action-btn read" href="${escAttr(url)}" target="_blank" rel="noopener">Read Full Story &#8599;</a>`
+    :`<span class="story-action-btn" style="opacity:.25;cursor:default;border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.28);font-size:8px">No link</span>`
+  }
+  ${opts.showRemove
+    ?`<button class="story-action-btn remove" data-key="${escAttr(ideaKey(item.title,url))}">Remove</button>`
+    :`<button class="story-action-btn ${already?'saved':'save'}">${already?'Saved &#10003;':'Save'}</button>`
+  }
+</div>`;
+
+  // Toggle expand on card tap (not on action buttons)
+  el.addEventListener('click',e=>{
+    if(e.target.closest('.story-action-btn'))return;
+    el.classList.toggle('open');
+  });
+
+  // Save button
+  const saveBtn=el.querySelector('.story-action-btn.save');
+  if(saveBtn){
+    saveBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const saved=saveIdea(item);
+      if(saved){
+        saveBtn.textContent='Saved \u2713';
+        saveBtn.classList.remove('save');saveBtn.classList.add('saved');
+        saveBtn.disabled=true;
+        toast('Saved to Reading List',1200);
+        updateSavedBadge();
+      }
+    });
+  }
+
+  // Remove button
+  const removeBtn=el.querySelector('.story-action-btn.remove');
+  if(removeBtn){
+    removeBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      removeIdea(removeBtn.dataset.key);
+      updateSavedBadge();
+      el.style.transition='opacity .2s';el.style.opacity='0';
+      setTimeout(()=>el.remove(),200);
+    });
+  }
+
+  return el;
+}
+
+function renderFeedItems(items,color){
+  const container=$('storiesContent');
+  if(!items||!items.length){
+    container.innerHTML='<div class="stories-empty">Could not load this feed.<br>Check your connection or try another source.</div>';
+    return;
+  }
   container.innerHTML='';
   items.forEach(item=>{
-    const el=document.createElement('div');el.className='rss-item';
-    const dateStr=item.date?new Date(item.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    const source=item.source||feedName;
-    const color=item.color||feedColor;
-    const url=item.url||item.link||'#';
-    el.innerHTML='<div class="rss-item-source" style="color:'+escapeAttr(color)+'">'+escapeHtml(source)+'</div>'+ 
-      '<div class="rss-item-title">'+escapeHtml(item.title)+'</div>'+ 
-      (dateStr?'<div class="rss-item-date">'+dateStr+'</div>':'')+
-      '<div class="rss-item-body">'+escapeHtml(item.desc||'No summary available yet.')+
-      (url&&url!=='#'?'<br><br><a href="'+escapeAttr(url)+'" target="_blank" rel="noopener" style="color:#5b8dff;font-size:10px;text-decoration:none">READ ↗</a>':'')+
-      '<br><button class="rss-save-btn" type="button">SAVE FOR LATER</button></div>';
-    el.addEventListener('click',()=>el.classList.toggle('expanded'));
-    el.querySelector('.rss-save-btn').addEventListener('click',e=>{e.stopPropagation();setSaveButtonState(e.currentTarget,saveContentIdea({...item,link:url,source},source));});
-    container.appendChild(el);
+    container.appendChild(makeStoryCard({...item,color:item.color||color||'#00e5a0'}));
   });
 }
-function buildRssTabs(){
-  const tabs=document.getElementById('rssTabs');
+
+function renderSavedItems(){
+  const container=$('storiesContent');
+  const ideas=getIdeas();
+  if(!ideas.length){
+    container.innerHTML='<div class="stories-empty">Nothing saved yet.<br>Open any story in the Feed tab<br>and tap Save.</div>';
+    return;
+  }
+  container.innerHTML='';
+  ideas.forEach(item=>{
+    container.appendChild(makeStoryCard(item,{showRemove:true}));
+  });
+}
+
+function buildFeedSourceTabs(){
+  const tabs=$('rssTabs');
   tabs.innerHTML=userFeeds.map((f,i)=>
-    '<button class="rss-tab'+(i===activeFeedIdx?' active':'')+'" data-idx="'+i+'" style="'+(i===activeFeedIdx?'background:'+f.color+';border-color:'+f.color+';color:#fff':'')+'>'+f.name+'</button>'
+    `<button class="rss-tab${i===activeFeedIdx?' active':''}" data-idx="${i}" style="${i===activeFeedIdx?`background:${f.color};border-color:${f.color};color:#fff`:''}">${f.name}</button>`
   ).join('');
   tabs.querySelectorAll('.rss-tab').forEach(btn=>{
-    btn.addEventListener('click',()=>{activeFeedIdx=+btn.dataset.idx;openFeedPanel(rssReturnAction);});
+    btn.addEventListener('click',()=>{activeFeedIdx=+btn.dataset.idx;loadFeedTab();});
   });
 }
-async function openFeedPanel(onClose){
-  if(onClose!==undefined)rssReturnAction=onClose;
-  document.getElementById('rssPanel').classList.remove('hidden');
-  buildRssTabs();
-  renderFeedItems(getStoryPool(),'Stories','#00e5a0');
+
+async function loadFeedTab(){
+  buildFeedSourceTabs();
+  $('storiesContent').innerHTML='<div class="stories-empty">Loading…</div>';
   const feed=userFeeds[activeFeedIdx];
   const items=await loadFeed(feed);
-  renderFeedItems((items&&items.length)?items:getStoryPool(),(items&&items.length)?feed.name:'Stories',(items&&items.length)?feed.color:'#00e5a0');
+  renderFeedItems(items||(storyPool.length?storyPool:fallbackPool()),feed.color);
 }
-function closeFeedPanel(){
-  document.getElementById('rssPanel').classList.add('hidden');
+
+function switchStoriesTab(tab){
+  storiesModeTab=tab;
+  $('tabFeed').classList.toggle('active',tab==='feed');
+  $('tabSaved').classList.toggle('active',tab==='saved');
+  $('rssTabs').classList.toggle('hidden',tab!=='feed');
+  if(tab==='feed')loadFeedTab();
+  else renderSavedItems();
+}
+
+async function openStoriesPanel(onClose,startTab){
+  if(onClose!==undefined)rssReturnAction=onClose;
+  updateSavedBadge();
+  $('storiesPanel').classList.remove('hidden');
+  switchStoriesTab(startTab||'feed');
+}
+function closeStoriesPanel(){
+  $('storiesPanel').classList.add('hidden');
   const cb=rssReturnAction;rssReturnAction=null;if(cb)cb();
 }
-document.getElementById('rssPanelClose').onclick=()=>closeFeedPanel();
-document.getElementById('rssContinueBtn').onclick=()=>closeFeedPanel();
-document.getElementById('rssAddBtn').onclick=async()=>{
-  const input=document.getElementById('rssUrlInput');let rss=input.value.trim();if(!rss)return;
-  if(!rss.startsWith('http'))rss='https://'+rss;
-  const name=prompt('Name for this feed?','Custom Feed')||'Custom Feed';
-  const color=['#5b8dff','#ff4d6d','#00e5a0','#ffd700','#ff6b35'][Math.floor(Math.random()*5)];
-  userFeeds.push({name,rss,color});saveFeeds();activeFeedIdx=userFeeds.length-1;input.value='';rssCache={};
-  await openFeedPanel(rssReturnAction);
-};
+function openFeedPanel(onClose){return openStoriesPanel(onClose,'feed');}
+function closeFeedPanel(){return closeStoriesPanel();}
 
-/* ── Persistence ── */
+$('storiesPanelClose').onclick=closeStoriesPanel;
+$('storiesContinueBtn').onclick=closeStoriesPanel;
+$('tabFeed').onclick=()=>switchStoriesTab('feed');
+$('tabSaved').onclick=()=>switchStoriesTab('saved');
+
+/* ─────────────────────────────────────────────
+   PERSISTENCE
+───────────────────────────────────────────── */
 const save={
   get furthest(){return parseInt(localStorage.getItem('fv_furthest')||'0')||0},
   set furthest(v){localStorage.setItem('fv_furthest',Math.max(this.furthest,v))},
@@ -792,47 +908,34 @@ const save={
   setBest(l,v){if(v>this.getBest(l))localStorage.setItem('fv_best_'+l,v)},
 };
 
-/* ── Sound ── */
+/* ─────────────────────────────────────────────
+   SOUND
+───────────────────────────────────────────── */
 let AC=null;
 function getAC(){return AC=AC||(new(window.AudioContext||window.webkitAudioContext)());}
-function beep(f,d,t,v){d=d||.07;t=t||'square';v=v||.04;
-  try{const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
-    o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);
-    g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);
-    o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch(e){}}
-function sndJump(){try{const ac=getAC(),t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
-  o.type='sine';o.frequency.setValueAtTime(260,t);o.frequency.exponentialRampToValueAtTime(420,t+.1);
-  g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+.12);
-  o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.12);}catch(e){}}
-function sndPost(){try{const ac=getAC(),t=ac.currentTime;
-  [800,1000,1200].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();
-    o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.04,t+i*.04);
-    g.gain.exponentialRampToValueAtTime(.0001,t+i*.04+.07);
-    o.connect(g);g.connect(ac.destination);o.start(t+i*.04);o.stop(t+i*.04+.08);});}catch(e){}}
-function sndViral(){[660,880,1100,1320].forEach((f,i)=>setTimeout(()=>beep(f,.12,'sine',.06),i*80));}
-function sndRatio(){try{const ac=getAC(),t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
-  o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.exponentialRampToValueAtTime(60,t+.42);
-  g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.0001,t+.42);
-  o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.42);}catch(e){}}
-function sndNotif(){beep(880,.05,'sine',.04);setTimeout(()=>beep(1100,.07,'sine',.04),70);}
-function sndBreak(){beep(300,.1,'sawtooth',.05);}
-function sndClick(){beep(600,.04,'square',.025);}
+function beep(f,d,t,v){try{const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();o.type=t||'square';o.frequency.value=f;g.gain.setValueAtTime(v||.04,ac.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch(e){}}
+function sndJump(){try{const ac=getAC(),t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(260,t);o.frequency.exponentialRampToValueAtTime(420,t+.1);g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.12);}catch(e){}}
+function sndBoost(){try{const ac=getAC(),t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(320,t);o.frequency.exponentialRampToValueAtTime(620,t+.14);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.16);}catch(e){}}
+function sndPost(){try{const ac=getAC(),t=ac.currentTime;[800,1000,1200].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.035,t+i*.04);g.gain.exponentialRampToValueAtTime(.0001,t+i*.04+.07);o.connect(g);g.connect(ac.destination);o.start(t+i*.04);o.stop(t+i*.04+.08);});}catch(e){}}
+function sndViral(){[660,880,1100,1320].forEach((f,i)=>setTimeout(()=>beep(f,.14,'sine',.055),i*75));}
+function sndFail(){try{const ac=getAC(),t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.setValueAtTime(280,t);o.frequency.exponentialRampToValueAtTime(55,t+.45);g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.0001,t+.45);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.45);}catch(e){}}
+function sndBreak(){beep(240,.09,'sawtooth',.045);}
+function sndCollect(){beep(880,.05,'sine',.04);setTimeout(()=>beep(1100,.07,'sine',.04),65);}
+function sndClick(){beep(600,.04,'square',.022);}
+function sndShift(){beep(180,.12,'triangle',.035);}
+function sndHit(){beep(320,.07,'sawtooth',.05);}
 
-let _tt=null,toastActive=false;const toastQueue=[];
-function toast(msg,dur,opts){dur=dur||1500;opts=opts||{};
-  if(toastActive){if(opts.priority==='low'&&toastQueue.length)return;toastQueue.push({msg,dur,opts});return;}
-  toastActive=true;const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>{toastActive=false;const next=toastQueue.shift();if(next)toast(next.msg,next.dur,next.opts);},170);},Math.min(dur,1900));}
-function haptic(pattern){try{if(navigator.vibrate)navigator.vibrate(pattern||18);}catch(e){}}
-
-/* ── Input ── */
-const input={dir:0};
+/* ─────────────────────────────────────────────
+   INPUT
+───────────────────────────────────────────── */
+const input={dir:0,justShot:false};
 addEventListener('pointerdown',e=>{
   if(state!=='playing')return;
   if(e.target.closest('#pauseBtn')||e.target.closest('#shootBtn'))return;
   input.dir=e.clientX<window.innerWidth/2?-1:1;
 });
-addEventListener('pointerup',()=>input.dir=0);addEventListener('pointercancel',()=>input.dir=0);
+addEventListener('pointerup',()=>input.dir=0);
+addEventListener('pointercancel',()=>input.dir=0);
 addEventListener('keydown',e=>{
   if(state!=='playing')return;
   if(e.key==='ArrowLeft'||e.code==='KeyA')input.dir=-1;
@@ -846,628 +949,1095 @@ addEventListener('keyup',e=>{
   if((e.key==='ArrowRight'||e.code==='KeyD')&&input.dir===1)input.dir=0;
 });
 
-/* ── Game state ── */
-let state='menu';let level=0;
-let player,platforms,particles,hazards,bullets,wormholes,ringBands;
-let cam,maxAlt,finishPad,levelDone,shootCd,ghostTimer,gravMult,jumpCount,combo,runIdeasSaved,storyCard,storyCardArmed,lastSafePlatform;
-let _consNonSolid=0;
+/* ─────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────── */
+let _toastTm=null,toastBusy=false;const toastQ=[];
+function toast(msg,dur=1500,priority='normal'){
+  if(toastBusy&&priority!=='high'){toastQ.push({msg,dur});return;}
+  toastBusy=true;const el=$('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(_toastTm);_toastTm=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>{toastBusy=false;const n=toastQ.shift();if(n)toast(n.msg,n.dur);},150);},Math.min(dur,2000));
+}
+function haptic(p){try{if(navigator.vibrate)navigator.vibrate(p||16);}catch(e){}}
 
-function spawnPlatform(y,cfg){
-  const r=Math.random();let type='solid';
-  if(_consNonSolid<2){
-    if(r<cfg.moving)type='moving';
-    else if(r<cfg.moving+cfg.brittle)type='brittle';
-  }
-  if(type==='solid')_consNonSolid=0;else _consNonSolid++;
-  const ghost=cfg.mechanic==='ghost'&&type==='solid'&&_consNonSolid===0&&Math.random()<.38;
-  const earlyGame=jumpCount<10;
-  const width=cfg.practice?150:(cfg.earlyWidth&&earlyGame?cfg.earlyWidth:68);
-  return{x:rand(10,W-width-10),y,w:width,h:14,type,
-    vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
-    spring:Math.random()<cfg.spring,broken:false,ghost,
-    ghostPhase:Math.random()*Math.PI*2,ghostVis:1};
-}
-function spawnHazard(y,cfg){
-  if(cfg.bh&&Math.random()<cfg.bh){hazards.push({type:'blackhole',x:rand(50,W-50),y:y-rand(30,60),r:14,pull:100,vx:0,dead:false});return;}
-  const earlySafe=(level===0&&jumpCount<14)||(level>0&&level<3&&jumpCount<6);
-  if(!earlySafe&&Math.random()<(cfg.hazard||.05)){
-    hazards.push({type:cfg.hazType||'algorithm',x:rand(24,W-24),y:y-rand(20,55),r:16,
-      vx:(Math.random()<.5?-1:1)*rand(.5,1.5),rot:Math.random()*Math.PI*2,dead:false});
-  }
-}
-function shoot(){
-  if(state!=='playing'||shootCd>0)return;
-  shootCd=14;sndPost();haptic(12);bullets.push({x:player.x+16,y:player.y-4,vy:-10,dead:false});
-}
-function updatePostButtonDangerState(){
-  const btn=document.getElementById('shootBtn');
-  if(state!=='playing'||!player||!hazards){btn.classList.remove('danger');return;}
-  const pcx=player.x+16,pcy=player.y+18;
-  const danger=hazards.some(h=>!h.dead&&h.type!=='blackhole'&&Math.hypot(h.x-pcx,h.y-pcy)<95);
-  btn.classList.toggle('danger',danger);
-}
+/* ─────────────────────────────────────────────
+   ROTATING TAGLINES
+───────────────────────────────────────────── */
+const TAGLINES=[
+  'Jump the algorithm. Dodge ratio\'d posts.',
+  'The algorithm changed again. Of course it did.',
+  'Please like and subscribe. I am begging you.',
+  'Your content calendar is on fire. Literally.',
+  '10 platforms. Zero mercy. Trust Nobody.',
+  'Engagement is down 90%. My LinkedIn is fine.',
+  'This is a game about social media. We are sorry.',
+  'Going viral was never in the content calendar.',
+];
+let taglineIdx=0;
+$('menuTagline').textContent=TAGLINES[0];
+setInterval(()=>{taglineIdx=(taglineIdx+1)%TAGLINES.length;$('menuTagline').textContent=TAGLINES[taglineIdx];},3200);
 
+/* ─────────────────────────────────────────────
+   STARS
+───────────────────────────────────────────── */
 let stars=[];
-function makeStars(){stars=[];for(let i=0;i<85;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.4,p:Math.random()*Math.PI*2,d:.3+Math.random()*.7});}
+function makeStars(){stars=[];for(let i=0;i<90;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:.5+Math.random()*1.4,p:Math.random()*Math.PI*2,d:.3+Math.random()*.7});}
 makeStars();
 
-/* ── Menu BG ── */
-const menuBg={platforms:[],person:{x:W/2,y:H*.7,vy:-9,vx:.5,face:1},cam:0,particles:[]};
+/* ─────────────────────────────────────────────
+   GAME STATE
+───────────────────────────────────────────── */
+let state='menu';
+let level=0;
+// game objects
+let player,platforms,particles,hazards,bullets;
+// per-level state
+let cam,maxAlt,finishPad,levelDone,shootCd;
+let jumpCount,combo,lastSafePlatform;
+// mechanic-specific
+let waveY;        // demonetize wave Y position
+let shiftTimer;   // threads shift countdown
+let pinnedPlatforms; // pinterest pinned set
+let finishDrift;  // mastodon finish pad drift
+let hijackTimer;  // tiktok dancer control hijack
+
+/* ─────────────────────────────────────────────
+   MENU BG ANIMATION
+───────────────────────────────────────────── */
+const menuBg={plats:[],person:{x:W/2,y:H*.72,vy:-9,vx:.4,face:1},cam:0,pts:[]};
 function initMenuBg(){
-  menuBg.platforms=[];menuBg.cam=0;let y=H*.76;
-  for(let i=0;i<18;i++){y-=rand(60,88);menuBg.platforms.push({x:rand(20,W-90),y,w:68,h:13,vx:(Math.random()<.4?(Math.random()<.5?-1:1)*rand(.3,.6):0)});}
-  menuBg.person={x:W/2-16,y:H*.7,vy:-9,vx:rand(.3,.7)*(Math.random()<.5?1:-1),face:1};
+  menuBg.plats=[];menuBg.cam=0;let y=H*.76;
+  for(let i=0;i<20;i++){y-=rand(58,86);menuBg.plats.push({x:rand(18,W-86),y,w:rand(60,90),h:12,vx:Math.random()<.35?(Math.random()<.5?-1:1)*rand(.3,.55):0,li:Math.floor(Math.random()*PLATFORMS.length)});}
+  menuBg.person={x:W/2-16,y:H*.72,vy:-9,vx:rand(.3,.6)*(Math.random()<.5?1:-1),face:1};
 }
 function tickMenuBg(){
-  const a=menuBg.person;a.vy+=.3;a.x+=a.vx;a.y+=a.vy;
+  const a=menuBg.person;a.vy+=.32;a.x+=a.vx;a.y+=a.vy;
   if(a.x<0||a.x>W-32)a.vx*=-1;if(Math.abs(a.vx)>.3)a.face=a.vx>0?1:-1;
-  if(a.vy>0){for(const p of menuBg.platforms){if(a.x+20>p.x&&a.x+12<p.x+p.w&&a.y+36>p.y&&a.y+36<p.y+p.h+a.vy){a.y=p.y-36;a.vy=-9-Math.random()*2;a.vx+=rand(-.3,.3);for(let i=0;i<4;i++)menuBg.particles.push({x:a.x+16,y:p.y,vx:rand(-1,1),vy:rand(.3,1.4),life:16,color:'#5b8dff'});break;}}}
-  for(const p of menuBg.platforms){if(p.vx){p.x+=p.vx;if(p.x<10||p.x+p.w>W-10)p.vx*=-1;}}
-  const lift=H*.5-a.y;if(lift>0){a.y+=lift;for(const p of menuBg.platforms)p.y+=lift;menuBg.cam+=lift;}
+  if(a.vy>0){
+    for(const p of menuBg.plats){
+      if(a.x+20>p.x&&a.x+12<p.x+p.w&&a.y+36>p.y&&a.y+36<p.y+p.h+a.vy){
+        a.y=p.y-36;a.vy=-9-Math.random()*2;a.vx+=rand(-.3,.3);
+        for(let i=0;i<4;i++)menuBg.pts.push({x:a.x+16,y:p.y,vx:rand(-1,1),vy:rand(.3,1.4),life:16,color:'#5b8dff'});
+        break;
+      }
+    }
+  }
+  for(const p of menuBg.plats){if(p.vx){p.x+=p.vx;if(p.x<8||p.x+p.w>W-8)p.vx*=-1;}}
+  const lift=H*.5-a.y;if(lift>0){a.y+=lift;for(const p of menuBg.plats)p.y+=lift;menuBg.cam+=lift;}
   if(a.y>H+60)initMenuBg();
-  for(const pt of menuBg.particles){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.06;pt.life--;}
-  menuBg.particles=menuBg.particles.filter(p=>p.life>0);
+  for(const pt of menuBg.pts){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.06;pt.life--;}
+  menuBg.pts=menuBg.pts.filter(p=>p.life>0);
 }
 function drawMenuBg(){
   const now=performance.now();
-  ctx.fillStyle='#05070f';ctx.fillRect(0,0,W,H);
-  // deep gradient
-  const g=ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0,'#0d1535');g.addColorStop(.5,'#080e24');g.addColorStop(1,'#050709');
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0d1535');g.addColorStop(.5,'#080e24');g.addColorStop(1,'#050709');
   ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  // ambient platform-color blobs drifting slowly
-  const blobs=[
-    {x:W*.15,y:H*.25,r:110,color:'#0077b5'},// linkedin blue
-    {x:W*.82,y:H*.55,r:90, color:'#ff4d6d'},// engage red
-    {x:W*.5, y:H*.8, r:100,color:'#00e5a0'},// viral green
-    {x:W*.7, y:H*.18,r:80, color:'#6364ff'},// mastodon purple
-  ];
-  blobs.forEach((b,i)=>{
-    const bx=b.x+Math.sin(now/8000+i*1.3)*30;
-    const by=b.y+Math.cos(now/9000+i*0.9)*24;
-    const bg2=ctx.createRadialGradient(bx,by,0,bx,by,b.r);
-    bg2.addColorStop(0,b.color+'1a');bg2.addColorStop(1,'transparent');
-    ctx.fillStyle=bg2;ctx.fillRect(0,0,W,H);
+  // ambient blobs
+  [[W*.15,H*.28,110,'#0077b5'],[W*.82,H*.55,90,'#ff4d6d'],[W*.5,H*.8,100,'#00e5a0'],[W*.7,H*.2,80,'#6364ff']].forEach(([bx,by,r,col],i)=>{
+    const x=bx+Math.sin(now/8000+i*1.3)*28,y=by+Math.cos(now/9200+i*.9)*22;
+    const bg=ctx.createRadialGradient(x,y,0,x,y,r);
+    bg.addColorStop(0,col+'18');bg.addColorStop(1,'transparent');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   });
-  // grid lines - very subtle
-  ctx.strokeStyle='rgba(91,141,255,0.05)';ctx.lineWidth=1;
+  // subtle grid
+  ctx.strokeStyle='rgba(91,141,255,0.04)';ctx.lineWidth=1;
   for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   // stars
   for(const s of stars){
-    const sy=(s.y+menuBg.cam*.12*s.d)%H;const tw=.4+.6*Math.sin(s.p+now/800);
-    ctx.globalAlpha=.2+.5*tw;ctx.fillStyle='#7dd3fc';ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
+    const sy=(s.y+menuBg.cam*.12*s.d)%H;
+    ctx.globalAlpha=.18+.45*(.5+.5*Math.sin(s.p+now/800));
+    ctx.fillStyle='#7dd3fc';ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
   }
   ctx.globalAlpha=1;
-  // platforms as branded cards with tiny logos
-  for(const p of menuBg.platforms){
-    const li=Math.floor(Math.abs(p.x*13+p.y*7))%PLATFORMS_META.length;
-    const pcfg=PLATFORMS_META[li];
-    ctx.globalAlpha=.28;ctx.fillStyle='#1a2040';ctx.fillRect(p.x,p.y,p.w,p.h);
+  // mini branded platforms
+  for(const p of menuBg.plats){
+    const pcfg=PLATFORMS[p.li];
+    ctx.globalAlpha=.26;ctx.fillStyle='#1a2040';ctx.fillRect(p.x,p.y,p.w,p.h);
     ctx.fillStyle=pcfg.color;ctx.fillRect(p.x,p.y,3,p.h);
-    ctx.globalAlpha=.12;ctx.fillStyle='#000';ctx.fillRect(p.x,p.y+p.h-3,p.w,3);
-    // mini logo on card
-    ctx.globalAlpha=.5;ctx.save();ctx.translate(p.x+p.w-10,p.y+p.h/2);ctx.scale(.45,.45);
-    const fn=LOGO_FNS[pcfg.id];if(fn){try{fn(ctx,10);}catch(e){}}
+    ctx.globalAlpha=.45;ctx.save();ctx.translate(p.x+p.w-10,p.y+p.h/2);ctx.scale(.42,.42);
+    const fn=LOGO_FNS[pcfg.id];if(fn)try{fn(ctx,10);}catch(e){}
     ctx.restore();ctx.globalAlpha=1;
   }
-  for(const pt of menuBg.particles){ctx.globalAlpha=pt.life/16*.6;ctx.fillStyle=pt.color;ctx.fillRect(pt.x,pt.y,2,2);}
-  ctx.globalAlpha=.5;drawSocialPerson(menuBg.person.x,menuBg.person.y,menuBg.person.face);ctx.globalAlpha=1;
+  for(const pt of menuBg.pts){ctx.globalAlpha=pt.life/16*.55;ctx.fillStyle=pt.color;ctx.fillRect(pt.x,pt.y,2,2);}
+  ctx.globalAlpha=.5;drawPerson(menuBg.person.x,menuBg.person.y,menuBg.person.face);ctx.globalAlpha=1;
 }
 initMenuBg();
 
-/* ── Start level ── */
-function startLevel(n){
-  level=n;const cfg=getCfg();
-  platforms=[];particles=[];hazards=[];bullets=[];wormholes=[];ringBands=[];
-  shootCd=0;ghostTimer=0;_consNonSolid=0;
-  gravMult=cfg.mechanic==='heavy-grav'?1.38:cfg.mechanic==='low-grav'?.44:1;
-  const RUNGS=cfg.practice?7:5,RUNG_GAP=cfg.practice?58:68;const sides=cfg.practice?[W*.5-70,W*.5-62,W*.5-78,W*.5-58,W*.5-72,W*.5-64,W*.5-80]:[W*.15,W*.54,W*.20,W*.58,W*.24];
-  let y=H-40;
-  platforms.push({x:W/2-(cfg.practice?82:(level===0?72:58)),y,w:cfg.practice?164:(level===0?144:116),h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-  for(let r=0;r<RUNGS;r++){y-=RUNG_GAP;platforms.push({x:sides[r],y,w:cfg.practice?150:(level===0?108:84),h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});}
-  while(y>-H*1.5){
-    y-=rand(cfg.gap[0],Math.min(cfg.gap[1],108));
-    platforms.push(spawnPlatform(y,cfg));
-    if(!cfg.practice&&y<H-900)spawnHazard(y,cfg);
-    if(!cfg.practice&&cfg.mechanic==='wormhole'&&Math.random()<.09)wormholes.push({x:rand(30,W-60),y:y-40,r:16,rot:0});
+/* ─────────────────────────────────────────────
+   LEVEL INIT
+───────────────────────────────────────────── */
+const BASE_GRAV=.37;
+const BASE_JUMP=-13.2;
+const SPRING_V=-20;
+const MOVE_ACC=.52;
+const MAX_VX=6.0;
+
+function mkPlatform(y,cfg,wide=false){
+  const r=Math.random();
+  let type='solid';
+  if(!wide){
+    if(r<cfg.brittle)type='brittle';
+    else if(r<cfg.brittle+cfg.moving)type='moving';
   }
-  if(!cfg.practice&&cfg.mechanic==='ring-bands'){ringBands=[];for(let i=0;i<4;i++)ringBands.push({y:H*.2+i*(H*.19),vy:rand(.5,1.)*(Math.random()<.5?1:-1),thick:20+rand(0,14)});}
-  player={x:W/2-16,y:H-90,w:32,h:36,vx:0,vy:-13.2,face:1};
-  cam=0;maxAlt=0;levelDone=false;finishPad=null;jumpCount=0;combo=0;runIdeasSaved=0;levelStories=[];if(n===0||n<0)runStories=[];storyCard=null;storyCardArmed=false;lastSafePlatform=platforms[0];toastQueue.length=0;toastActive=false;clearTimeout(_tt);$('toast').classList.remove('show');
-  document.getElementById('lvlTag').textContent=cfg.name;document.getElementById('engageTag').textContent='Reach: 0';document.getElementById('comboTag').classList.add('hidden');setState('playing');
+  const w=wide?160:clamp(60+Math.floor(Math.random()*38),58,98);
+  const x=rand(10,W-w-10);
+
+  // Reddit subreddit flavor
+  let subreddit=null;
+  if(cfg.id==='reddit'){
+    const subs=['r/mildlyinteresting','r/AmITheAsshole','r/tifu','r/dataisbeautiful','r/mildlyinfuriating'];
+    subreddit=subs[Math.floor(Math.random()*subs.length)];
+    if(subreddit==='r/AmITheAsshole')type='moving';
+    if(subreddit==='r/tifu')type='brittle';
+  }
+  // YouTube sponsor pad
+  let sponsor=false;
+  if(cfg.id==='youtube'&&!wide&&Math.random()<.14){sponsor=true;type='solid';}
+  // LinkedIn humble brag
+  let humbleBrag=false;
+  if(cfg.id==='linkedin'&&!wide&&Math.random()<.16){humbleBrag=true;type='solid';}
+  // TikTok platform disappears — timer starts inactive
+  let tiktokTimer=null;
+  // FYP pad — rare, wide, permanent, gold
+  let isFYP=false;
+  if(cfg.id==='tiktok'&&!wide&&Math.random()<.12){isFYP=true;type='solid';}
+  const hasTiktokTimer=cfg.id==='tiktok'&&!wide&&!isFYP;
+  // Instagram ghost
+  let ghost=cfg.id==='instagram'&&!wide;
+  let ghostPhase=Math.random()*Math.PI*2;
+
+  return{x,y,w:isFYP?clamp(w+40,110,130):w,h:13,type,vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
+    spring:!wide&&!sponsor&&!humbleBrag&&!isFYP&&Math.random()<cfg.spring,
+    broken:false,sponsor,humbleBrag,subreddit,isFYP,
+    tiktokTimer:hasTiktokTimer?0:null,
+    tiktokActive:false,
+    ghost,ghostPhase,ghostVis:1,ghostSolid:true,
+    pinned:false};
 }
 
+function spawnHazard(y,cfg){
+  if(cfg.id==='twitter'){
+    // ratio bombs come from above — spawned during update
+    return;
+  }
+  if(cfg.id==='reddit'&&Math.random()<.12){
+    // "Removed by mods" block
+    hazards.push({type:'mod',x:rand(30,W-30),y:y-rand(20,60),vx:(Math.random()<.5?-1:1)*rand(.6,1.4),vy:0,r:16,rot:0,dead:false});
+    return;
+  }
+  if(cfg.id==='linkedin'&&Math.random()<.10){
+    // Open To Work banner — drifts horizontally, can't shoot
+    hazards.push({type:'otw',x:-60,y:y-rand(30,60),vx:rand(.8,1.6),vy:0,r:0,rot:0,dead:false,w:70,h:20});
+    return;
+  }
+  if(cfg.id==='instagram'&&Math.random()<.08){
+    // "Post More Reels" notification — nudges player
+    hazards.push({type:'notif',x:rand(20,W-20),y:y-rand(20,60),vx:(Math.random()<.5?-1:1)*rand(.5,1.0),vy:.3,r:14,rot:0,dead:false});
+    return;
+  }
+  if(cfg.id==='tiktok'){
+    // Cap total hazards on screen — TikTok is already chaotic enough with vanishing platforms
+    const activeHazards=hazards.filter(h=>!h.dead).length;
+    if(activeHazards>=2)return;
+    const roll=Math.random();
+    if(roll<.04&&jumpCount>6){
+      // Oracle only appears mid-game, rare
+      hazards.push({type:'oracle',x:rand(50,W-50),y:y-rand(40,80),vx:rand(.3,.6)*(Math.random()<.5?1:-1),vy:.45,r:20,rot:0,dead:false});
+    } else if(roll<.09&&jumpCount>3){
+      // Dancer — slightly more common but still gated
+      hazards.push({type:'dancer',x:Math.random()<.5?-20:W+20,y:y-rand(20,60),vx:Math.random()<.5?1.1:-1.1,vy:0,r:16,rot:0,dead:false});
+    }
+    return;
+  }
+  if(cfg.id==='threads'&&Math.random()<.09){
+    hazards.push({type:'zuck',x:Math.random()<.5?-20:W+20,y:y-rand(30,70),vx:Math.random()<.5?.9:-.9,vy:0,r:14,rot:0,dead:false});
+    return;
+  }
+  if(cfg.id==='mastodon'&&Math.random()<.12){
+    // random hazard from all types
+    const types=['mod','notif','zuck'];
+    const t=types[Math.floor(Math.random()*types.length)];
+    hazards.push({type:t,x:rand(20,W-20),y:y-rand(20,60),vx:(Math.random()<.5?-1:1)*rand(.6,1.4),vy:0,r:15,rot:0,dead:false});
+  }
+}
 
-const BASE_GRAV=.37,JUMP=-13.2,SPRING_V=-19.5,MOVE=.54,MAXVX=6.2;
+const SAFE_PLAT=(x,y,w,spr=false)=>({x,y,w,h:13,type:'solid',vx:0,spring:spr,broken:false,sponsor:false,humbleBrag:false,isFYP:false,subreddit:null,tiktokTimer:null,tiktokActive:false,ghost:false,ghostVis:1,ghostSolid:true,pinned:false});
 
+function startLevel(n){
+  level=n;
+  const cfg=getCfg();
+  platforms=[];particles=[];hazards=[];bullets=[];
+  shootCd=0;jumpCount=0;combo=0;cam=0;maxAlt=0;
+  levelDone=false;finishPad=null;lastSafePlatform=null;
+  waveY=H+20;shiftTimer=480;pinnedPlatforms=new Set();finishDrift=0;hijackTimer=0;
+
+  // Update HUD
+  $('lvlTag').textContent=cfg.name;
+  $('reachTag').textContent='Reach: 0';
+  $('comboTag').classList.remove('show');
+  $('mechHint').textContent=cfg.mechHint;
+  $('shootBtn').textContent=cfg.shootLabel||'POST';
+  $('waveWarning').classList.remove('show');
+  $('progressBar').style.width='0%';
+
+  const grav=BASE_GRAV*(cfg.grav||1);
+
+  // Build initial platforms — wide safe start
+  let y=H-40;
+  const startW=cfg.practice?170:140;
+  platforms.push(SAFE_PLAT(W/2-startW/2,y,startW));
+  // A few safe rungs to get started
+  const safeRungs=cfg.practice?7:4;
+  for(let i=0;i<safeRungs;i++){
+    y-=rand(48,64);
+    const w=cfg.practice?150:clamp(100-i*6,72,110);
+    platforms.push(SAFE_PLAT(rand(18,W-w-18),y,w));
+  }
+  // Normal generation upward
+  while(y>-H*1.8){
+    y-=rand(cfg.gap[0],cfg.gap[1]);
+    platforms.push(mkPlatform(y,cfg));
+    spawnHazard(y,cfg);
+  }
+
+  player={x:W/2-16,y:H-88,w:32,h:36,vx:0,vy:-13.2,face:1,doubleJump:false,djUsed:false};
+  lastSafePlatform=platforms[0];
+
+  // Clear toast queue
+  toastQ.length=0;toastBusy=false;clearTimeout(_toastTm);$('toast').classList.remove('show');
+
+  setState('playing');
+}
+
+/* ─────────────────────────────────────────────
+   SHOOT
+───────────────────────────────────────────── */
+function shoot(){
+  if(state!=='playing'||shootCd>0)return;
+  shootCd=16;sndPost();haptic(10);
+  bullets.push({x:player.x+16,y:player.y-4,vy:-10,dead:false});
+  // Pinterest: pin nearest moving platform
+  if(getCfg().id==='pinterest'){
+    let nearest=null,nd=999;
+    for(const p of platforms){
+      if(p.type==='moving'&&!p.pinned){const d=Math.abs(p.y-player.y);if(d<nd){nd=d;nearest=p;}}
+    }
+    if(nearest){nearest.pinned=true;nearest.vx=0;pinnedPlatforms.add(nearest);toast('📌 Pinned!',900);}
+  }
+}
+
+/* ─────────────────────────────────────────────
+   UPDATE
+───────────────────────────────────────────── */
 function update(){
   const cfg=getCfg();
-  const grav=BASE_GRAV*gravMult;
-  const jumpV=cfg.mechanic==='low-grav'?JUMP*.80:JUMP;
-  const springV=cfg.mechanic==='heavy-grav'?SPRING_V*1.18:SPRING_V;
-  player.vx+=input.dir*MOVE;player.vx*=.94;
-  player.vx=Math.max(-MAXVX,Math.min(MAXVX,player.vx));
+  const grav=BASE_GRAV*(cfg.grav||1);
+  const jumpV=cfg.mechanic==='trend-cycle'?BASE_JUMP*.78:BASE_JUMP;
+
+  // ── Player physics ──
+  // Dancer hijack: reverse controls briefly
+  const effectiveDir=hijackTimer>0?-input.dir:input.dir;
+  if(hijackTimer>0)hijackTimer--;
+  player.vx+=effectiveDir*MOVE_ACC;
+  player.vx*=.93;
+  player.vx=clamp(player.vx,-MAX_VX,MAX_VX);
   if(Math.abs(player.vx)>.3)player.face=player.vx>0?1:-1;
-  player.vy+=grav;player.x+=player.vx;player.y+=player.vy;
-  if(player.x>W)player.x=-player.w;if(player.x<-player.w)player.x=W;
-  ghostTimer++;
-  for(const p of platforms){if(!p.ghost)continue;p.ghostVis=.5+.5*Math.sin(ghostTimer*.055+p.ghostPhase);p.ghostSolid=p.ghostVis>.5;}
-  if(player.vy>0){
-    const feet=player.y+player.h;
+  player.vy+=grav;
+  player.x+=player.vx;player.y+=player.vy;
+  // Wrap
+  if(player.x>W)player.x=-player.w;
+  if(player.x<-player.w)player.x=W;
+
+  // ── TikTok: platform timers — only countdown when on screen ──
+  if(cfg.id==='tiktok'){
     for(const p of platforms){
-      if(p.broken)continue;if(p.ghost&&!p.ghostSolid)continue;
-      if(player.x+player.w*.7>p.x&&player.x+player.w*.3<p.x+p.w&&feet>p.y&&feet<p.y+p.h+player.vy){
-        if(p.type==='brittle'){p.broken=true;sndBreak();jet(p.x+p.w/2,p.y,'#888');continue;}
-        player.y=p.y-player.h;player.vy=p.spring?springV:jumpV;
-        if(p.spring)sndViral();else sndJump();
-        jet(player.x+player.w/2,player.y+player.h,p.spring?'#00e5a0':'#5b8dff');haptic(p.spring?[20,25,20]:8);
-        if(p===finishPad){completeLevel();return;}
-        lastSafePlatform=p;jumpCount++;combo++;if(combo&&combo%5===0){maxAlt+=35;haptic([12,20,12]);}
-        maybeSpawnStoryCard(p,cfg);
+      if(p.tiktokTimer===null||p.broken||p.type==='finish'||p.isFYP)continue;
+      const onScreen=p.y>-60&&p.y<H+60;
+      if(onScreen&&!p.tiktokActive){
+        // Platform just entered screen — start its countdown (2-3.5 seconds at 60fps)
+        p.tiktokTimer=130+Math.floor(Math.random()*80);
+        p.tiktokActive=true;
+      }
+      if(p.tiktokActive&&p.tiktokTimer>0){
+        p.tiktokTimer--;
+        if(p.tiktokTimer<=0){p.broken=true;jet(p.x+p.w/2,p.y,'#69c9d0',4);}
       }
     }
   }
-  for(const p of platforms){if(p.type==='moving'){p.x+=p.vx;if(p.x<4||p.x+p.w>W-4)p.vx*=-1;}}
-  if(cfg.mechanic==='ring-bands'&&ringBands){
-    for(const rb of ringBands){
-      rb.y+=rb.vy;if(rb.y>H+rb.thick)rb.y=-rb.thick;if(rb.y<-rb.thick)rb.y=H+rb.thick;
-      if(player.y+player.h>rb.y&&player.y<rb.y+rb.thick){failGame();return;}
+
+  // ── Instagram: ghost cycle ──
+  if(cfg.id==='instagram'){
+    const t=performance.now()/1000;
+    for(const p of platforms){
+      if(!p.ghost)continue;
+      p.ghostVis=.5+.5*Math.sin(t*1.8+p.ghostPhase);
+      p.ghostSolid=p.ghostVis>.5;
     }
   }
-  if((cfg.mechanic==='wormhole'||cfg.mechanic==='event-horizon')&&wormholes){
-    for(const w of wormholes){
-      w.rot+=.04;const dx=player.x+16-w.x,dy=player.y+18-w.y;
-      if(Math.hypot(dx,dy)<w.r+10){player.y-=rand(H*.3,H*.5);player.vy=JUMP*.65;sndNotif();jet(player.x+16,player.y+18,'#6364ff');break;}
+
+  // ── Threads: periodic shift ──
+  if(cfg.id==='threads'||cfg.id==='mastodon'){
+    shiftTimer--;
+    if(shiftTimer<=0){
+      shiftTimer=480;
+      const shift=rand(28,55)*(Math.random()<.5?1:-1);
+      for(const p of platforms){p.x=clamp(p.x+shift,6,W-p.w-6);}
+      sndShift();toast('⚡ META PUSHED AN UPDATE',1200,'high');haptic([20,15,20]);
     }
   }
+
+  // ── YouTube: demonetize wave ──
+  if(cfg.id==='youtube'){
+    waveY-=.55;// rises
+    if(waveY<H)$('waveWarning').classList.add('show');
+    else $('waveWarning').classList.remove('show');
+    if(player.y+player.h>waveY){failGame();return;}
+  }
+
+  // ── Platform collisions — check both falling AND fast upward pass-through ──
+  const feet=player.y+player.h;
+  // Finish pad: catch at any velocity (player can fly through it going up too)
+  if(finishPad&&!finishPad.broken){
+    const fpMid=finishPad.y+finishPad.h/2;
+    const prevFeet=feet-player.vy;
+    const crossedDown=prevFeet<=fpMid&&feet>=fpMid;
+    const crossedUp=prevFeet>=fpMid&&feet<=fpMid;
+    const overlapX=player.x+player.w*.72>finishPad.x&&player.x+player.w*.28<finishPad.x+finishPad.w;
+    if(overlapX&&(crossedDown||crossedUp)){completeLevel();return;}
+  }
+  if(player.vy>0){
+    for(const p of platforms){
+      if(p.broken||p===finishPad)continue;
+      if(p.ghost&&!p.ghostSolid)continue;
+      if(player.x+player.w*.72>p.x&&player.x+player.w*.28<p.x+p.w&&feet>p.y&&feet<p.y+p.h+player.vy+1){
+        // brittle
+        if(p.type==='brittle'){p.broken=true;sndBreak();jet(p.x+p.w/2,p.y,'#888');continue;}
+        player.y=p.y-player.h;
+        // spring / sponsor / humble brag / FYP
+        if(p.spring||p.sponsor||p.humbleBrag||p.isFYP){
+          player.vy=p.humbleBrag?BASE_JUMP*1.7:p.isFYP?BASE_JUMP*1.55:SPRING_V;
+          sndBoost();haptic([18,20,18]);
+          jet(player.x+16,player.y+player.h,p.humbleBrag||p.isFYP?'#ffd700':p.sponsor?'#ffcc00':'#00e5a0');
+          if(p.humbleBrag){toast('"So honored to share this moment. 🙏 #Blessed"',1200);maxAlt+=40;}
+          if(p.isFYP){
+            const fyps=['"You have been chosen. For now."','"The algorithm likes you today."','"FYP. Do not ask why."','"Congrats. The raccoon video is next."'];
+            toast(fyps[Math.floor(Math.random()*fyps.length)],1200);maxAlt+=30;
+          }
+          if(p.sponsor){toast('💛 SPONSORSHIP · DOUBLE JUMP UNLOCKED',1100);player.doubleJump=true;player.djUsed=false;}
+        } else {
+          player.vy=jumpV;
+          sndJump();haptic(8);
+          jet(player.x+16,player.y+player.h,cfg.color+'99');
+        }
+        player.djUsed=false;
+        lastSafePlatform=p;jumpCount++;
+        combo++;if(combo&&combo%6===0)toast('🔥 '+combo+' COMBO',900);
+      }
+    }
+  }
+
+  // ── Moving platforms ──
+  for(const p of platforms){
+    if(p.type==='moving'&&!p.pinned){
+      p.x+=p.vx;
+      if(p.x<4||p.x+p.w>W-4)p.vx*=-1;
+    }
+  }
+
+  // ── Shoot / bullets ──
   if(shootCd>0)shootCd--;
-  const pcx=player.x+16,pcy=player.y+18;
-  if(finishPad&&pcx>finishPad.x-8&&pcx<finishPad.x+finishPad.w+8&&player.y+player.h<finishPad.y&&player.y+player.h>finishPad.y-40){completeLevel();return;}
-  for(const h of hazards){
-    if(h.dead)continue;
-    if(h.type==='blackhole'){
-      const dx=h.x-pcx,dy=h.y-pcy,d=Math.hypot(dx,dy)||1;
-      if(d<h.pull){const f=(1-d/h.pull);player.vx+=dx/d*f*.8;player.vy+=dy/d*f*.45;}
-      if(d<h.r+10){failGame();return;}
-    } else {
-      h.x+=h.vx;h.rot+=.03;if(h.x<h.r||h.x>W-h.r)h.vx*=-1;
-      if(Math.abs(h.x-pcx)<h.r+12&&Math.abs(h.y-pcy)<h.r+13){failGame();return;}
-    }
-  }
   for(const b of bullets){
     if(b.dead)continue;b.y+=b.vy;
     for(const h of hazards){
-      if(h.dead||h.type==='blackhole')continue;
-      if(Math.abs(b.x-h.x)<h.r+5&&Math.abs(b.y-h.y)<h.r+5){
-        h.dead=true;b.dead=true;sndNotif();jet(h.x,h.y,'#ff4d6d');jet(h.x,h.y,'#ffd700');
-        const lbl=(HAZ_CFG[h.type]||{label:'?'}).label;toast('Cleared: '+lbl,1100);haptic([14,18,14]);
+      if(h.dead||h.type==='otw'||h.type==='oracle')continue;// can't shoot OTW banners or Oracle (government deal)
+      if(Math.abs(b.x-h.x)<(h.r||20)+5&&Math.abs(b.y-h.y)<(h.r||20)+5){
+        h.dead=true;b.dead=true;sndCollect();jet(h.x,h.y,'#ff4d6d');jet(h.x,h.y,'#ffd700');
+        const labels={mod:'Mod cleared 💀',notif:'Notification dismissed ✓',zuck:'GREETINGS DELETED',otw:'',ratio:'RATIO BLOCKED'};
+        if(labels[h.type])toast(labels[h.type],1000);
+        haptic([12,14,12]);
       }
     }
   }
-  bullets=bullets.filter(b=>!b.dead&&b.y>-30);hazards=hazards.filter(h=>!h.dead&&h.y<H+60);
-  const lift=H*.42-player.y;
-  if(lift>0){
-    player.y+=lift;for(const p of platforms)p.y+=lift;for(const pt of particles)pt.y+=lift;
-    for(const h of hazards)h.y+=lift;for(const b of bullets)b.y+=lift;
-    if(wormholes)for(const w of wormholes)w.y+=lift;
-    cam+=lift;maxAlt=Math.max(maxAlt,cam);
-  }
-  let topY=platforms.length?Math.min(...platforms.map(p=>p.y)):H*.4;
-  while(topY>-300){
-    if(finishPad)break;
-    topY-=rand(cfg.gap[0],Math.min(cfg.gap[1],108));
-    // Place finish pad after N jumps, but only in the live spawn window
-    if(jumpCount>=cfg.goal&&!finishPad){
-      const finishY=topY;
-      // Only clear nearby hazards — keep all platforms so the path stays intact
-      hazards=hazards.filter(h=>Math.abs(h.y-finishY)>260);
-      if(wormholes)wormholes=wormholes.filter(w=>Math.abs(w.y-finishY)>260);
-      // Three safe helper platforms staircase up to a wider finish pad
-      const helperW=cfg.practice?150:92,helperW3=cfg.practice?160:96;
-      platforms.push({x:W/2-(cfg.practice?75:112),y:finishY+210,w:helperW,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      platforms.push({x:W/2+(cfg.practice?-75:18), y:finishY+140,w:helperW,h:14,type:'solid',vx:0,spring:!cfg.practice, broken:false,ghost:false,ghostVis:1});
-      platforms.push({x:W/2-(cfg.practice?80:84), y:finishY+72, w:helperW3,h:14,type:'solid',vx:0,spring:false,broken:false,ghost:false,ghostVis:1});
-      finishPad={x:W/2-(cfg.practice?132:118),y:finishY,w:cfg.practice?264:236,h:18,type:'finish',vx:0,spring:false,broken:false,ghost:false,ghostVis:1};
-      platforms.push(finishPad);
-      platforms=platforms.filter(p=>p===finishPad||p.y>=finishPad.y);
-      hazards=hazards.filter(h=>h.y>=finishPad.y);
-      if(wormholes)wormholes=wormholes.filter(w=>w.y>=finishPad.y);
-      bullets=bullets.filter(b=>b.y>=finishPad.y);
-      if(ringBands)ringBands=ringBands.filter(rb=>rb.y>=finishPad.y);
-      levelDone=true;break;
+  bullets=bullets.filter(b=>!b.dead&&b.y>-40);
+
+  // ── Hazard logic ──
+  const pcx=player.x+16,pcy=player.y+18;
+  for(const h of hazards){
+    if(h.dead)continue;
+
+    // Movement
+    if(h.type==='oracle'){
+      h.y+=h.vy;h.x+=h.vx;
+      if(h.x<h.r||h.x>W-h.r)h.vx*=-1;
+      if(h.y>H+60)h.dead=true;
+    } else if(h.type==='dancer'){
+      h.x+=h.vx;
+      if(h.x<-40||h.x>W+40)h.dead=true;
+    } else if(h.type==='ratio'){
+      h.y+=h.vy;h.x+=h.vx;
+      if(h.x<h.r||h.x>W-h.r)h.vx*=-1;
+      if(h.y>H+40)h.dead=true;
+    } else if(h.type==='otw'){
+      h.x+=h.vx;if(h.x>W+80)h.x=-80;
     } else {
-      platforms.push(spawnPlatform(topY,cfg));if(!cfg.practice)spawnHazard(topY,cfg);
-      if(!cfg.practice&&cfg.mechanic==='wormhole'&&Math.random()<.08)wormholes.push({x:rand(30,W-60),y:topY-40,r:16,rot:0});
+      h.x+=h.vx;h.rot+=.03;
+      if(h.x<h.r||h.x>W-h.r)h.vx*=-1;
+    }
+
+    if(h.dead)continue;
+
+    // Collision
+    if(h.type==='oracle'){
+      if(Math.abs(pcx-h.x)<h.r+12&&Math.abs(pcy-h.y)<h.r+14){failGame();return;}
+    } else if(h.type==='dancer'){
+      if(hijackTimer<=0&&Math.abs(pcx-h.x)<h.r+14&&Math.abs(pcy-h.y)<h.r+18){
+        hijackTimer=90;h.dead=true;sndHit();
+        toast('💃 CONTROLS REVERSED · doing the trend',1400,'high');haptic([15,10,15,10,15]);
+      }
+    } else if(h.type==='notif'){
+      if(Math.abs(pcx-h.x)<h.r+14&&Math.abs(pcy-h.y)<h.r+14){
+        player.vx+=(pcx<h.x?-1:1)*2.5;sndHit();h.dead=true;toast('"Post more Reels!" 👻',1000);
+      }
+    } else if(h.type==='otw'){
+      if(pcy>h.y&&pcy<h.y+h.h&&pcx>h.x&&pcx<h.x+h.w){failGame();return;}
+    } else if(h.type==='ratio'){
+      if(h.y>pcy-30&&Math.abs(pcx-h.x)<h.r+10&&Math.abs(pcy-h.y)<h.r+10){failGame();return;}
+    } else {
+      if(Math.abs(pcx-h.x)<(h.r||18)+10&&Math.abs(pcy-h.y)<(h.r||18)+10){failGame();return;}
     }
   }
-  platforms=platforms.filter(p=>p.y<H+110&&!(p.broken&&p.y>H));
-  hazards=hazards.filter(h=>!h.dead&&h.y<H+60);
-  if(wormholes)wormholes=wormholes.filter(w=>w.y<H+50);
+
+  // ── Twitter: spawn ratio bombs from top ──
+  if(cfg.id==='twitter'&&jumpCount>2&&Math.random()<.008){
+    hazards.push({type:'ratio',x:rand(24,W-24),y:-20,vx:(Math.random()<.5?-1:1)*rand(.6,1.4),vy:rand(1.4,2.4),r:16,rot:0,dead:false});
+  }
+
+  // ── Mastodon: finish pad drifts ──
+  if(cfg.id==='mastodon'&&finishPad){
+    finishDrift+=.008;
+    finishPad.x=clamp(W/2-finishPad.w/2+Math.sin(finishDrift)*80,10,W-finishPad.w-10);
+  }
+
+  // ── Clean up ──
+  hazards=hazards.filter(h=>!h.dead&&h.y<H+80);
+  // On TikTok, also cull hazards that have scrolled far above the player (big FYP launch)
+  if(cfg.id==='tiktok')hazards=hazards.filter(h=>h.y>player.y-H*.6);
   for(const pt of particles){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.05;pt.life--;}
   particles=particles.filter(pt=>pt.life>0);
-  if(storyCard&&!storyCard.collected){storyCard.y+=Math.sin(performance.now()/260)*.05;if(Math.abs((player.x+16)-storyCard.x)<24&&Math.abs((player.y+18)-storyCard.y)<26)collectStoryCard();}
-  if(player.y>H+60){if(cfg.practice){const p=lastSafePlatform||platforms[0];player.x=(p?p.x+p.w/2:W/2)-16;player.y=(p?p.y:H-80)-player.h-8;player.vx=0;player.vy=JUMP*.75;haptic(10);}else{failGame();return;}}
-  document.getElementById('progressBar').style.width=Math.min(100,jumpCount/getCfg().goal*100)+'%';
-  updatePostButtonDangerState();
-  const reach=Math.floor(maxAlt/10);document.getElementById('engageTag').textContent='Reach: '+reach.toLocaleString();
-  const comboEl=document.getElementById('comboTag');comboEl.textContent='Combo x'+combo;comboEl.classList.toggle('hidden',combo<2);
+
+  // ── Camera / scroll ──
+  const lift=H*.42-player.y;
+  if(lift>0){
+    player.y+=lift;
+    for(const p of platforms)p.y+=lift;
+    for(const pt of particles)pt.y+=lift;
+    for(const h of hazards)h.y+=lift;
+    for(const b of bullets)b.y+=lift;
+    if(cfg.id==='youtube')waveY+=lift;
+    cam+=lift;maxAlt=Math.max(maxAlt,cam);
+  }
+
+  // ── Spawn more platforms upward ──
+  let topY=platforms.length?Math.min(...platforms.map(p=>p.y)):H*.4;
+  while(topY>-350){
+    if(finishPad)break;
+    topY-=rand(cfg.gap[0],cfg.gap[1]);
+    if(jumpCount>=cfg.goal&&!finishPad){
+      // Clear nearby hazards
+      hazards=hazards.filter(h=>Math.abs(h.y-topY)>220);
+      const hw=cfg.practice?180:200;
+
+      // Per-platform approach rungs — themed to match each platform's feel
+      if(cfg.id==='linkedin'){
+        // Wide, stable, professional — corporate boardroom staircase
+        platforms.push(SAFE_PLAT(W/2-90,topY+190,120));
+        platforms.push(SAFE_PLAT(W/2-60,topY+125,110,false));
+        platforms.push(SAFE_PLAT(W/2-70,topY+62,100));
+      } else if(cfg.id==='twitter'){
+        // Narrow, erratic — hot takes don't last
+        platforms.push(SAFE_PLAT(rand(20,W-80),topY+185,68));
+        platforms.push(SAFE_PLAT(rand(20,W-80),topY+120,62));
+        platforms.push(SAFE_PLAT(rand(20,W-80),topY+58,70));
+      } else if(cfg.id==='tiktok'){
+        // Spring-loaded — big floaty bounces
+        platforms.push(SAFE_PLAT(W/2-50,topY+200,80,true));
+        platforms.push(SAFE_PLAT(W/2-40,topY+118,76));
+        platforms.push(SAFE_PLAT(W/2-44,topY+55,84,true));
+      } else if(cfg.id==='instagram'){
+        // Normal but symmetrical — everything is aesthetic here
+        platforms.push(SAFE_PLAT(W/2-52,topY+188,104));
+        platforms.push(SAFE_PLAT(W/2-48,topY+124,96));
+        platforms.push(SAFE_PLAT(W/2-52,topY+60,104));
+      } else if(cfg.id==='youtube'){
+        // Wide sponsor pads on the way up
+        const sp1=SAFE_PLAT(W/2-55,topY+190,110);sp1.sponsor=true;platforms.push(sp1);
+        platforms.push(SAFE_PLAT(W/2-44,topY+122,88));
+        const sp2=SAFE_PLAT(W/2-50,topY+58,100);sp2.sponsor=true;platforms.push(sp2);
+      } else if(cfg.id==='threads'){
+        // Slightly offset — Meta keeps pushing updates
+        platforms.push(SAFE_PLAT(W/2-100,topY+188,88));
+        platforms.push(SAFE_PLAT(W/2+10,topY+122,88));
+        platforms.push(SAFE_PLAT(W/2-80,topY+58,92));
+      } else if(cfg.id==='bluesky'){
+        // Far apart — chronological, spacious, sparse
+        platforms.push(SAFE_PLAT(W/2-44,topY+210,88));
+        platforms.push(SAFE_PLAT(W/2-40,topY+130,84,true));
+        platforms.push(SAFE_PLAT(W/2-44,topY+62,88));
+      } else if(cfg.id==='reddit'){
+        // Labelled subreddit rungs
+        const r1=SAFE_PLAT(rand(20,W-90),topY+185,82);r1.subreddit='r/gaming';platforms.push(r1);
+        const r2=SAFE_PLAT(rand(20,W-90),topY+120,78);r2.subreddit='r/all';platforms.push(r2);
+        const r3=SAFE_PLAT(rand(20,W-90),topY+58,82);r3.subreddit='r/popular';platforms.push(r3);
+      } else if(cfg.id==='pinterest'){
+        // Narrow tall pins, heavy gravity means closer spacing
+        platforms.push(SAFE_PLAT(W/2-38,topY+160,76));
+        platforms.push(SAFE_PLAT(W/2-34,topY+105,72,true));
+        platforms.push(SAFE_PLAT(W/2-38,topY+52,76));
+      } else if(cfg.id==='mastodon'){
+        // Drifting — finish pad already moves, rungs are solid anchors
+        platforms.push(SAFE_PLAT(W/2-80,topY+188,92));
+        platforms.push(SAFE_PLAT(W/2+5,topY+122,88,true));
+        platforms.push(SAFE_PLAT(W/2-76,topY+58,92));
+      } else {
+        // Practice / fallback
+        platforms.push(SAFE_PLAT(W/2-80,topY+180,88));
+        platforms.push(SAFE_PLAT(W/2+10,topY+120,88,true));
+        platforms.push(SAFE_PLAT(W/2-78,topY+60,92));
+      }
+
+      finishPad=SAFE_PLAT(W/2-hw/2,topY,hw);
+      finishPad.type='finish';finishPad.h=16;
+      platforms.push(finishPad);
+      levelDone=true;break;
+    } else {
+      platforms.push(mkPlatform(topY,cfg));
+      spawnHazard(topY,cfg);
+    }
+  }
+
+  // ── Trim off-screen ──
+  platforms=platforms.filter(p=>p.y<H+120&&!(p.broken&&p.y>H));
+
+  // ── HUD updates ──
+  $('progressBar').style.width=Math.min(100,jumpCount/cfg.goal*100)+'%';
+  $('reachTag').textContent=hijackTimer>0?'💃 CONTROLS REVERSED':'Reach: '+Math.floor(maxAlt/10).toLocaleString();
+  const ce=$('comboTag');ce.textContent='Combo ×'+combo;ce.classList.toggle('show',combo>=3);
+
+  // ── POST button danger pulse ──
+  const danger=hazards.some(h=>!h.dead&&h.type!=='otw'&&Math.hypot(h.x-pcx,h.y-pcy)<90);
+  $('shootBtn').classList.toggle('danger',danger);
+
+  // ── Fell off bottom ──
+  if(player.y>H+60){
+    if(cfg.practice){
+      const p=lastSafePlatform||platforms[0];
+      player.x=(p?p.x+p.w/2:W/2)-16;player.y=(p?p.y:H-80)-player.h-8;
+      player.vx=0;player.vy=BASE_JUMP*.75;haptic(10);
+    } else {failGame();return;}
+  }
 }
 
-/* ── Draw platform as branded post card ── */
-function drawPlatformCard(p,cfg){
-  const c=ctx;
-  // card base
-  const baseColor=p.type==='moving'?cfg.color:p.type==='brittle'?'#3a3a4a':'#dde4ff';
-  c.fillStyle=baseColor;c.fillRect(p.x,p.y,p.w,p.h);
-  // coloured left accent bar
-  c.fillStyle=cfg.color;c.fillRect(p.x,p.y,3,p.h);
-  // text lines on card
-  c.fillStyle=p.type==='moving'?'rgba(255,255,255,.5)':'rgba(50,50,80,.4)';
-  c.fillRect(p.x+6,p.y+4,p.w*.45,2);
-  c.fillRect(p.x+6,p.y+8,p.w*.28,2);
-  // shadow
-  c.fillStyle='rgba(0,0,0,.25)';c.fillRect(p.x,p.y+p.h-3,p.w,3);
-  // brittle cracks
-  if(p.type==='brittle'){
-    c.strokeStyle='rgba(0,0,0,.3)';c.lineWidth=1;c.beginPath();
-    c.moveTo(p.x+p.w*.35,p.y);c.lineTo(p.x+p.w*.4,p.y+p.h);
-    c.moveTo(p.x+p.w*.65,p.y+2);c.lineTo(p.x+p.w*.62,p.y+p.h);c.stroke();
+/* ─────────────────────────────────────────────
+   DRAW
+───────────────────────────────────────────── */
+function draw(){
+  const cfg=getCfg();const t=performance.now()/1000;
+  drawBg(cfg,t);
+  // Stars
+  for(const s of stars){
+    const sy=(s.y+cam*.14*s.d)%H;
+    ctx.globalAlpha=.16+.45*(.5+.5*Math.sin(s.p+t*1.4));
+    ctx.fillStyle=cfg.star||'#9fc4ff';
+    ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
+  }ctx.globalAlpha=1;
+
+  // Demonetize wave (YouTube)
+  if(cfg.id==='youtube'&&waveY<H+10){
+    const wg=ctx.createLinearGradient(0,waveY-30,0,waveY);
+    wg.addColorStop(0,'rgba(255,0,0,0)');wg.addColorStop(1,'rgba(255,0,0,0.38)');
+    ctx.fillStyle=wg;ctx.fillRect(0,waveY-30,W,30);
+    ctx.fillStyle='rgba(255,0,0,0.55)';ctx.fillRect(0,waveY,W,H-waveY);
+    ctx.strokeStyle='#ff4444';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,waveY);ctx.lineTo(W,waveY);ctx.stroke();
   }
-  // spring
-  if(p.spring){
-    c.fillStyle='#00e5a0';c.fillRect(p.x+p.w/2-8,p.y-7,16,7);
-    c.fillRect(p.x+p.w/2-5,p.y-11,10,4);
+
+  // Platforms
+  for(const p of platforms){
+    if(p.broken)continue;
+    if(p.type==='finish'){drawViralPad(p,cfg,t);continue;}
+    if(p.ghost){ctx.globalAlpha=Math.max(.15,p.ghostVis);}
+    drawPost(p,cfg,t);
+    if(p.ghost)ctx.globalAlpha=1;
   }
-  // mini logo on right side of card
-  c.save();c.translate(p.x+p.w-12,p.y+p.h/2);c.scale(.55,.55);
-  const fn=LOGO_FNS[cfg.id];if(fn){try{fn(c,10);}catch(e){}}
-  c.restore();
+
+  // Hazards
+  for(const h of hazards){
+    if(h.dead)continue;
+    drawHazard(h,cfg,t);
+  }
+
+  // Bullets
+  for(const b of bullets){
+    if(b.dead)continue;
+    ctx.fillStyle='#00e5a0';ctx.fillRect(b.x-2,b.y-7,4,10);
+    ctx.globalAlpha=.28;ctx.fillStyle='#00e5a0';ctx.fillRect(b.x-5,b.y-9,10,14);ctx.globalAlpha=1;
+  }
+
+  // Particles
+  for(const pt of particles){ctx.globalAlpha=pt.life/24;ctx.fillStyle=pt.color;ctx.fillRect(pt.x,pt.y,3,3);}
+  ctx.globalAlpha=1;
+
+  // Player
+  drawPerson(player.x,player.y,player.face);
 }
 
 /* ── Per-platform backgrounds ── */
-function drawLevelBg(cfg,t){
+function drawBg(cfg,t){
   ctx.fillStyle=cfg.bg||'#05070f';ctx.fillRect(0,0,W,H);
   if(cfg.id==='linkedin'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0a1e3a');g.addColorStop(1,'#050e1f');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle='rgba(0,119,181,0.09)';ctx.lineWidth=1;
-    for(let x=0;x<W;x+=32){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<H;y+=32){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-    for(let i=0;i<18;i++){
-      const wx=(i*73+17)%W,wy=((i*97+cam*.05)%(H+50)+H+50)%(H+50);
-      ctx.globalAlpha=(Math.sin(t*.4+i)>.2)?.16:.04;ctx.fillStyle='#5b8dff';ctx.fillRect(wx,wy,22,14);}
-    ctx.globalAlpha=1;
+    ctx.strokeStyle='rgba(0,119,181,0.07)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   } else if(cfg.id==='twitter'){
-    const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#040d18');g.addColorStop(1,'#020810');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.lineWidth=1;
-    for(let i=0;i<22;i++){const x=((i*60+t*45*(i%2?1:-1))%(W+80)+W+80)%(W+80);
-      ctx.globalAlpha=.04+.03*(i%3);ctx.strokeStyle='#1da1f2';
-      ctx.beginPath();ctx.moveTo(x,-10);ctx.lineTo(x-H*.4,H+10);ctx.stroke();}ctx.globalAlpha=1;
+    ctx.lineWidth=1;
+    for(let i=0;i<18;i++){const x=((i*58+t*38*(i%2?1:-1))%(W+70)+W+70)%(W+70);ctx.globalAlpha=.04;ctx.strokeStyle='#1da1f2';ctx.beginPath();ctx.moveTo(x,-10);ctx.lineTo(x-H*.35,H+10);ctx.stroke();}
+    ctx.globalAlpha=1;
   } else if(cfg.id==='tiktok'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#040e10');g.addColorStop(.5,'#08181a');g.addColorStop(1,'#040408');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let y=0;y<H;y+=4){ctx.globalAlpha=.05;ctx.fillStyle='#000';ctx.fillRect(0,y,W,2);}ctx.globalAlpha=1;
-    const g2=ctx.createRadialGradient(W*.2,H*.3+Math.sin(t)*22,0,W*.2,H*.3,130);
-    g2.addColorStop(0,'rgba(105,201,208,0.13)');g2.addColorStop(1,'transparent');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
-    const g3=ctx.createRadialGradient(W*.8,H*.6+Math.cos(t*.7)*26,0,W*.8,H*.6,140);
-    g3.addColorStop(0,'rgba(255,0,80,0.10)');g3.addColorStop(1,'transparent');ctx.fillStyle=g3;ctx.fillRect(0,0,W,H);
+    for(let y=0;y<H;y+=4){ctx.globalAlpha=.04;ctx.fillStyle='#000';ctx.fillRect(0,y,W,2);}ctx.globalAlpha=1;
+    const g1=ctx.createRadialGradient(W*.2,H*.3+Math.sin(t)*20,0,W*.2,H*.3,120);g1.addColorStop(0,'rgba(105,201,208,0.12)');g1.addColorStop(1,'transparent');ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);
+    const g2=ctx.createRadialGradient(W*.8,H*.6+Math.cos(t*.7)*24,0,W*.8,H*.6,130);g2.addColorStop(0,'rgba(255,0,80,0.09)');g2.addColorStop(1,'transparent');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
   } else if(cfg.id==='instagram'){
-    const g=ctx.createLinearGradient(0,0,W,H);
-    g.addColorStop(0,'#1a0525');g.addColorStop(.4,'#2d0a1a');g.addColorStop(.7,'#1a0810');g.addColorStop(1,'#08050a');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let i=0;i<14;i++){const bx=(i*78+10)%W,by=((i*110+cam*.06)%(H+60)+H+60)%(H+60);const br=10+i%4*9;
-      const ig=ctx.createRadialGradient(bx,by,0,bx,by,br);const hue=i%2?'225,48,108':'180,60,180';
-      ig.addColorStop(0,'rgba('+hue+',.13)');ig.addColorStop(1,'transparent');ctx.fillStyle=ig;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();}
+    const ig=ctx.createLinearGradient(0,0,W,H);ig.addColorStop(0,'#1a0525');ig.addColorStop(.4,'#2d0a1a');ig.addColorStop(1,'#0a030f');ctx.fillStyle=ig;ctx.fillRect(0,0,W,H);
+    for(let i=0;i<12;i++){const bx=(i*82+10)%W,by=((i*120+cam*.05)%(H+60)+H+60)%(H+60);const br=12+i%4*10;
+      const ig2=ctx.createRadialGradient(bx,by,0,bx,by,br);ig2.addColorStop(0,'rgba(225,48,108,.11)');ig2.addColorStop(1,'transparent');ctx.fillStyle=ig2;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();}
   } else if(cfg.id==='youtube'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#150202');g.addColorStop(1,'#080101');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    const sg=ctx.createRadialGradient(W/2,0,0,W/2,0,H*.8);sg.addColorStop(0,'rgba(255,0,0,0.09)');sg.addColorStop(1,'transparent');ctx.fillStyle=sg;ctx.fillRect(0,0,W,H);
-    ctx.globalAlpha=.04;ctx.fillStyle='#ff0000';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(W/2-40,H/2-28,80,56,14);else ctx.rect(W/2-40,H/2-28,80,56);ctx.fill();
-    ctx.globalAlpha=.06;ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(W/2-10,H/2-14);ctx.lineTo(W/2+18,H/2);ctx.lineTo(W/2-10,H/2+14);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+    const yg=ctx.createLinearGradient(0,0,0,H);yg.addColorStop(0,'#150202');yg.addColorStop(1,'#080101');ctx.fillStyle=yg;ctx.fillRect(0,0,W,H);
+    const sg=ctx.createRadialGradient(W/2,0,0,W/2,0,H*.75);sg.addColorStop(0,'rgba(255,0,0,0.08)');sg.addColorStop(1,'transparent');ctx.fillStyle=sg;ctx.fillRect(0,0,W,H);
   } else if(cfg.id==='threads'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#141414');g.addColorStop(1,'#080808');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let i=0;i<9;i++){ctx.strokeStyle='rgba(180,180,180,0.05)';ctx.lineWidth=1;const tx=30+i*(W-60)/8;ctx.beginPath();ctx.moveTo(tx,0);ctx.lineTo(tx,H);ctx.stroke();}
-    for(let y=40;y<H;y+=80){ctx.strokeStyle='rgba(180,180,180,0.04)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(20,y);ctx.lineTo(W-20,y);ctx.stroke();}
+    for(let i=0;i<8;i++){ctx.strokeStyle='rgba(180,180,180,0.04)';ctx.lineWidth=1;const tx=28+i*(W-56)/7;ctx.beginPath();ctx.moveTo(tx,0);ctx.lineTo(tx,H);ctx.stroke();}
+    for(let y=50;y<H;y+=80){ctx.strokeStyle='rgba(180,180,180,0.035)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(18,y);ctx.lineTo(W-18,y);ctx.stroke();}
   } else if(cfg.id==='bluesky'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#020d1a');g.addColorStop(.5,'#040f22');g.addColorStop(1,'#020812');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let i=0;i<3;i++){const ay=H*(.2+i*.25)+Math.sin(t*.4+i*1.4)*30;
-      const ag=ctx.createLinearGradient(0,ay-40,0,ay+40);const hue=i===0?'0,133,255':i===1?'0,200,180':'100,80,255';
-      ag.addColorStop(0,'transparent');ag.addColorStop(.5,'rgba('+hue+',.09)');ag.addColorStop(1,'transparent');ctx.fillStyle=ag;ctx.fillRect(0,ay-40,W,80);}
+    const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#020d1a');bg.addColorStop(1,'#020810');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    for(let i=0;i<3;i++){const ay=H*(.2+i*.25)+Math.sin(t*.4+i*1.4)*28;
+      const ag=ctx.createLinearGradient(0,ay-38,0,ay+38);ag.addColorStop(0,'transparent');ag.addColorStop(.5,`rgba(0,133,255,0.08)`);ag.addColorStop(1,'transparent');ctx.fillStyle=ag;ctx.fillRect(0,ay-38,W,76);}
   } else if(cfg.id==='reddit'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0f0500');g.addColorStop(1,'#060200');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let i=0;i<16;i++){const ex=((i*71+cam*.3*(i%2?1:-1.3))%(W+20)+W+20)%(W+20);const ey=(H-((i*53+cam*.5+t*28*(1+i*.1))%H+H)%H+H)%H;
-      ctx.globalAlpha=.07+.04*Math.sin(t+i);ctx.fillStyle='#ff4500';ctx.beginPath();ctx.arc(ex,ey,1.5+i%3,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
+    for(let i=0;i<14;i++){const ex=((i*74+cam*.3*(i%2?1:-1.3))%(W+20)+W+20)%(W+20);const ey=(H-((i*56+cam*.5+t*26*(1+i*.1))%H+H)%H+H)%H;
+      ctx.globalAlpha=.06+.03*Math.sin(t+i);ctx.fillStyle='#ff4500';ctx.beginPath();ctx.arc(ex,ey,1.5+i%3,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
   } else if(cfg.id==='pinterest'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#140102');g.addColorStop(1,'#080001');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    const cw=(W-8)/3,hy=[0,0,0];
-    for(let i=0;i<20;i++){const col=i%3;const x=4+col*cw;const yy=((hy[col]+cam*.05)%(H+300)+H+300)%(H+300)-300;const h2=40+i%5*18;
-      ctx.globalAlpha=.05+.02*(i%3);ctx.fillStyle='#e60023';ctx.fillRect(x,yy,cw-4,h2);hy[col]+=h2+4;}ctx.globalAlpha=1;
+    const pg=ctx.createLinearGradient(0,0,0,H);pg.addColorStop(0,'#140102');pg.addColorStop(1,'#080001');ctx.fillStyle=pg;ctx.fillRect(0,0,W,H);
+    const cw=(W-8)/3,hy2=[0,0,0];
+    for(let i=0;i<18;i++){const col=i%3;const x=4+col*cw;const yy=((hy2[col]+cam*.04)%(H+280)+H+280)%(H+280)-280;const h2=42+i%5*16;
+      ctx.globalAlpha=.045+.018*(i%3);ctx.fillStyle='#e60023';ctx.fillRect(x,yy,cw-4,h2);hy2[col]+=h2+4;}ctx.globalAlpha=1;
   } else if(cfg.id==='mastodon'){
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#080818');g.addColorStop(1,'#030308');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(let i=0;i<5;i++){const nx=W*(.12+i*.19)+Math.sin(t*.2+i)*16;const ny=H*(.15+i*.16)+cam*.03;const nr=55+i*18;
-      const ng=ctx.createRadialGradient(nx,ny,0,nx,ny,nr);const hue=i%2?'99,100,255':'130,80,255';
-      ng.addColorStop(0,'rgba('+hue+',.09)');ng.addColorStop(1,'transparent');ctx.fillStyle=ng;ctx.beginPath();ctx.arc(nx,ny,nr,0,Math.PI*2);ctx.fill();}
-  } else {
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,cfg.color+'14');g.addColorStop(1,cfg.bg||'#05070f');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    for(let i=0;i<5;i++){const nx=W*(.12+i*.19)+Math.sin(t*.2+i)*14;const ny=H*(.15+i*.16)+cam*.03;const nr=52+i*16;
+      const ng=ctx.createRadialGradient(nx,ny,0,nx,ny,nr);ng.addColorStop(0,`rgba(99,100,255,0.08)`);ng.addColorStop(1,'transparent');ctx.fillStyle=ng;ctx.beginPath();ctx.arc(nx,ny,nr,0,Math.PI*2);ctx.fill();}
   }
 }
 
-/* ── Draw hazard as hand-drawn logo ── */
-function drawHazard(h,cfg){
-  ctx.save();ctx.translate(h.x,h.y);ctx.rotate(h.rot*.25);
-  const pulse=.5+.5*Math.sin(performance.now()/135);
-  // warning ring
-  ctx.globalAlpha=.55+.28*pulse;ctx.strokeStyle='#ff4d6d';ctx.lineWidth=2.5+pulse*1.5;ctx.beginPath();ctx.arc(0,0,h.r+9+pulse*5,0,Math.PI*2);ctx.stroke();
-  ctx.globalAlpha=.18;ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,h.r+15+pulse*7,0,Math.PI*2);ctx.stroke();
-  // glow
-  ctx.globalAlpha=.14;ctx.fillStyle=cfg.color;ctx.beginPath();ctx.arc(0,0,h.r+8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
-  // draw the platform's own logo as the hazard
-  try{const fn=LOGO_FNS[getCfg().id];if(fn)fn(ctx,h.r*.85);}catch(e){}
-  ctx.restore();
-}
-
-function draw(){
-  const cfg=getCfg();const t=performance.now()/1000;
-  drawLevelBg(cfg,t);
-  // stars
-  for(const s of stars){
-    const sy=(s.y+cam*.14*s.d)%H;const tw=.5+.5*Math.sin(s.p+t*1.43);
-    ctx.globalAlpha=.18+.5*tw;ctx.fillStyle=cfg.star||'#9fc4ff';ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
-  }ctx.globalAlpha=1;
-  // ring bands
-  if(cfg.mechanic==='ring-bands'&&ringBands){for(const rb of ringBands){
-    const rg=ctx.createLinearGradient(0,rb.y,0,rb.y+rb.thick);
-    rg.addColorStop(0,cfg.color+'00');rg.addColorStop(.35,cfg.color+'77');rg.addColorStop(.65,cfg.color+'77');rg.addColorStop(1,cfg.color+'00');
-    ctx.fillStyle=rg;ctx.fillRect(0,rb.y,W,rb.thick);}}
-  // wormholes
-  if(wormholes){for(const w of wormholes){
-    ctx.save();ctx.translate(w.x,w.y);
-    for(let i=3;i>=0;i--){ctx.globalAlpha=.12+i*.11;ctx.strokeStyle=i%2?cfg.color:'#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,w.r+i*5+2*Math.sin(w.rot+i),0,Math.PI*2);ctx.stroke();}
-    ctx.globalAlpha=.8;ctx.fillStyle='rgba(30,0,60,.85)';ctx.beginPath();ctx.arc(0,0,w.r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.restore();}}
-  // platforms as branded post cards
-  for(const p of platforms){
-    if(p.broken)continue;if(p.type==='finish'){drawViral(p,cfg,t);continue;}
-    if(p.ghost)ctx.globalAlpha=p.ghostVis;
-    drawPlatformCard(p,cfg);
-    if(p.ghost)ctx.globalAlpha=1;
+/* ── Platform / post card ── */
+function drawPost(p,cfg,t){
+  const c=ctx;
+  // Base color: moving = platform color tinted, sponsor = gold, humblebrag = gold+glow, FYP = gold, normal = light card
+  let base='#dde4ff';
+  if(p.type==='moving')base=cfg.color+'44';
+  if(p.sponsor)base='#2a2200';
+  if(p.isFYP){base='#1a1400';
+    c.globalAlpha=(.4+.4*Math.sin(t*2.8))*.4;
+    c.fillStyle='#ffd700';c.fillRect(p.x-4,p.y-4,p.w+8,p.h+8);c.globalAlpha=1;
   }
-  // story card collectible
-  if(storyCard&&!storyCard.collected){drawStoryCard(storyCard,cfg,t);}
-  // hazards — drawn as platform logos
-  for(const h of hazards){
-    if(h.dead)continue;
-    if(h.type==='blackhole'){
-      ctx.save();ctx.translate(h.x,h.y);const bt=t*3.5;
-      ctx.globalAlpha=.3;ctx.strokeStyle=cfg.color;ctx.lineWidth=1;
-      for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(0,0,h.r+7+i*8+2*Math.sin(bt+i),0,Math.PI*2);ctx.stroke();}
-      ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.beginPath();ctx.arc(0,0,h.r,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle=cfg.color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,h.r,0,Math.PI*2);ctx.stroke();ctx.restore();
-    } else {
-      drawHazard(h,{color:(HAZ_CFG[h.type]||{}).color||cfg.color+'aa'});
+  if(p.humbleBrag){base='#1a1400';
+    c.globalAlpha=(.5+.5*Math.sin(t*3))*.35;
+    c.fillStyle='#ffd700';c.fillRect(p.x-3,p.y-3,p.w+6,p.h+6);c.globalAlpha=1;
+  }
+  if(p.type==='brittle')base='#2a2a35';
+  c.fillStyle=base;c.fillRect(p.x,p.y,p.w,p.h);
+  // Left accent
+  c.fillStyle=p.sponsor||p.humbleBrag||p.isFYP?'#ffd700':cfg.color;c.fillRect(p.x,p.y,3,p.h);
+  // Text lines
+  const lineColor=p.type==='moving'?'rgba(255,255,255,.45)':p.humbleBrag||p.sponsor?'rgba(255,215,0,.4)':'rgba(50,55,90,.35)';
+  c.fillStyle=lineColor;c.fillRect(p.x+6,p.y+4,p.w*.42,2);c.fillRect(p.x+6,p.y+8,p.w*.28,2);
+  // Shadow
+  c.fillStyle='rgba(0,0,0,.22)';c.fillRect(p.x,p.y+p.h-3,p.w,3);
+  // Brittle cracks
+  if(p.type==='brittle'){
+    c.strokeStyle='rgba(0,0,0,.28)';c.lineWidth=1;c.beginPath();
+    c.moveTo(p.x+p.w*.36,p.y);c.lineTo(p.x+p.w*.4,p.y+p.h);
+    c.moveTo(p.x+p.w*.64,p.y+2);c.lineTo(p.x+p.w*.61,p.y+p.h);c.stroke();
+  }
+  // Spring
+  if(p.spring){c.fillStyle='#00e5a0';c.fillRect(p.x+p.w/2-7,p.y-6,14,6);c.fillRect(p.x+p.w/2-4,p.y-9,8,3);}
+  // Sponsor badge
+  if(p.sponsor){c.fillStyle='#ffd700';c.font=`600 7px var(--display)`;c.textAlign='left';c.fillText('SPONSORED',p.x+7,p.y+10);}
+  // Humble brag badge
+  if(p.humbleBrag){c.fillStyle='#ffd700';c.font=`600 7px var(--display)`;c.textAlign='left';c.fillText('🙏 HUMBLE BRAG',p.x+7,p.y+10);}
+  // Subreddit label (Reddit)
+  if(p.subreddit){c.fillStyle=cfg.color;c.font=`500 6px var(--mono)`;c.textAlign='left';c.fillText(p.subreddit,p.x+6,p.y+10);}
+  // Instagram signal bar
+  if(p.ghost){
+    const bars=Math.round(p.ghostVis*3);
+    for(let i=0;i<3;i++){c.fillStyle=i<bars?cfg.color:'rgba(255,255,255,.15)';c.fillRect(p.x+p.w-16+i*5,p.y+4,3,6+i*2);}
+  }
+  // TikTok timer bar — only show when active and counting down
+  if(p.tiktokTimer!==null&&p.tiktokActive&&p.tiktokTimer>0){
+    const maxT=210;// matches spawn max
+    const frac=p.tiktokTimer/maxT;
+    const danger=frac<.3;
+    // Flash red when almost gone
+    if(danger&&Math.floor(performance.now()/120)%2===0){
+      c.fillStyle='rgba(255,0,80,.18)';c.fillRect(p.x,p.y,p.w,p.h);
     }
+    c.fillStyle='rgba(0,0,0,.35)';c.fillRect(p.x,p.y+p.h-3,p.w,3);
+    c.fillStyle=frac>.5?cfg.color:frac>.25?'#ff8800':'#ff0050';
+    c.fillRect(p.x,p.y+p.h-3,p.w*frac,3);
   }
-  // bullets
-  for(const b of bullets){if(b.dead)continue;
-    ctx.fillStyle='#00e5a0';ctx.fillRect(b.x-2,b.y-6,4,10);
-    ctx.globalAlpha=.28;ctx.fillStyle='#00e5a0';ctx.fillRect(b.x-4,b.y-8,8,14);ctx.globalAlpha=1;}
-  // particles
-  for(const pt of particles){ctx.globalAlpha=pt.life/24;ctx.fillStyle=pt.color;ctx.fillRect(pt.x,pt.y,3,3);}
-  ctx.globalAlpha=1;
-  drawSocialPerson(player.x,player.y,player.face);
+  // FYP badge
+  if(p.isFYP){
+    c.fillStyle='#ffd700';c.font=`700 7px var(--display)`;c.textAlign='left';
+    c.fillText('✦ FYP',p.x+7,p.y+10);
+  }
+  // Pinned indicator (Pinterest)
+  if(p.pinned){c.fillStyle='#e60023';c.beginPath();c.arc(p.x+p.w/2,p.y-8,5,0,Math.PI*2);c.fill();c.strokeStyle='#fff';c.lineWidth=1;c.stroke();}
+  // Mini logo
+  c.save();c.translate(p.x+p.w-11,p.y+p.h/2);c.scale(.5,.5);
+  const fn=LOGO_FNS[cfg.id];if(fn)try{fn(c,10);}catch(e){}
+  c.restore();c.textAlign='left';
 }
 
-function drawViral(p,cfg,t){
-  ctx.globalAlpha=.18+.1*Math.sin(t*2.5);ctx.fillStyle=cfg.color;
-  ctx.beginPath();ctx.arc(p.x+p.w/2,p.y+p.h/2,54,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+/* ── Viral / finish pad ── */
+function drawViralPad(p,cfg,t){
+  ctx.globalAlpha=.16+.1*Math.sin(t*2.2);ctx.fillStyle=cfg.color;
+  ctx.beginPath();ctx.arc(p.x+p.w/2,p.y+p.h/2,58,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
   ctx.fillStyle=cfg.color;ctx.fillRect(p.x,p.y,p.w,p.h);
-  ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(p.x,p.y,3,p.h); // accent
-  ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(p.x+p.w/2,p.y);ctx.lineTo(p.x+p.w/2,p.y-24);ctx.stroke();
-  ctx.fillStyle=Math.sin(t*2)>0?cfg.color:'#fff';ctx.beginPath();ctx.arc(p.x+p.w/2,p.y-26,4,0,Math.PI*2);ctx.fill();
-  // big logo centered on viral pad
+  // Pole
+  ctx.strokeStyle='rgba(255,255,255,.45)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(p.x+p.w/2,p.y);ctx.lineTo(p.x+p.w/2,p.y-22);ctx.stroke();
+  // Flag
+  ctx.fillStyle=Math.sin(t*2.5)>0?cfg.color:'#fff';ctx.beginPath();ctx.arc(p.x+p.w/2,p.y-24,4,0,Math.PI*2);ctx.fill();
+  // Logo
   ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);
-  const fn=LOGO_FNS[cfg.id];if(fn){try{fn(ctx,10);}catch(e){}}
+  const fn=LOGO_FNS[cfg.id];if(fn)try{fn(ctx,11);}catch(e){}
   ctx.restore();
   ctx.fillStyle='#fff';ctx.font='700 8px "Chakra Petch",monospace';ctx.textAlign='center';
-  ctx.fillText('VIRAL POST',p.x+p.w/2,p.y+p.h+12);
+  ctx.fillText('VIRAL POST',p.x+p.w/2,p.y+p.h+11);ctx.textAlign='left';
 }
 
-function drawSocialPerson(x,y,face){
+/* ── Hazard drawing ── */
+function drawHazard(h,cfg,t){
+  ctx.save();
+  ctx.translate(h.x,h.y);
+
+  if(h.type==='oracle'){
+    const og=ctx.createRadialGradient(0,0,0,0,0,h.r+18);
+    og.addColorStop(0,'rgba(255,50,0,0.22)');
+    og.addColorStop(1,'transparent');
+    ctx.fillStyle=og;
+    ctx.beginPath();ctx.arc(0,0,h.r+18,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#cc2200';
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(-h.r,-h.r,h.r*2,h.r*2,5);else ctx.rect(-h.r,-h.r,h.r*2,h.r*2);
+    ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 8px Space Mono,monospace';ctx.textAlign='center';
+    ctx.fillText('ORACLE',0,-3);ctx.fillText('CORP',0,7);
+    ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.arc(0,0,h.r+10,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-h.r-10,h.r+10);ctx.lineTo(h.r+10,-h.r-10);ctx.stroke();
+    ctx.textAlign='left';ctx.restore();return;
+  }
+
+  if(h.type==='dancer'){
+    const bounce=Math.sin(performance.now()/80)*4;
+    ctx.translate(0,bounce);
+    const tt=performance.now()/400;
+    ctx.fillStyle=Math.sin(tt)>0?'#ff0050':'#00f2ea';
+    ctx.globalAlpha=.85;
+    ctx.beginPath();ctx.arc(0,-14,7,0,Math.PI*2);ctx.fill();
+    ctx.fillRect(-5,-12,10,16);
+    const armAngle=Math.sin(performance.now()/150)*0.9;
+    ctx.save();ctx.translate(-5,-6);ctx.rotate(-armAngle-0.5);ctx.fillRect(-10,0,10,3);ctx.restore();
+    ctx.save();ctx.translate(5,-6);ctx.rotate(armAngle+0.5);ctx.fillRect(0,0,10,3);ctx.restore();
+    ctx.save();ctx.translate(-3,4);ctx.rotate(Math.sin(performance.now()/120)*0.6);ctx.fillRect(-2,0,4,10);ctx.restore();
+    ctx.save();ctx.translate(3,4);ctx.rotate(-Math.sin(performance.now()/120)*0.6);ctx.fillRect(-2,0,4,10);ctx.restore();
+    ctx.globalAlpha=1;ctx.restore();return;
+  }
+
+  if(h.type==='otw'){
+    ctx.globalAlpha=.82;ctx.fillStyle='#0077b5';
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(-h.w/2,-h.h/2,h.w,h.h,4);else ctx.rect(-h.w/2,-h.h/2,h.w,h.h);
+    ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 8px sans-serif';ctx.textAlign='center';
+    ctx.fillText('OPEN TO WORK',0,3);
+    ctx.textAlign='left';ctx.globalAlpha=1;ctx.restore();return;
+  }
+
+  const pulse=.5+.5*Math.sin(performance.now()/130);
+  ctx.globalAlpha=.5+.25*pulse;ctx.strokeStyle='#ff4d6d';ctx.lineWidth=2+pulse*1.5;
+  ctx.beginPath();ctx.arc(0,0,(h.r||16)+8+pulse*4,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=1;
+  if(h.type==='ratio'){
+    ctx.fillStyle='#ff4d6d';ctx.font='bold 11px Chakra Petch,monospace';ctx.textAlign='center';ctx.fillText('RATIO',0,4);ctx.textAlign='left';
+  } else if(h.type==='mod'){
+    ctx.fillStyle='#ff4500';ctx.font='bold 8px Space Mono,monospace';ctx.textAlign='center';ctx.fillText('[removed]',0,4);ctx.textAlign='left';
+  } else if(h.type==='zuck'){
+    ctx.fillStyle='#aaa';ctx.font='bold 7px Space Mono,monospace';ctx.textAlign='center';ctx.fillText('GREETINGS',0,-2);ctx.fillText('HUMAN',0,7);ctx.textAlign='left';
+  } else if(h.type==='notif'){
+    ctx.fillStyle='#e1306c';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('\uD83D\uDCF1',0,4);ctx.textAlign='left';
+  }
+  ctx.restore();
+}
+
+/* ── Player character ── */
+function drawPerson(x,y,face){
   ctx.save();ctx.translate(x+16,y+18);ctx.scale(face,1);
+  // Body
   ctx.fillStyle='#1e2a4a';if(ctx.roundRect)ctx.beginPath(),ctx.roundRect(-11,-4,24,22,5),ctx.fill();else ctx.fillRect(-11,-4,24,22);
+  // Shirt / screen
   ctx.fillStyle='#5b8dff';if(ctx.roundRect)ctx.beginPath(),ctx.roundRect(-6,1,13,16,3),ctx.fill();else ctx.fillRect(-6,1,13,16);
-  ctx.fillStyle='rgba(168,200,255,0.7)';ctx.fillRect(-4,3,9,10);
+  ctx.fillStyle='rgba(168,200,255,0.65)';ctx.fillRect(-4,3,9,10);
+  // Notification dot
   if(Math.sin(performance.now()*.0022)>.6){ctx.fillStyle='#ff4d6d';ctx.beginPath();ctx.arc(5,2,3,0,Math.PI*2);ctx.fill();}
+  // Head
   ctx.fillStyle='#f0c8a0';ctx.beginPath();ctx.arc(2,-10,9,0,Math.PI*2);ctx.fill();
+  // Hair
   ctx.fillStyle='#2a1a0a';ctx.beginPath();ctx.arc(2,-12,8,Math.PI*1.1,Math.PI*2.0);ctx.fill();
   ctx.strokeStyle='#333';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(2,-11,10,Math.PI*1.1,Math.PI*1.9,false);ctx.stroke();
+  // Ears / headphones
   ctx.fillStyle='#444';ctx.fillRect(-9,-13,5,5);ctx.fillRect(9,-13,5,5);
   ctx.restore();
 }
-function jet(x,y,color){for(let i=0;i<6;i++)particles.push({x,y,vx:rand(-1.2,1.2),vy:rand(.4,1.8),life:rand(12,22),color});}
-function drawStoryCard(tok,cfg,t){ctx.save();ctx.translate(tok.x,tok.y+Math.sin(t*4)*3);ctx.globalAlpha=.22;ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(0,0,24,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#f0f2ff';ctx.strokeStyle=cfg.color;ctx.lineWidth=2;if(ctx.roundRect)ctx.beginPath(),ctx.roundRect(-13,-15,26,30,4),ctx.fill(),ctx.stroke();else ctx.fillRect(-13,-15,26,30);ctx.fillStyle=cfg.color;ctx.fillRect(-8,-8,16,2);ctx.fillRect(-8,-2,13,2);ctx.fillRect(-8,4,10,2);ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(11,-12,5,0,Math.PI*2);ctx.fill();ctx.restore();}
-function maybeSpawnStoryCard(platform,cfg){if(storyCardArmed||storyCard||jumpCount<4)return;storyCardArmed=true;storyCard={x:Math.max(28,Math.min(W-28,platform.x+platform.w/2)),y:platform.y-54,collected:false,story:null};}
-function collectStoryCard(){if(!storyCard||storyCard.collected)return;storyCard.collected=true;sndNotif();haptic([18,20,18]);jet(storyCard.x,storyCard.y,'#ffd700');const story=getStoryForCard();storyCard.story=story;levelStories.push(story);runStories.push(story);maxAlt+=25;toast('Story found: '+story.source,1100);}
-// One-shot finish pad celebration: flash, particles, sound, and optional haptics.
+
+function jet(x,y,color,n=6){
+  for(let i=0;i<n;i++)particles.push({x,y,vx:rand(-1.4,1.4),vy:rand(.4,2.0),life:rand(12,24),color});
+}
+
+/* ─────────────────────────────────────────────
+   GAME FLOW
+───────────────────────────────────────────── */
+const SCREENS=['menuScreen','howScreen','levelSelectScreen','introScreen','pauseScreen','failScreen','clearScreen','winScreen','aboutScreen'];
+function show(id){SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>$(s).classList.add('hidden'));if(id==='menuScreen')updateSavedBadge();}
+function setState(s){state=s;$('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
+
+function pauseGame(){
+  if(state!=='playing')return;
+  state='paused';
+  const cfg=getCfg();
+  $('pauseStat').innerHTML=`${cfg.name} &nbsp;·&nbsp; Reach <b>${Math.floor(maxAlt/10).toLocaleString()}</b> &nbsp; Best <b>${Math.floor(level<0?0:save.getBest(level)/10).toLocaleString()}</b>`;
+  show('pauseScreen');
+}
+
+function failGame(){
+  if(state!=='playing')return;
+  sndFail();if(level>=0)save.setBest(level,maxAlt);state='fail';
+  $('hud').classList.remove('show');
+  const cfg=getCfg();
+  $('failEyebrow').textContent=cfg.failLabel||'Signal Lost';
+  $('failTitle').innerHTML=cfg.id==='twitter'?"RATIO'D<br>INTO OBLIVION":cfg.id==='tiktok'?'SCROLLED<br>PAST':cfg.id==='reddit'?'POST<br>REMOVED':'ACCOUNT<br>SUSPENDED';
+  const cur=Math.floor(maxAlt/10),best=Math.floor(Math.max(level<0?0:save.getBest(level),maxAlt)/10);
+  $('failStat').innerHTML=`${cfg.name} &nbsp;·&nbsp; Reach <b>${cur.toLocaleString()}</b> &nbsp;·&nbsp; Best <b>${best.toLocaleString()}</b>`;
+  $('failQuote').textContent=cfg.failQuote;
+  haptic([45,35,45]);show('failScreen');
+}
+
 function doFanfare(cfg){
-  const flash=$('screenFlash');flash.style.background=cfg.color||'#fff';flash.classList.add('show');setTimeout(()=>flash.classList.remove('show'),70);
-  sndViral();setTimeout(()=>beep(1760,.16,'triangle',.045),260);
-  if(navigator.vibrate)navigator.vibrate([35,25,55]);
-  const x=finishPad?finishPad.x+finishPad.w/2:W/2,y=finishPad?finishPad.y+finishPad.h/2:H*.35;
-  for(let i=0;i<42;i++)particles.push({x,y,vx:rand(-4.2,4.2),vy:rand(-5.2,1.2),life:rand(22,42),color:i%3?cfg.color:'#ffd700'});
-  draw();
+  const fl=$('screenFlash');fl.classList.add('flash');setTimeout(()=>fl.classList.remove('flash'),80);
+  sndViral();setTimeout(()=>beep(1760,.16,'triangle',.04),240);
+  haptic([30,20,50]);
+  if(finishPad){const fx=finishPad.x+finishPad.w/2,fy=finishPad.y+finishPad.h/2;for(let i=0;i<44;i++)particles.push({x:fx,y:fy,vx:rand(-4.5,4.5),vy:rand(-5.5,1.4),life:rand(22,44),color:i%3?cfg.color:'#ffd700'});}
 }
 
-function loop(){
-  if(state==='playing'){update();if(state==='playing')draw();}
-  else if(state==='menu'||state==='levelselect'||state==='paused'||state==='intro'){tickMenuBg();drawMenuBg();}
-  requestAnimationFrame(loop);
-}
-loop();
+function completeLevel(){
+  if(state!=='playing')return;
+  const cfg=getCfg();
+  doFanfare(cfg);
+  if(level>=0)save.setBest(level,maxAlt);
+  if(level>=0)save.furthest=level+1;
+  const reach=Math.floor(maxAlt/10);
+  $('hud').classList.remove('show');
+  const isPractice=level<0;
+  const isLast=level===PLATFORMS.length-1;
 
-/* ── Level grid ── */
+  if(isPractice){
+    state='clear';
+    $('clearTitle').textContent='PRACTICE CLEARED';
+    $('clearStat').innerHTML=`You're ready. The algorithm awaits.<br><b>${reach.toLocaleString()}</b> reach`;
+    $('clearMeme').textContent=cfg.winMeme;
+    $('storyBreakCard').classList.add('hidden');
+    $('nextBtn').textContent='Start Game →';
+    show('clearScreen');return;
+  }
+  if(isLast){
+    state='win';
+    $('winStat').innerHTML=`Total Reach <b>${reach.toLocaleString()}</b>`;
+    $('winMeme').textContent=cfg.winMeme;
+    // Build defeated platforms grid
+    const grid=$('winPlatformGrid');
+    grid.innerHTML='';
+    PLATFORMS.forEach((p,i)=>{
+      const cell=document.createElement('div');
+      cell.style.cssText='display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:1px solid rgba(0,229,160,.3);border-radius:6px;background:rgba(0,229,160,.04);animation:cellPop .3s ease both';
+      cell.style.animationDelay=(i*.06)+'s';
+      cell.innerHTML=`<img src="${getLogoUrl(p.id)}" style="width:22px;height:22px" alt="${p.name}">
+<span style="font-size:6px;opacity:.45;letter-spacing:.04em;text-transform:uppercase;font-family:var(--mono)">${p.id}</span>
+<span style="font-size:8px;color:var(--viral)">✓</span>`;
+      grid.appendChild(cell);
+    });
+    show('winScreen');
+    $('winShareBtn').onclick=()=>shareScore(cfg,reach,true);return;
+  }
+  state='clear';
+  $('clearTitle').textContent=cfg.name+' CLEARED';
+  const best=Math.floor(save.getBest(level)/10);
+  $('clearStat').innerHTML=`Reach <b>${reach.toLocaleString()}</b> &nbsp;·&nbsp; Best <b>${best.toLocaleString()}</b>`;
+  $('clearMeme').textContent=cfg.winMeme;
+  $('clearShareBtn').onclick=()=>shareScore(cfg,reach,false);
+  showStoryBreak();
+  show('clearScreen');
+}
+
+function showStoryBreak(){
+  const card=$('storyBreakCard');
+  const story=getNextStory();
+  if(!story){card.classList.add('hidden');return;}
+  $('storyBreakSource').textContent=story.source||'Stories';
+  $('storyBreakSource').style.color=story.color||'#00e5a0';
+  $('storyBreakTitle').textContent=story.title||'';
+  $('storyBreakDesc').textContent=story.desc||'A useful read for your content strategy.';
+  const readLink=$('storyBreakRead');
+  if(story.url&&story.url!=='#'){readLink.href=story.url;readLink.style.display='inline-block';}
+  else readLink.style.display='none';
+  const saveBtn=$('storyBreakSave');
+  saveBtn.textContent='SAVE FOR LATER';saveBtn.disabled=false;
+  saveBtn.onclick=()=>{
+    const saved=saveIdea(story);
+    saveBtn.textContent=saved?'SAVED \u2713':'ALREADY SAVED';
+    saveBtn.disabled=true;
+    if(saved){toast('Saved to Reading List \uD83D\uDCCC',1200);updateSavedBadge();}
+  };
+  card.classList.remove('hidden');
+}
+
+async function shareScore(cfg,reach,won){
+  const text=won
+    ?`I defeated all 10 platforms in Feed Velocity 👑 Total reach: ${reach.toLocaleString()}. Algorithm: defeated. Built by Ben Campbell. ${GAME_URL}`
+    :`Just cleared ${cfg.name} in Feed Velocity with ${reach.toLocaleString()} reach. ${cfg.winMeme.split('.')[0]}. Built by Ben Campbell. ${GAME_URL}`;
+  try{if(navigator.share){await navigator.share({title:'Feed Velocity',text,url:GAME_URL});toast('Shared ✨',1400);return;}}catch(e){}
+  try{window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');toast('Opened share draft ✨',1400);return;}catch(e){}
+  try{await navigator.clipboard.writeText(text);toast('Copied to clipboard 📋',1400);}catch(e){toast('Share: '+text.slice(0,60)+'…',3000);}
+}
+
+/* ─────────────────────────────────────────────
+   LEVEL SELECT
+───────────────────────────────────────────── */
 function buildLevelGrid(){
-  const grid=document.getElementById('levelGrid');grid.innerHTML='';
+  const grid=$('levelGrid');grid.innerHTML='';
   const furthest=save.furthest;
-  PLATFORMS_META.forEach((cfg,i)=>{
+  PLATFORMS.forEach((cfg,i)=>{
     const completed=i<furthest,unlocked=i<=furthest;
     const node=document.createElement('div');
     node.className='lvl-node'+(completed?' completed':unlocked?' unlocked':' locked');
-    node.innerHTML=(completed?'<span class="lvl-check">\u2713</span>':'')+
-      '<img src="'+getLogoDataUrl(cfg.id)+'" style="width:28px;height:28px;display:block;margin:0 auto 2px">'+
-      '<span class="lvl-num">'+(i+1)+'</span>'+
-      '<span class="lvl-name">'+cfg.name+'</span>'+
-      (save.getBest(i)?'<span class="lvl-name" style="color:var(--gold);opacity:.8">Best '+Math.floor(save.getBest(i)/10).toLocaleString()+'</span>':'');
+    const best=save.getBest(i);
+    node.innerHTML=(completed?'<span class="lvl-check">✓</span>':'')+
+      `<img src="${getLogoUrl(cfg.id)}" style="width:26px;height:26px;display:block;margin:0 auto 1px" alt="${cfg.name}">
+<span class="lvl-num">${i+1}</span>
+<span class="lvl-name">${cfg.id}</span>
+${best?`<span class="lvl-name" style="color:var(--gold)">☆ ${Math.floor(best/10).toLocaleString()}</span>`:''}`;
     if(unlocked)node.addEventListener('pointerup',e=>{e.stopPropagation();sndClick();openIntro(i);});
     grid.appendChild(node);
   });
 }
 
-const SCREENS=['menuScreen','howScreen','levelSelectScreen','introScreen','pauseScreen','ideaScreen','failScreen','clearScreen','winScreen'];
-function show(id){SCREENS.forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>document.getElementById(s).classList.add('hidden'));maybeShowInstallPrompt();}
-function setState(s){state=s;document.getElementById('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
-
-const FAIL_QUOTES=[
-  '"Going viral was never in my content calendar." \u2014 every SM manager ever',
-  '"The algorithm changed again. Of course it did." \u2014 you, every Monday',
-  '"Engagement is down 90%. My LinkedIn is fine though." \u2014 lying',
-  '"I should have been a developer." \u2014 also you',
-  '"I\u2019ve got 23 browser tabs open and zero ideas." \u2014 relatable',
-  '"We need to be on TikTok." \u2014 your boss, 3 years ago',
-  '"Did you try posting at 6am on a Tuesday?" \u2014 some LinkedIn guru',
-  '"Just be authentic." *refuses to elaborate* \u2014 every conference speaker',
-  '"Our Q3 content strategy is\u2026" *falls into black hole*',
-  '"Have you considered going viral?" \u2014 your CEO',
-];
-
+/* ─────────────────────────────────────────────
+   PLATFORM INTRO SCREEN
+───────────────────────────────────────────── */
 function openIntro(n){
   level=n;const cfg=getCfg();
-  document.getElementById('introEyebrow').textContent='Platform '+(n+1)+' of '+PLATFORMS_META.length;
-  document.getElementById('introName').textContent=cfg.name;
-  document.getElementById('introCampaign').textContent=cfg.campaign||'';
-  document.getElementById('introMechanic').textContent=cfg.mechanic.replace(/-/g,' ').toUpperCase()+' ALGORITHM';
-  document.getElementById('introDesc').textContent=cfg.desc;
-  document.getElementById('introMeme').textContent=cfg.meme;
+  $('introEyebrow').textContent=`Platform ${n+1} of ${PLATFORMS.length}`;
+  $('introName').textContent=cfg.name;
+  $('introName').style.color=cfg.color;
+  $('introCampaign').textContent=cfg.campaign;
+  $('introMechanic').textContent=cfg.mechanic.replace(/-/g,' ').toUpperCase();
+  $('introMechanic').style.borderColor=cfg.color+'66';
+  $('introMechanic').style.color=cfg.color;
+  $('introMechanic').style.background=cfg.color+'12';
+  $('introDesc').textContent=cfg.desc;
+  $('introMeme').textContent=cfg.meme;
+  // Logo image
+  const logoEl=$('introLogo');
+  if(logoEl){logoEl.src=getLogoUrl(cfg.id);logoEl.alt=cfg.name;}
+  // Best score hint on button
   const best=save.getBest(n);
-  document.getElementById('introTags').innerHTML=
-    '<span class="platform-tag" style="color:'+cfg.color+';border-color:'+cfg.color+'44">'+cfg.name+'</span>'+
-    '<span class="platform-tag" style="color:var(--viral);border-color:rgba(0,229,160,.35)">'+cfg.campaign+'</span>'+
-    '<span class="platform-tag" style="color:#aaa;border-color:#aaa44">'+cfg.hazType+'</span>'+
-    (best?'<span class="platform-tag" style="color:var(--gold);border-color:rgba(255,215,0,.3)">\u2605 best '+Math.floor(best/10).toLocaleString()+'</span>':'');
+  $('introGo').textContent=best?`Let's Post  ★ best ${Math.floor(best/10).toLocaleString()}`:"Let's Post";
   state='intro';show('introScreen');
 }
-function pauseGame(){
-  state='paused';
-  document.getElementById('pauseStat').innerHTML=getCfg().name+' &nbsp;\u00b7&nbsp; Current <b>'+Math.floor(maxAlt/10).toLocaleString()+'</b> &nbsp; Best <b>'+Math.floor(level<0?0:save.getBest(level)/10).toLocaleString()+'</b>';
-  show('pauseScreen');
-}
-function failGame(){
-  sndRatio();if(level>=0)save.setBest(level,maxAlt);state='fail';
-  document.getElementById('failEyebrow').textContent=(HAZ_CFG[getCfg().hazType]||{}).label||'Signal lost';
-  const current=Math.floor(maxAlt/10),best=Math.floor(Math.max(level<0?0:save.getBest(level),maxAlt)/10);
-  document.getElementById('failStat').innerHTML=getCfg().name+' · Current <b>'+current.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b>';
-  document.getElementById('failQuote').textContent=FAIL_QUOTES[Math.floor(Math.random()*FAIL_QUOTES.length)];
-  haptic([45,35,45]);document.getElementById('hud').classList.remove('show');show('failScreen');
-}
-function completeLevel(){
-  if(state!=='playing')return;
-  const cfg=getCfg();doFanfare(cfg);if(level>=0)save.setBest(level,maxAlt);if(level>=0)save.furthest=level+1;
-  const gained=Math.floor(maxAlt/10);
-  const isPractice=level<0;
-  const isLast=level===PLATFORMS_META.length-1;
-  document.getElementById('hud').classList.remove('show');
-  if(isPractice){
-    state='clear';
-    document.getElementById('clearTitle').textContent='PRACTICE CLEARED';
-    document.getElementById('clearStat').innerHTML='You’re ready. Now go fight the algorithm.';
-    document.getElementById('clearMeme').textContent='';
-    $('betweenHeadline').classList.add('hidden');
-    $('nextBtn').textContent='Start Game';
-    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);return;
-  }
-  if(isLast){
-    state='win';document.getElementById('winStat').innerHTML='<b>'+gained.toLocaleString()+'</b> reach';show('winScreen');$('winShareBtn').onclick=()=>shareScore(cfg,gained,true);
-  } else {
-    state='clear';
-    $('nextBtn').textContent='Next Platform →';
-    document.getElementById('clearTitle').textContent=cfg.name+' CLEARED';
-    const best=Math.floor(level<0?0:save.getBest(level)/10);
-    document.getElementById('clearStat').innerHTML='Current <b>'+gained.toLocaleString()+'</b> · Best <b>'+best.toLocaleString()+'</b><br>Stories found this level <b>'+levelStories.length+'</b>';
-    document.getElementById('clearMeme').textContent=cfg.winMeme;
-    show('clearScreen');$('clearShareBtn').onclick=()=>shareScore(cfg,gained,false);showStoryBreak();
-  }
-}
 
-const $=id=>document.getElementById(id);
+/* ─────────────────────────────────────────────
+   BUTTON WIRING
+───────────────────────────────────────────── */
 $('startBtn').onclick=()=>{sndClick();openIntro(0);};
 $('howBtn').onclick=()=>{sndClick();state='how';show('howScreen');};
 $('practiceBtn').onclick=()=>{sndClick();startLevel(-1);};
 $('howStartBtn').onclick=()=>{sndClick();openIntro(0);};
 $('howBackBtn').onclick=()=>{sndClick();state='menu';show('menuScreen');};
-$('lvlSelBtn').onclick=()=>{sndClick();state='levelselect';buildLevelGrid();show('levelSelectScreen');};
-$('feedBtn').onclick=()=>openFeedPanel(null);
+$('lvlSelBtn').onclick=()=>{sndClick();buildLevelGrid();state='levelselect';show('levelSelectScreen');};
+$('aboutBtn').onclick=()=>{sndClick();state='about';show('aboutScreen');};
+$('aboutBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
+$('feedBtn').onclick=()=>{openFeedPanel(()=>{state='menu';show('menuScreen');});};
 $('lvlSelBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('introGo').onclick=()=>{sndClick();startLevel(level);};
-$('introFeedBtn').onclick=()=>openFeedPanel(()=>{state='intro';show('introScreen');});
+$('introBack').onclick=()=>{sndClick();state='levelselect';buildLevelGrid();show('levelSelectScreen');};
 $('pauseBtn').onclick=()=>{if(state==='playing')pauseGame();};
 $('resumeBtn').onclick=()=>{show(null);setState('playing');};
-$('pauseFeedBtn').onclick=()=>openFeedPanel(()=>{show(null);setState('playing');});
-$('ideaBoardBtn').onclick=()=>{renderIdeaBoard();state='paused';show('ideaScreen');};
-$('ideaBackBtn').onclick=()=>{state='paused';show('pauseScreen');};
-$('pauseMenuBtn').onclick=()=>{state='menu';document.getElementById('hud').classList.remove('show');show('menuScreen');};
+$('pauseFeedBtn').onclick=()=>openStoriesPanel(()=>{show(null);setState('playing');});
+$('pauseMenuBtn').onclick=()=>{state='menu';$('hud').classList.remove('show');show('menuScreen');};
 $('retryBtn').onclick=()=>{sndClick();openIntro(level);};
-$('failFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level));
 $('failMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('nextBtn').onclick=()=>{sndClick();openIntro(level<0?0:level+1);};
+$('nextBtn').onclick=()=>{sndClick();if(level<0)openIntro(0);else openIntro(level+1);};
 $('clearMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('clearFeedBtn').onclick=()=>openFeedPanel(()=>openIntro(level<0?0:level+1));
-if($('winFeedBtn'))$('winFeedBtn').onclick=()=>openFeedPanel(null);
-$('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('againBtn').onclick=()=>{sndClick();openIntro(0);};
+$('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('shootBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(state==='playing')shoot();});
 
-// Between-level story break: collected stories first, pool fallback always.
-function storyDesc(story){return story.desc||'A useful read for your next content idea.';}
-async function showStoryBreak(){
-  const card=$('betweenHeadline');card.classList.add('hidden');card.innerHTML='';
-  const collected=levelStories.length>0;
-  const story=collected?levelStories[0]:getStoryForBreak();
-  if(!story)return;
-  const countLine=levelStories.length>1?'<div class="headline-source" style="color:var(--gold)">Stories found this level: '+levelStories.length+'</div>':'';
-  const note=collected?'':'<div class="headline-source" style="color:var(--gold)">No story card grabbed, but here’s one from the feed.</div>';
-  card.innerHTML='<div class="headline-source" style="color:var(--viral)">STORY BREAK</div>'+countLine+note+
-    '<div class="headline-source" style="color:'+escapeAttr(story.color||'#00e5a0')+'">'+escapeHtml(story.source)+'</div>'+ 
-    '<div class="headline-title">'+escapeHtml(story.title)+'</div>'+ 
-    '<div style="font-size:11px;line-height:1.55;opacity:.62;margin:-3px 0 10px">'+escapeHtml(storyDesc(story))+'</div>'+ 
-    '<div class="headline-actions">'+(story.url&&story.url!=='#'?'<a class="mini-btn" target="_blank" rel="noopener" href="'+escapeAttr(story.url)+'">READ ↗</a>':'<button class="mini-btn" disabled>READ</button>')+'<button class="mini-btn save" id="betweenSaveBtn">SAVE FOR LATER</button></div>';
-  card.classList.remove('hidden');
-  $('betweenSaveBtn').onclick=e=>{const saved=saveContentIdea({title:story.title,link:story.url,source:story.source},story.source);e.currentTarget.textContent=saved?'SAVED FOR LATER':'ALREADY SAVED';e.currentTarget.disabled=true;toast(saved?'Saved for later':'Already saved',1000);};
+/* ─────────────────────────────────────────────
+   CHEAT CODE — type "VIRAL" or tap title 7×
+───────────────────────────────────────────── */
+const CHEAT='VIRAL';
+let cheatBuffer='';
+let cheatTaps=0,cheatTapTm=null;
+
+function activateCheat(){
+  save.furthest=PLATFORMS.length;
+  sndViral();
+  toast('👑 ALL LEVELS UNLOCKED — you know the algorithm',2200,'high');
+  haptic([20,15,20,15,50]);
+  // Flash the title
+  const title=document.getElementById('mainTitle');
+  if(title){title.style.transition='color .1s';title.style.color='var(--gold)';setTimeout(()=>title.style.color='',600);}
 }
-// Native share first, then X intent, then clipboard/toast fallback.
-async function shareScore(cfg,reach,won){
-  const text=(won?'I defeated every algorithm in Feed Velocity':'I cleared '+cfg.name+' with '+reach.toLocaleString()+' reach')+'. Built by Ben Campbell. '+(won?'The content crown is unwell.':'My engagement dashboard needs a little lie down.');
-  const shareData={title:'Feed Velocity',text,url:GAME_URL};
-  try{if(navigator.share){await navigator.share(shareData);toast('Shared. The algorithm is nervous.',1600);return;}}catch(e){}
-  const intent='https://twitter.com/intent/tweet?text='+encodeURIComponent(text+' '+GAME_URL);
-  try{window.open(intent,'_blank','noopener');toast('Opened share draft ✨',1600);return;}catch(e){}
-  try{await navigator.clipboard.writeText(text+' '+GAME_URL);toast('Copied share text 📋',1600);}catch(e){toast('Share text ready: '+text,3200);}
+
+addEventListener('keydown',e=>{
+  if(state!=='menu')return;
+  cheatBuffer=(cheatBuffer+e.key.toUpperCase()).slice(-CHEAT.length);
+  if(cheatBuffer===CHEAT)activateCheat();
+});
+
+// Mobile: tap the title 7 times within 3 seconds
+document.getElementById('mainTitle').addEventListener('pointerdown',()=>{
+  if(state!=='menu')return;
+  cheatTaps++;
+  clearTimeout(cheatTapTm);
+  if(cheatTaps>=7){cheatTaps=0;activateCheat();return;}
+  cheatTapTm=setTimeout(()=>cheatTaps=0,3000);
+});
+function loop(){
+  if(state==='playing'){
+    update();
+    if(state==='playing')draw();
+  } else {
+    tickMenuBg();
+    drawMenuBg();
+  }
+  requestAnimationFrame(loop);
 }
-// Non-blocking PWA install prompt; only surfaces on the main menu.
-let deferredInstallPrompt=null,installDismissed=false;
-function maybeShowInstallPrompt(){
-  const banner=$('installBanner');
-  if(deferredInstallPrompt&&!installDismissed&&state==='menu')banner.classList.remove('hidden');
-  else banner.classList.add('hidden');
-}
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;maybeShowInstallPrompt();});
-$('installAccept').onclick=async()=>{if(!deferredInstallPrompt)return maybeShowInstallPrompt();deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice;}catch(e){}deferredInstallPrompt=null;installDismissed=true;maybeShowInstallPrompt();};
-$('installDismiss').onclick=()=>{installDismissed=true;maybeShowInstallPrompt();};
+loop();
 </script>
 </body>
 </html>
