@@ -6,7 +6,33 @@
 <meta name="theme-color" content="#0a0d16">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>FEED VELOCITY</title>
+<title>FEED VELOCITY — Jump the Algorithm</title>
+<meta name="description" content="A browser game about managing social media. 10 platforms. Each mechanic mirrors how that algorithm actually works. Built by Ben Campbell.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://feedvelocity.netlify.app/">
+<meta property="og:title" content="FEED VELOCITY — Jump the Algorithm">
+<meta property="og:description" content="10 platforms. Zero mercy. Each level is mechanically designed around how that algorithm actually behaves.">
+<meta property="og:image" content="https://feedvelocity.netlify.app/images/sharecard.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Feed Velocity">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Ben_Soup">
+<meta name="twitter:creator" content="@Ben_Soup">
+<meta name="twitter:title" content="FEED VELOCITY — Jump the Algorithm">
+<meta name="twitter:description" content="10 platforms. Zero mercy. Each level is mechanically designed around how that algorithm actually behaves.">
+<meta name="twitter:image" content="https://feedvelocity.netlify.app/images/sharecard.png">
+<!-- Icons & PWA manifest -->
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/icon-96x96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/icon-180x180.png">
+<meta name="apple-mobile-web-app-title" content="Feed Velocity">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -150,7 +176,37 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 .mini-btn{font-family:var(--display);font-size:8px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,242,255,.2);background:rgba(240,242,255,.05);color:var(--paper);border-radius:4px;padding:7px 10px;cursor:pointer;text-decoration:none;display:inline-block}
 .mini-btn.save{border-color:rgba(0,229,160,.4);color:var(--viral)}
 
-/* ── PLATFORM INTRO TAGS ── */
+/* ── MENU CSS BACKGROUND — no JS, GPU composited only ── */
+#menuScreen{position:relative;overflow:hidden}
+#menuScreen::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 55% 40% at 12% 22%, rgba(0,119,181,.22) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 35% at 88% 62%, rgba(255,77,109,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 50% 92%, rgba(0,229,160,.16) 0%, transparent 70%),
+    radial-gradient(ellipse 38% 30% at 78% 14%, rgba(99,100,255,.15) 0%, transparent 70%),
+    linear-gradient(160deg, #0d1535 0%, #080e24 50%, #050709 100%);
+  animation:menuBlobDrift 18s ease-in-out infinite alternate;
+}
+#menuScreen::after{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(91,141,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,141,255,.05) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+@keyframes menuBlobDrift{
+  0%  {background-position:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%}
+  33% {filter:brightness(1.04)}
+  66% {filter:brightness(.97)}
+  100%{filter:brightness(1.02)}
+}
+/* Stars layer — CSS only */
+#menuStars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.mstar{position:absolute;background:#7dd3fc;border-radius:50%;animation:starTwinkle var(--d,3s) ease-in-out infinite alternate}
+@keyframes starTwinkle{from{opacity:var(--a1,.1)}to{opacity:var(--a2,.5)}}
+/* Menu content sits above pseudo elements */
+#menuScreen>div{position:relative;z-index:1}
 .tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
 .platform-tag{font-size:8px;letter-spacing:.08em;padding:3px 9px;border-radius:10px;border:1px solid;text-transform:uppercase}
 .how-row{display:flex;align-items:flex-start;gap:10px;font-size:11px;line-height:1.5}
@@ -178,6 +234,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 
 <!-- MAIN MENU -->
 <div class="overlay" id="menuScreen" style="gap:0;justify-content:center">
+  <div id="menuStars"></div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:300px">
     <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
       <div class="eyebrow">Nobody Creative</div>
@@ -197,15 +254,21 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
         <button class="btn ghost" id="feedBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px;position:relative">📰 Stories<span id="menuSavedBadge" style="display:none;position:absolute;top:6px;right:5px;background:var(--viral);color:var(--ink);font-size:7px;font-weight:700;width:14px;height:14px;border-radius:50%;line-height:14px;text-align:center"></span></button>
       </div>
     </div>
-    <!-- Ben card = sole portfolio touchpoint. About opens separately below. -->
-    <a class="ben-card" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="max-width:100%">
-      <img class="ben-avatar" src="https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg" alt="Ben Campbell">
-      <div class="ben-info">
-        <div class="ben-name">Ben Campbell</div>
-        <div class="ben-title">Social Media Strategist · Nobody Creative</div>
-        <span class="ben-cta">View Portfolio ↗</span>
-      </div>
-    </a>
+    <!-- Ben card — full card links to portfolio -->
+    <div style="width:100%;max-width:300px">
+      <p style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;opacity:.3;margin-bottom:6px;text-align:left">Built by</p>
+      <a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="display:block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-left:2px solid var(--engage);border-radius:6px;padding:10px 14px;text-decoration:none;color:inherit;transition:background .15s;width:100%">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg" alt="Ben" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid var(--engage);flex-shrink:0">
+          <div style="flex:1;min-width:0;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:2px 8px;align-items:center">
+            <div style="font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.05em;color:var(--paper)">Ben Campbell</div>
+            <div style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--viral);border:1px solid rgba(0,229,160,.35);border-radius:8px;padding:2px 7px;white-space:nowrap;text-align:center">Open to Work</div>
+            <div style="font-size:9px;opacity:.45;letter-spacing:.02em">Social Media Manager</div>
+            <div style="font-family:var(--display);font-size:9px;color:var(--engage);text-align:right;letter-spacing:.06em">View Portfolio ↗</div>
+          </div>
+        </div>
+      </a>
+    </div>
     <div style="display:flex;gap:12px;align-items:center">
       <button id="aboutBtn" style="background:none;border:none;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(240,242,255,.28);cursor:pointer;font-family:var(--mono);padding:4px 0">About this game</button>
       <span style="opacity:.15;font-size:9px">·</span>
@@ -978,91 +1041,35 @@ $('menuTagline').textContent=TAGLINES[0];
 setInterval(()=>{taglineIdx=(taglineIdx+1)%TAGLINES.length;$('menuTagline').textContent=TAGLINES[taglineIdx];},3200);
 
 /* ─────────────────────────────────────────────
-   STARS
-───────────────────────────────────────────── */
-let stars=[];
-function makeStars(){stars=[];for(let i=0;i<90;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:.5+Math.random()*1.4,p:Math.random()*Math.PI*2,d:.3+Math.random()*.7});}
-makeStars();
-
-/* ─────────────────────────────────────────────
    GAME STATE
 ───────────────────────────────────────────── */
 let state='menu';
 let level=0;
-// game objects
 let player,platforms,particles,hazards,bullets;
-// per-level state
 let cam,maxAlt,finishPad,levelDone,shootCd;
 let jumpCount,combo,lastSafePlatform;
-// mechanic-specific
-let waveY;        // demonetize wave Y position
-let shiftTimer;   // threads shift countdown
-let pinnedPlatforms; // pinterest pinned set
-let finishDrift;  // mastodon finish pad drift
-let hijackTimer;  // tiktok dancer control hijack
+let waveY,shiftTimer,pinnedPlatforms,finishDrift,hijackTimer;
 
-/* ─────────────────────────────────────────────
-   MENU BG ANIMATION
-───────────────────────────────────────────── */
-const menuBg={plats:[],person:{x:W/2,y:H*.72,vy:-9,vx:.4,face:1},cam:0,pts:[]};
-function initMenuBg(){
-  menuBg.plats=[];menuBg.cam=0;let y=H*.76;
-  for(let i=0;i<20;i++){y-=rand(58,86);menuBg.plats.push({x:rand(18,W-86),y,w:rand(60,90),h:12,vx:Math.random()<.35?(Math.random()<.5?-1:1)*rand(.3,.55):0,li:Math.floor(Math.random()*PLATFORMS.length)});}
-  menuBg.person={x:W/2-16,y:H*.72,vy:-9,vx:rand(.3,.6)*(Math.random()<.5?1:-1),face:1};
-}
-function tickMenuBg(){
-  const a=menuBg.person;a.vy+=.32;a.x+=a.vx;a.y+=a.vy;
-  if(a.x<0||a.x>W-32)a.vx*=-1;if(Math.abs(a.vx)>.3)a.face=a.vx>0?1:-1;
-  if(a.vy>0){
-    for(const p of menuBg.plats){
-      if(a.x+20>p.x&&a.x+12<p.x+p.w&&a.y+36>p.y&&a.y+36<p.y+p.h+a.vy){
-        a.y=p.y-36;a.vy=-9-Math.random()*2;a.vx+=rand(-.3,.3);
-        for(let i=0;i<4;i++)menuBg.pts.push({x:a.x+16,y:p.y,vx:rand(-1,1),vy:rand(.3,1.4),life:16,color:'#5b8dff'});
-        break;
-      }
-    }
+// CSS star field — generated once on load, zero per-frame cost
+(function spawnMenuStars(){
+  const container=document.getElementById('menuStars');
+  if(!container)return;
+  for(let i=0;i<55;i++){
+    const el=document.createElement('div');
+    el.className='mstar';
+    const size=Math.random()<.3?2:1;
+    el.style.cssText=`
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --d:${(2.5+Math.random()*4).toFixed(1)}s;
+      --a1:${(.05+Math.random()*.12).toFixed(2)};
+      --a2:${(.3+Math.random()*.5).toFixed(2)};
+      animation-delay:${(Math.random()*5).toFixed(1)}s;
+    `;
+    container.appendChild(el);
   }
-  for(const p of menuBg.plats){if(p.vx){p.x+=p.vx;if(p.x<8||p.x+p.w>W-8)p.vx*=-1;}}
-  const lift=H*.5-a.y;if(lift>0){a.y+=lift;for(const p of menuBg.plats)p.y+=lift;menuBg.cam+=lift;}
-  if(a.y>H+60)initMenuBg();
-  for(const pt of menuBg.pts){pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.06;pt.life--;}
-  menuBg.pts=menuBg.pts.filter(p=>p.life>0);
-}
-function drawMenuBg(){
-  const now=performance.now();
-  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0d1535');g.addColorStop(.5,'#080e24');g.addColorStop(1,'#050709');
-  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  // ambient blobs
-  [[W*.15,H*.28,110,'#0077b5'],[W*.82,H*.55,90,'#ff4d6d'],[W*.5,H*.8,100,'#00e5a0'],[W*.7,H*.2,80,'#6364ff']].forEach(([bx,by,r,col],i)=>{
-    const x=bx+Math.sin(now/8000+i*1.3)*28,y=by+Math.cos(now/9200+i*.9)*22;
-    const bg=ctx.createRadialGradient(x,y,0,x,y,r);
-    bg.addColorStop(0,col+'18');bg.addColorStop(1,'transparent');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  });
-  // subtle grid
-  ctx.strokeStyle='rgba(91,141,255,0.04)';ctx.lineWidth=1;
-  for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  // stars
-  for(const s of stars){
-    const sy=(s.y+menuBg.cam*.12*s.d)%H;
-    ctx.globalAlpha=.18+.45*(.5+.5*Math.sin(s.p+now/800));
-    ctx.fillStyle='#7dd3fc';ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
-  }
-  ctx.globalAlpha=1;
-  // mini branded platforms
-  for(const p of menuBg.plats){
-    const pcfg=PLATFORMS[p.li];
-    ctx.globalAlpha=.26;ctx.fillStyle='#1a2040';ctx.fillRect(p.x,p.y,p.w,p.h);
-    ctx.fillStyle=pcfg.color;ctx.fillRect(p.x,p.y,3,p.h);
-    ctx.globalAlpha=.45;ctx.save();ctx.translate(p.x+p.w-10,p.y+p.h/2);ctx.scale(.42,.42);
-    const fn=LOGO_FNS[pcfg.id];if(fn)try{fn(ctx,10);}catch(e){}
-    ctx.restore();ctx.globalAlpha=1;
-  }
-  for(const pt of menuBg.pts){ctx.globalAlpha=pt.life/16*.55;ctx.fillStyle=pt.color;ctx.fillRect(pt.x,pt.y,2,2);}
-  ctx.globalAlpha=.5;drawPerson(menuBg.person.x,menuBg.person.y,menuBg.person.face);ctx.globalAlpha=1;
-}
-initMenuBg();
+}());
 
 /* ─────────────────────────────────────────────
    LEVEL INIT
@@ -1544,13 +1551,18 @@ function update(){
 function draw(){
   const cfg=getCfg();const t=performance.now()/1000;
   drawBg(cfg,t);
-  // Stars
-  for(const s of stars){
-    const sy=(s.y+cam*.14*s.d)%H;
-    ctx.globalAlpha=.16+.45*(.5+.5*Math.sin(s.p+t*1.4));
-    ctx.fillStyle=cfg.star||'#9fc4ff';
-    ctx.fillRect(s.x,sy<0?sy+H:sy,s.r,s.r);
-  }ctx.globalAlpha=1;
+  // Stars — drawn from a fixed seed each frame, no array needed
+  {
+    let _s=7919;const srng=()=>{_s=(_s*1664525+1013904223)&0xffffffff;return(_s>>>0)/0xffffffff;};
+    for(let i=0;i<80;i++){
+      const sx=srng()*W,sy0=srng()*H,sr=srng()*1.4+.4,sp=srng()*Math.PI*2,sd=srng()*.7+.3;
+      const sy=(sy0+cam*.14*sd)%H;
+      ctx.globalAlpha=.14+.42*(.5+.5*Math.sin(sp+t*1.4));
+      ctx.fillStyle=cfg.star||'#9fc4ff';
+      ctx.fillRect(sx,sy<0?sy+H:sy,sr,sr);
+    }
+    ctx.globalAlpha=1;
+  }
 
   // Demonetize wave (YouTube)
   if(cfg.id==='youtube'&&waveY<H+10){
@@ -1813,8 +1825,20 @@ function jet(x,y,color,n=6){
    GAME FLOW
 ───────────────────────────────────────────── */
 const SCREENS=['menuScreen','howScreen','levelSelectScreen','introScreen','pauseScreen','failScreen','clearScreen','winScreen','aboutScreen'];
-function show(id){SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>$(s).classList.add('hidden'));if(id==='menuScreen')updateSavedBadge();}
-function setState(s){state=s;$('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
+function show(id){
+  SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));
+  if(!id)SCREENS.forEach(s=>$(s).classList.add('hidden'));
+  if(id==='menuScreen')updateSavedBadge();
+  // Clear canvas any time an overlay is showing — prevents last level bleeding through
+  if(id)ctx.clearRect(0,0,cvs.width,cvs.height);
+}
+function setState(s){
+  state=s;
+  $('hud').classList.toggle('show',s==='playing');
+  if(s==='playing')show(null);
+  // Clear canvas whenever we leave the game so last level doesn't bleed through menu
+  if(s!=='playing')ctx.clearRect(0,0,cvs.width,cvs.height);
+}
 
 function pauseGame(){
   if(state!=='playing')return;
@@ -1916,12 +1940,23 @@ function showStoryBreak(){
 }
 
 async function shareScore(cfg,reach,won){
-  const text=won
-    ?`I defeated all 10 platforms in Feed Velocity 👑 Total reach: ${reach.toLocaleString()}. Algorithm: defeated. Built by Ben Campbell. ${GAME_URL}`
-    :`Just cleared ${cfg.name} in Feed Velocity with ${reach.toLocaleString()} reach. ${cfg.winMeme.split('.')[0]}. Built by Ben Campbell. ${GAME_URL}`;
-  try{if(navigator.share){await navigator.share({title:'Feed Velocity',text,url:GAME_URL});toast('Shared ✨',1400);return;}}catch(e){}
-  try{window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');toast('Opened share draft ✨',1400);return;}catch(e){}
-  try{await navigator.clipboard.writeText(text);toast('Copied to clipboard 📋',1400);}catch(e){toast('Share: '+text.slice(0,60)+'…',3000);}
+  const platformLines={
+    linkedin:`Just cleared LinkedIn in Feed Velocity with ${reach.toLocaleString()} reach. Excited to share this moment. I have learned so much. \uD83D\uDCAA`,
+    twitter:`Got ratio'd ${reach.toLocaleString()} times and still cleared X / Twitter in Feed Velocity. This site is terrible. I love it.`,
+    tiktok:`${reach.toLocaleString()} reach on TikTok before the trend expired. Made $11.40. Worth it.`,
+    instagram:`Cleared Instagram in Feed Velocity. Reach: ${reach.toLocaleString()}. It was a bot. The bot has left.`,
+    youtube:`PLEASE LIKE AND SUBSCRIBE. Cleared YouTube with ${reach.toLocaleString()} reach. Revenue: $4.18.`,
+    threads:`Cleared Threads in Feed Velocity. ${reach.toLocaleString()} reach. 3 likes. One was me.`,
+    bluesky:`Cleared Bluesky in Feed Velocity. The chronological feed showed my post to everyone. All ${reach.toLocaleString()} of them.`,
+    reddit:`Post cleared in Feed Velocity. ${reach.toLocaleString()} reach. Post was then removed for Rule 7.`,
+    pinterest:`${reach.toLocaleString()} reach on Pinterest. Zero clicks. Repinned 40,000 times. No one will ever make this recipe.`,
+    mastodon:`Just boosted this toot. Cleared Mastodon in Feed Velocity with ${reach.toLocaleString()} reach. Federation achieved.`,
+  };
+  const wonLine=`I defeated all 10 platforms in Feed Velocity \uD83D\uDC51 ${reach.toLocaleString()} total reach. The algorithm has been jumped.`;
+  const text=(won?wonLine:(platformLines[cfg.id]||`Cleared ${cfg.name} in Feed Velocity with ${reach.toLocaleString()} reach.`))+' feedvelocity.netlify.app built by @Ben_Soup';
+  try{if(navigator.share){await navigator.share({title:'Feed Velocity',text,url:'https://feedvelocity.netlify.app'});toast('Shared \u2728',1400);return;}}catch(e){}
+  try{window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');toast('Opened share draft \u2728',1400);return;}catch(e){}
+  try{await navigator.clipboard.writeText(text);toast('Copied to clipboard \uD83D\uDCCB',1400);}catch(e){toast('Share: '+text.slice(0,60)+'...',3000);}
 }
 
 /* ─────────────────────────────────────────────
@@ -2031,10 +2066,8 @@ function loop(){
   if(state==='playing'){
     update();
     if(state==='playing')draw();
-  } else {
-    tickMenuBg();
-    drawMenuBg();
   }
+  // Not playing: canvas is idle. CSS handles all menu/overlay visuals.
   requestAnimationFrame(loop);
 }
 loop();
