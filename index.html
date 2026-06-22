@@ -182,7 +182,9 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 .story-break-card.hidden{display:none}
 .story-source{font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
 .story-title{font-family:var(--display);font-size:13px;line-height:1.4;color:var(--paper);margin-bottom:6px}
-.story-desc{font-size:10px;line-height:1.55;opacity:.6;margin-bottom:10px}
+.story-desc{font-size:10px;line-height:1.55;opacity:.68;margin-bottom:8px}
+.strategy-eyebrow{font-family:var(--display);font-size:8px;letter-spacing:.18em;color:var(--gold);margin-bottom:8px}
+.strategy-label{font-family:var(--display);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--viral);opacity:.85;margin-top:7px;margin-bottom:2px}
 .story-actions{display:flex;gap:8px;flex-wrap:wrap}
 .mini-btn{font-family:var(--display);font-size:8px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,242,255,.2);background:rgba(240,242,255,.05);color:var(--paper);border-radius:4px;padding:7px 10px;cursor:pointer;text-decoration:none;display:inline-block}
 .mini-btn.save{border-color:rgba(0,229,160,.4);color:var(--viral)}
@@ -237,7 +239,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
       <div style="display:flex;gap:8px;width:100%">
         <button class="btn ghost" id="howBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px">How to Play</button>
         <button class="btn ghost" id="lvlSelBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px">Levels</button>
-        <button class="btn ghost" id="feedBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px;position:relative">📰 Stories<span id="menuSavedBadge" style="display:none;position:absolute;top:6px;right:5px;background:var(--viral);color:var(--ink);font-size:7px;font-weight:700;width:14px;height:14px;border-radius:50%;line-height:14px;text-align:center"></span></button>
+        <button class="btn ghost" id="feedBtn" style="flex:1;min-width:0;font-size:11px;padding:11px 6px;position:relative">🧠 Strategy Cards<span id="menuSavedBadge" style="display:none;position:absolute;top:6px;right:5px;background:var(--viral);color:var(--ink);font-size:7px;font-weight:700;width:14px;height:14px;border-radius:50%;line-height:14px;text-align:center"></span></button>
       </div>
     </div>
     <!-- Ben card -->
@@ -272,7 +274,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
     <div class="how-row"><span>🧱</span><p>Land on posts to bounce up. Each platform = a post.</p></div>
     <div class="how-row"><span>🚀</span><p>Tap POST to fire back at trolls, bots, and bad takes.</p></div>
     <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to clear the level.</p></div>
-    <div class="how-row"><span>📰</span><p>Between levels, read a real marketing story from the feed.</p></div>
+    <div class="how-row"><span>🧠</span><p>Between levels, grab an optional strategy card — or skip straight to the next platform.</p></div>
     <div class="how-row"><span>⚠️</span><p>Every platform has its own chaos. Read the intro.</p></div>
   </div>
   <button class="btn viral" id="practiceBtn">Practice Run</button>
@@ -314,7 +316,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   <h2>PAUSED</h2>
   <div class="stat" id="pauseStat"></div>
   <button class="btn accent" id="resumeBtn">Resume</button>
-  <button class="btn ghost" id="pauseFeedBtn">📰 Stories</button>
+  <button class="btn ghost" id="pauseFeedBtn">🧠 Strategy Cards</button>
   <button class="btn ghost" id="pauseMenuBtn">Main Menu</button>
 </div>
 
@@ -337,12 +339,18 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   <p style="font-size:11px;opacity:.45;font-style:italic;max-width:260px;line-height:1.55" id="clearMeme"></p>
   <!-- Between-level story break -->
   <div class="story-break-card hidden" id="storyBreakCard">
+    <div class="strategy-eyebrow">SOMETHING TO CHEW ON</div>
     <div class="story-source" id="storyBreakSource"></div>
     <div class="story-title" id="storyBreakTitle"></div>
-    <div class="story-desc" id="storyBreakDesc"></div>
+    <div class="strategy-label">Summary</div>
+    <div class="story-desc" id="storyBreakSummary"></div>
+    <div class="strategy-label">Why it matters</div>
+    <div class="story-desc" id="storyBreakWhy"></div>
+    <div class="strategy-label">Try this</div>
+    <div class="story-desc" id="storyBreakTry"></div>
     <div class="story-actions">
-      <a class="mini-btn" id="storyBreakRead" target="_blank" rel="noopener" href="#">READ ↗</a>
-      <button class="mini-btn save" id="storyBreakSave">SAVE FOR LATER</button>
+      <button class="mini-btn save" id="storyBreakSave">Save</button>
+      <a class="mini-btn" id="storyBreakRead" target="_blank" rel="noopener" href="#">Read Full Article ↗</a>
     </div>
   </div>
   <button class="btn accent" id="nextBtn">Next Platform →</button>
@@ -353,37 +361,30 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 <!-- WIN -->
 <div class="overlay hidden" id="winScreen" style="gap:0;justify-content:center;padding:20px">
   <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:320px">
-
-    <!-- Crown moment -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
       <div style="font-size:36px;line-height:1;animation:crownFloat 2.2s ease-in-out infinite alternate">👑</div>
       <div class="eyebrow" style="color:var(--gold);letter-spacing:.3em">Algorithm Defeated</div>
       <h2 style="font-family:var(--display);font-size:clamp(28px,8vw,42px);letter-spacing:.06em;line-height:.95;text-align:center">CONTENT<br>KING</h2>
       <div class="stat" id="winStat" style="margin-top:4px"></div>
+      <div class="stat" id="winSavedStat" style="margin-top:-6px;font-size:10px;opacity:.7"></div>
     </div>
-
-    <!-- 10 defeated platforms -->
     <div style="width:100%">
       <p style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;opacity:.35;text-align:center;margin-bottom:8px">Platforms Defeated</p>
       <div id="winPlatformGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px"></div>
     </div>
-
-    <!-- Win meme -->
     <p id="winMeme" style="font-size:10px;opacity:.38;font-style:italic;text-align:center;line-height:1.55;max-width:270px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px;width:100%"></p>
-
-    <!-- Actions -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+      <button class="btn accent" id="winSavedBtn" style="width:100%">Open Saved Cards</button>
       <button class="btn accent" id="againBtn" style="width:100%">Play Again</button>
       <div style="display:flex;gap:8px;width:100%">
-        <button class="btn ghost small" id="winShareBtn" style="flex:1;min-width:0">Share 👑</button>
+        <button class="btn ghost small" id="winShareBtn" style="flex:1;min-width:0">Share Score</button>
         <button class="btn ghost small" id="winMenuBtn" style="flex:1;min-width:0">Main Menu</button>
       </div>
+      <a class="btn ghost small" href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="width:100%;text-align:center;text-decoration:none">View Ben’s Portfolio</a>
     </div>
-
-    <p style="font-size:9px;opacity:.25;letter-spacing:.08em;text-align:center">Built by <a href="https://bencampbell.netlify.app/" target="_blank" rel="noopener" style="color:var(--viral);text-decoration:none;opacity:1">Ben Campbell</a></p>
-
   </div>
 </div>
+
 
 <!-- ABOUT -->
 <div class="overlay hidden" id="aboutScreen" style="gap:0;justify-content:center;padding:20px">
@@ -406,21 +407,20 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   </div>
 </div>
 
-<!-- UNIFIED STORIES PANEL -->
+<!-- SAVED STRATEGY CARDS PANEL -->
 <div id="storiesPanel" class="hidden">
   <div id="storiesPanelTop">
-    <h3>📰 STORIES</h3>
+    <h3>🧠 STRATEGY CARDS</h3>
     <button class="btn ghost small" id="storiesPanelClose">✕ Close</button>
   </div>
-  <!-- Mode tabs: Feed | Saved -->
+  <!-- Mode tabs: Cards | Saved Cards -->
   <div id="storiesModeTabs">
-    <button class="stories-mode-tab active" id="tabFeed">Feed</button>
-    <button class="stories-mode-tab" id="tabSaved">Saved<span id="savedBadge"></span></button>
+    <button class="stories-mode-tab active" id="tabFeed">Cards</button>
+    <button class="stories-mode-tab" id="tabSaved">Saved Cards<span id="savedBadge"></span></button>
   </div>
-  <!-- Feed sub-tabs (sources) — only shown in Feed mode -->
   <div class="rss-feed-tabs hidden" id="rssTabs"></div>
   <!-- Scrollable content area -->
-  <div id="storiesContent"><div class="rss-empty">Loading…</div></div>
+  <div id="storiesContent"><div class="stories-empty">Loading…</div></div>
   <div id="storiesContinueWrap">
     <button class="btn accent" id="storiesContinueBtn" style="width:100%;min-width:0">Back to Game</button>
   </div>
@@ -724,14 +724,33 @@ const DEFAULT_FEEDS=[
   {name:'Sprout Social',      rss:'https://sproutsocial.com/insights/feed/',     color:'#59cb59'},
 ];
 const FALLBACK_STORIES=[
-  {title:'Turn one strong post into a week of content',source:'Buffer Blog',url:'https://buffer.com/resources/repurposing-content/',date:'',desc:'A practical framework for repurposing one useful idea across short posts, carousels, videos, and newsletters.',color:'#00e5a0'},
-  {title:'What social teams should measure before chasing reach',source:'Social Media Today',url:'https://www.socialmediatoday.com/news/social-media-metrics-guide/617234/',date:'',desc:'Connect awareness, engagement, saves, clicks, and conversions before calling a post a win.',color:'#0077b5'},
-  {title:'Why brand voice matters more when every feed looks the same',source:'Marketing Brew',url:'https://www.marketingbrew.com/stories/2024/01/10/brand-voice-social-media',date:'',desc:'As formats converge, recognizable language and point of view help content feel worth stopping for.',color:'#ffd700'},
-  {title:'A calmer planning system for always-on social calendars',source:'Later Blog',url:'https://later.com/blog/social-media-content-calendar/',date:'',desc:'Batch evergreen ideas, timely hooks, and community replies so the calendar supports the team.',color:'#ff4d6d'},
-  {title:'How to write hooks that don\'t sound like engagement bait',source:'HubSpot Marketing',url:'https://blog.hubspot.com/marketing/how-to-write-social-media-hooks',date:'',desc:'Lead with the reader problem, make a clear promise, and skip the fake urgency.',color:'#ff7a59'},
-  {title:'Community management lessons from high-volume comment threads',source:'Sprout Social',url:'https://sproutsocial.com/insights/community-management/',date:'',desc:'Fast replies help, but consistent tone and escalation rules keep support moments from becoming chaos.',color:'#59cb59'},
+  {id:'repurpose-week',title:'Turn one strong post into a week of content',source:'Buffer Blog',url:'https://buffer.com/resources/repurposing-content/',summary:'One useful idea can become a LinkedIn post, short video, thread, carousel, and newsletter note — if the format changes with the platform.',why:'Social teams do not need more random posts. They need repeatable ways to stretch strong ideas without making every channel feel copy-pasted.',tryThis:'Pick one post from this week and turn it into three formats: one opinion post, one tactical tip, and one question for comments.',color:'#00e5a0'},
+  {id:'exec-visibility',title:'Make executive visibility feel less like a hostage video',source:"Ben's Strategy Desk",url:'https://bencampbell.netlify.app/',summary:'The best leader posts sound like a sharp hallway conversation, not a press release wearing sneakers.',why:'Executives can create trust fast, but only when their posts have a point of view instead of recycled company updates.',tryThis:'Interview one leader for 10 minutes. Pull out one opinion, one lesson, and one specific story — then draft the post around those, not the announcement.',color:'#5b8dff'},
+  {id:'comments-prompts',title:'Treat comments like the brief for your next post',source:'Sprout Social',url:'https://sproutsocial.com/insights/community-management/',summary:'Comment sections are messy, but they are also free audience research with typos and emotional honesty.',why:'The questions people ask after a post often reveal the next angle, objection, or explainer your calendar is missing.',tryThis:'Find three comments from this week. Turn one into an FAQ post, one into a myth-bust, and one into a poll.',color:'#59cb59'},
+  {id:'social-search',title:'Write posts people can find later, not just like now',source:'Later Blog',url:'https://later.com/blog/social-search/',summary:'Social search rewards clear language. Cute captions are fun until nobody can find the thing you actually sell.',why:'TikTok, Instagram, YouTube, and Pinterest all behave more like search engines when people are hunting for answers.',tryThis:'Rewrite one caption with the exact phrase your audience would search, then keep the hook human instead of keyword soup.',color:'#ff4d6d'},
+  {id:'community-rules',title:'Community management needs a playbook before the fire drill',source:'Social Media Today',url:'https://www.socialmediatoday.com/',summary:'Fast replies are great. Fast replies with no tone, boundaries, or escalation plan are how brands accidentally start side quests.',why:'Social managers protect both the audience relationship and the team\'s sanity when response rules are clear before chaos hits.',tryThis:'Create three reply buckets: answer publicly, move to DM, escalate internally. Add one example response for each.',color:'#0077b5'},
+  {id:'native-creative',title:'Make the idea native before you make it pretty',source:'Marketing Brew',url:'https://www.marketingbrew.com/',summary:'A polished asset that ignores platform behavior is just a billboard lost in the feed.',why:'Platform-native creative usually wins because it respects how people scroll, pause, comment, save, remix, and bail.',tryThis:'Before designing the asset, write the native behavior: saveable checklist, comment bait without being cringe, stitchable take, or quick demo.',color:'#ffd700'},
+  {id:'creator-approvals',title:'Creator approvals should protect the idea, not sand it flat',source:'Creator Economy',url:'https://www.creatoriq.com/blog',summary:'Too many approval rounds turn creator posts into brand posts with a rented face attached.',why:'Creators work because their audience recognizes their rhythm. Over-editing kills the reason you hired them.',tryThis:'Split feedback into must-fix facts, brand safety, and nice-to-have wording. Only the first two should block approval.',color:'#c084fc'},
+  {id:'brand-voice',title:'Brand voice is what survives when the trend dies',source:"Ben's Strategy Desk",url:'https://bencampbell.netlify.app/',summary:'Trends can get attention, but voice is why people know it was you without checking the handle.',why:'When every brand uses the same formats, a recognizable point of view is the difference between content and feed wallpaper.',tryThis:'Write a tiny voice filter: three words you should sound like, three words you should never sound like, and one joke you would actually make.',color:'#ff7a59'}
 ];
 
+function strategyFallbackFor(seed){
+  const basis=String(seed||'').split('').reduce((n,ch)=>n+ch.charCodeAt(0),0);
+  return FALLBACK_STORIES[basis%FALLBACK_STORIES.length];
+}
+function toStrategyCard(item,idx){
+  const fb=strategyFallbackFor((item&&item.title)||idx);
+  return {
+    id:(item&&item.id)||fb.id,
+    title:(item&&item.title)||fb.title,
+    source:(item&&item.source)||fb.source,
+    url:(item&&item.url)||fb.url,
+    summary:(item&&item.summary)||fb.summary,
+    why:(item&&item.why)||fb.why,
+    tryThis:(item&&item.tryThis)||fb.tryThis,
+    color:(item&&item.color)||fb.color
+  };
+}
 function safeJson(k,fb){try{const r=localStorage.getItem(k);return r?JSON.parse(r):fb;}catch(e){return fb;}}
 function safeSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
 function escHtml(s){return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
@@ -741,7 +760,7 @@ let userFeeds=safeJson('fv_feeds',null)||DEFAULT_FEEDS;
 let rssCache={};let activeFeedIdx=0;let rssReturnAction=null;
 let storyPool=[];let storyCursor=0;
 
-function fallbackPool(){return FALLBACK_STORIES.map((s,i)=>({...s,id:'fb'+i}));}
+function fallbackPool(){return FALLBACK_STORIES.map((s,i)=>toStrategyCard(s,i));}
 
 async function loadFeed(feed){
   const key=feed.rss;
@@ -760,7 +779,6 @@ async function loadFeed(feed){
       source:feed.name,
       url:(it.link||'#').trim(),
       date:it.pubDate||'',
-      desc:(it.description||it.content||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().slice(0,220),
       color:feed.color||'#00e5a0',
     }));
     rssCache[key]=items;return items;
@@ -793,7 +811,8 @@ function saveIdea(story){
   const key=ideaKey(story.title,story.url||story.link);
   if(!key)return false;
   if(ideas.some(i=>ideaKey(i.title,i.url)===key))return false;
-  ideas.unshift({title:(story.title||'Untitled').trim(),source:story.source||'Stories',url:(story.url||story.link||'#').trim(),savedAt:new Date().toISOString()});
+  const card=toStrategyCard(story);
+  ideas.unshift({id:card.id,title:(card.title||'Untitled').trim(),source:card.source||'Strategy Card',url:(card.url||story.link||'#').trim(),summary:card.summary,why:card.why,tryThis:card.tryThis,color:card.color,savedAt:new Date().toISOString()});
   return safeSet('fv_ideas',JSON.stringify(ideas.slice(0,60)));
 }
 function isIdeaSaved(story){
@@ -824,18 +843,19 @@ function makeStoryCard(item,opts){
   const hasUrl=url&&url!=='#';
   const dateStr=item.date||item.savedAt?new Date(item.date||item.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}):null;
 
+  const card=toStrategyCard(item);
   el.innerHTML=`
 <span class="story-card-chevron">&#9660;</span>
-<div class="story-card-source" style="color:${escAttr(item.color||'#00e5a0')}">${escHtml(item.source||'Stories')}${dateStr?' \xb7 '+dateStr:''}</div>
-<div class="story-card-title">${escHtml(item.title||'Untitled')}</div>
-<div class="story-card-desc">${escHtml(item.desc||'')}</div>
+<div class="story-card-source" style="color:${escAttr(card.color||'#00e5a0')}">${escHtml(card.source||'Strategy Card')}${dateStr?' \xb7 '+dateStr:''}</div>
+<div class="story-card-title">${escHtml(card.title||'Untitled')}</div>
+<div class="story-card-desc"><b>Why it matters:</b> ${escHtml(card.why||'')}<br><br><b>Try this:</b> ${escHtml(card.tryThis||'')}</div>
 <div class="story-card-actions">
   ${hasUrl
-    ?`<a class="story-action-btn read" href="${escAttr(url)}" target="_blank" rel="noopener">Read Full Story &#8599;</a>`
+    ?`<a class="story-action-btn read" href="${escAttr(url)}" target="_blank" rel="noopener">Read Full Article &#8599;</a>`
     :`<span class="story-action-btn" style="opacity:.25;cursor:default;border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.28);font-size:8px">No link</span>`
   }
   ${opts.showRemove
-    ?`<button class="story-action-btn remove" data-key="${escAttr(ideaKey(item.title,url))}">Remove</button>`
+    ?`<button class="story-action-btn remove" data-key="${escAttr(ideaKey(card.title,url))}">Remove</button>`
     :`<button class="story-action-btn ${already?'saved':'save'}">${already?'Saved &#10003;':'Save'}</button>`
   }
 </div>`;
@@ -856,7 +876,7 @@ function makeStoryCard(item,opts){
         saveBtn.textContent='Saved \u2713';
         saveBtn.classList.remove('save');saveBtn.classList.add('saved');
         saveBtn.disabled=true;
-        toast('Saved to Reading List',1200);
+        toast('Saved ✓',1200);
         updateSavedBadge();
       }
     });
@@ -880,7 +900,7 @@ function makeStoryCard(item,opts){
 function renderFeedItems(items,color){
   const container=$('storiesContent');
   if(!items||!items.length){
-    container.innerHTML='<div class="stories-empty">Could not load this feed.<br>Check your connection or try another source.</div>';
+    container.innerHTML="<div class=\"stories-empty\">Could not load live cards.<br>Showing Ben\'s curated fallbacks.</div>";
     return;
   }
   container.innerHTML='';
@@ -893,7 +913,7 @@ function renderSavedItems(){
   const container=$('storiesContent');
   const ideas=getIdeas();
   if(!ideas.length){
-    container.innerHTML='<div class="stories-empty">Nothing saved yet.<br>Open any story in the Feed tab<br>and tap Save.</div>';
+    container.innerHTML='<div class="stories-empty">Nothing saved yet.<br>Save a strategy card between levels<br>or from the Cards tab.</div>';
     return;
   }
   container.innerHTML='';
@@ -1920,6 +1940,7 @@ function completeLevel(){
   if(isLast){
     state='win';
     $('winStat').innerHTML=`Total Reach <b>${reach.toLocaleString()}</b>`;
+    $('winSavedStat').innerHTML=`Saved Strategy Cards <b>${getIdeas().length}</b>`;
     $('winMeme').textContent=cfg.winMeme;
     // Build defeated platforms grid
     const grid=$('winPlatformGrid');
@@ -1934,7 +1955,8 @@ function completeLevel(){
       grid.appendChild(cell);
     });
     show('winScreen');
-    $('winShareBtn').onclick=()=>shareScore(cfg,reach,true);return;
+    $('winShareBtn').onclick=()=>shareScore(cfg,reach,true);
+    $('winSavedBtn').onclick=()=>openStoriesPanel(()=>{state='win';show('winScreen');},'saved');return;
   }
   state='clear';
   $('clearTitle').textContent=cfg.name+' CLEARED';
@@ -1948,22 +1970,24 @@ function completeLevel(){
 
 function showStoryBreak(){
   const card=$('storyBreakCard');
-  const story=getNextStory();
+  const story=toStrategyCard(getNextStory());
   if(!story){card.classList.add('hidden');return;}
-  $('storyBreakSource').textContent=story.source||'Stories';
+  $('storyBreakSource').textContent=story.source||'Strategy Card';
   $('storyBreakSource').style.color=story.color||'#00e5a0';
   $('storyBreakTitle').textContent=story.title||'';
-  $('storyBreakDesc').textContent=story.desc||'A useful read for your content strategy.';
+  $('storyBreakSummary').textContent=story.summary||'A quick social strategy snack from Ben.';
+  $('storyBreakWhy').textContent=story.why||'Because stronger posts usually start with a sharper reason to exist.';
+  $('storyBreakTry').textContent=story.tryThis||'Pick one idea and turn it into a post your audience can use tomorrow.';
   const readLink=$('storyBreakRead');
   if(story.url&&story.url!=='#'){readLink.href=story.url;readLink.style.display='inline-block';}
   else readLink.style.display='none';
   const saveBtn=$('storyBreakSave');
-  saveBtn.textContent='SAVE FOR LATER';saveBtn.disabled=false;
+  saveBtn.textContent=isIdeaSaved(story)?'Saved ✓':'Save';saveBtn.disabled=isIdeaSaved(story);
   saveBtn.onclick=()=>{
     const saved=saveIdea(story);
-    saveBtn.textContent=saved?'SAVED \u2713':'ALREADY SAVED';
+    saveBtn.textContent=saved?'Saved ✓':'Saved ✓';
     saveBtn.disabled=true;
-    if(saved){toast('Saved to Reading List \uD83D\uDCCC',1200);updateSavedBadge();}
+    if(saved){toast('Saved ✓',1200);updateSavedBadge();}
   };
   card.classList.remove('hidden');
 }
@@ -2033,13 +2057,13 @@ $('howBackBtn').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('lvlSelBtn').onclick=()=>{sndClick();buildLevelGrid();state='levelselect';show('levelSelectScreen');};
 $('aboutBtn').onclick=()=>{sndClick();state='about';show('aboutScreen');};
 $('aboutBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
-$('feedBtn').onclick=()=>{openFeedPanel(()=>{state='menu';show('menuScreen');});};
+$('feedBtn').onclick=()=>{openStoriesPanel(()=>{state='menu';show('menuScreen');},'saved');};
 $('lvlSelBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('introGo').onclick=()=>{sndClick();startLevel(level);};
 $('introBack').onclick=()=>{sndClick();state='levelselect';buildLevelGrid();show('levelSelectScreen');};
 $('pauseBtn').onclick=()=>{if(state==='playing')pauseGame();};
 $('resumeBtn').onclick=()=>{show(null);setState('playing');};
-$('pauseFeedBtn').onclick=()=>openStoriesPanel(()=>{show(null);setState('playing');});
+$('pauseFeedBtn').onclick=()=>openStoriesPanel(()=>{show(null);setState('playing');},'saved');
 $('pauseMenuBtn').onclick=()=>{state='menu';$('hud').classList.remove('show');show('menuScreen');};
 $('retryBtn').onclick=()=>{sndClick();openIntro(level);};
 $('failMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
