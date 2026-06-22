@@ -35,22 +35,9 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--ink);font-family:var(--mono);color:var(--paper);touch-action:manipulation;user-select:none;-webkit-user-select:none}
-body{
-  background:
-    radial-gradient(ellipse 60% 50% at 8% 15%,  rgba(255,77,109,.2)  0%, transparent 65%),
-    radial-gradient(ellipse 50% 45% at 92% 85%,  rgba(0,229,160,.15)  0%, transparent 65%),
-    radial-gradient(ellipse 45% 40% at 85% 10%,  rgba(99,100,255,.14) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 45% at 15% 90%,  rgba(0,119,181,.15)  0%, transparent 60%),
-    linear-gradient(160deg,#0d1535 0%,#080e24 55%,#050709 100%);
-  background-attachment:fixed;
-}
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    linear-gradient(rgba(91,141,255,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(91,141,255,.05) 1px,transparent 1px);
-  background-size:40px 40px;
-}
+body{background:#050709;}
+/* The animated menu art is rendered inside the fixed 390×680 canvas shell.
+   Keep the page chrome plain so desktop gutters never impersonate gameplay. */
 #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 canvas{display:block}
 
@@ -106,8 +93,23 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 #comboTag{font-size:10px;letter-spacing:.12em;color:var(--paper);margin-top:2px;opacity:0;transition:opacity .2s}
 #comboTag.show{opacity:1}
 #pauseBtn{pointer-events:auto;width:38px;height:38px;border-radius:4px;border:1px solid rgba(240,242,255,.25);background:rgba(10,13,22,.6);color:var(--paper);font-size:13px;cursor:pointer;font-family:var(--display);backdrop-filter:blur(4px)}
-#progressWrap{position:absolute;top:max(56px,calc(env(safe-area-inset-top)+46px));left:14px;right:14px;height:5px;background:rgba(240,242,255,.1);border-radius:3px;overflow:hidden}
-#progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));border-radius:3px;transition:width .25s}
+#progressWrap{
+  position:absolute;
+  top:max(56px,calc(env(safe-area-inset-top)+46px));
+  left:14px;
+  right:14px;
+  height:5px;
+  background:rgba(240,242,255,.1);
+  border-radius:3px;
+  overflow:hidden;
+}
+#progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));
+  border-radius:3px;
+  transition:width .25s;
+}
 #mechHint{position:absolute;top:max(70px,calc(env(safe-area-inset-top)+60px));left:14px;right:14px;text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.35;pointer-events:none}
 #shootZone{display:none;position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto}
 #hud.show #shootZone{display:flex}
@@ -192,7 +194,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 .how-row span{font-size:18px;width:26px;text-align:center;flex-shrink:0;margin-top:1px}
 
 #menuScreen{
-  background:rgba(10,13,22,.55);
+  background:rgba(10,13,22,.42);
   backdrop-filter:none;
 }
   
@@ -1211,6 +1213,57 @@ function spawnHazard(y,cfg){
 
 const SAFE_PLAT=(x,y,w,spr=false)=>({x,y,w,h:13,type:'solid',vx:0,spring:spr,broken:false,sponsor:false,humbleBrag:false,isFYP:false,subreddit:null,tiktokTimer:null,tiktokActive:false,ghost:false,ghostVis:1,ghostSolid:true,pinned:false});
 
+function addFinalRunway(cfg,topY){
+  // Deterministic final runways prevent late-game RNG from creating impossible gaps,
+  // disappearing dead ends, or hazards above the finish. Keep platform flavor via flags/labels.
+  const add=p=>{platforms.push(p);return p;};
+  if(cfg.id==='linkedin'){
+    const b=add(SAFE_PLAT(W/2-90,topY+190,120));b.humbleBrag=true;
+    add(SAFE_PLAT(W/2-60,topY+125,110));
+    add(SAFE_PLAT(W/2-70,topY+62,100));
+  } else if(cfg.id==='twitter'){
+    add(SAFE_PLAT(W/2-112,topY+185,74));
+    add(SAFE_PLAT(W/2+28,topY+120,72));
+    add(SAFE_PLAT(W/2-38,topY+58,76));
+  } else if(cfg.id==='tiktok'){
+    const a=add(SAFE_PLAT(W/2-52,topY+198,86,true));a.isFYP=true;a.w=118;
+    add(SAFE_PLAT(W/2-42,topY+118,84));
+    add(SAFE_PLAT(W/2-48,topY+55,96,true));
+  } else if(cfg.id==='instagram'){
+    add(SAFE_PLAT(W/2-58,topY+188,116));
+    add(SAFE_PLAT(W/2-50,topY+124,100));
+    add(SAFE_PLAT(W/2-58,topY+60,116));
+  } else if(cfg.id==='youtube'){
+    const sp1=add(SAFE_PLAT(W/2-62,topY+190,124));sp1.sponsor=true;
+    add(SAFE_PLAT(W/2-50,topY+122,100));
+    const sp2=add(SAFE_PLAT(W/2-58,topY+58,116));sp2.sponsor=true;
+  } else if(cfg.id==='threads'){
+    add(SAFE_PLAT(W/2-100,topY+188,96));
+    add(SAFE_PLAT(W/2+4,topY+122,96));
+    add(SAFE_PLAT(W/2-70,topY+58,100));
+  } else if(cfg.id==='bluesky'){
+    add(SAFE_PLAT(W/2-48,topY+198,96));
+    add(SAFE_PLAT(W/2-44,topY+124,88,true));
+    add(SAFE_PLAT(W/2-50,topY+58,100));
+  } else if(cfg.id==='reddit'){
+    const r1=add(SAFE_PLAT(W/2-105,topY+185,88));r1.subreddit='r/gaming';
+    const r2=add(SAFE_PLAT(W/2+12,topY+120,86));r2.subreddit='r/all';
+    const r3=add(SAFE_PLAT(W/2-44,topY+58,88));r3.subreddit='r/popular';
+  } else if(cfg.id==='pinterest'){
+    add(SAFE_PLAT(W/2-44,topY+156,88));
+    add(SAFE_PLAT(W/2-40,topY+102,80,true));
+    add(SAFE_PLAT(W/2-44,topY+50,88));
+  } else if(cfg.id==='mastodon'){
+    add(SAFE_PLAT(W/2-86,topY+188,98));
+    add(SAFE_PLAT(W/2+2,topY+122,96,true));
+    add(SAFE_PLAT(W/2-76,topY+58,104));
+  } else {
+    add(SAFE_PLAT(W/2-80,topY+180,88));
+    add(SAFE_PLAT(W/2+10,topY+120,88,true));
+    add(SAFE_PLAT(W/2-78,topY+60,92));
+  }
+}
+
 function startLevel(n){
   level=n;
   const cfg=getCfg();
@@ -1336,7 +1389,8 @@ function update(){
 
   // ── YouTube: demonetize wave ──
   if(cfg.id==='youtube'){
-    waveY-=.55;// rises
+    // Screen-space timer: slow enough for the full climb, still threatening near the bottom.
+    waveY-=.18;
     if(waveY<H)$('waveWarning').classList.add('show');
     else $('waveWarning').classList.remove('show');
     if(player.y+player.h>waveY){failGame();return;}
@@ -1483,7 +1537,8 @@ function update(){
     for(const pt of particles)pt.y+=lift;
     for(const h of hazards)h.y+=lift;
     for(const b of bullets)b.y+=lift;
-    if(cfg.id==='youtube')waveY+=lift;
+    // YouTube's demonetization wave is screen-space pressure, not world geometry.
+    // Do not add camera lift here: doing so drops/resets the wave whenever the camera scrolls.
     cam+=lift;maxAlt=Math.max(maxAlt,cam);
   }
 
@@ -1494,66 +1549,11 @@ function update(){
     topY-=rand(cfg.gap[0],cfg.gap[1]);
     if(jumpCount>=cfg.goal&&!finishPad){
       // Clear nearby hazards
-      hazards=hazards.filter(h=>Math.abs(h.y-topY)>220);
+      hazards=hazards.filter(h=>Math.abs(h.y-topY)>260);
+      // Final approach is an earned safe zone: no hazards or random platforms above finish.
       const hw=cfg.practice?180:200;
 
-      // Per-platform approach rungs — themed to match each platform's feel
-      if(cfg.id==='linkedin'){
-        // Wide, stable, professional — corporate boardroom staircase
-        platforms.push(SAFE_PLAT(W/2-90,topY+190,120));
-        platforms.push(SAFE_PLAT(W/2-60,topY+125,110,false));
-        platforms.push(SAFE_PLAT(W/2-70,topY+62,100));
-      } else if(cfg.id==='twitter'){
-        // Narrow, erratic — hot takes don't last
-        platforms.push(SAFE_PLAT(rand(20,W-80),topY+185,68));
-        platforms.push(SAFE_PLAT(rand(20,W-80),topY+120,62));
-        platforms.push(SAFE_PLAT(rand(20,W-80),topY+58,70));
-      } else if(cfg.id==='tiktok'){
-        // Spring-loaded — big floaty bounces
-        platforms.push(SAFE_PLAT(W/2-50,topY+200,80,true));
-        platforms.push(SAFE_PLAT(W/2-40,topY+118,76));
-        platforms.push(SAFE_PLAT(W/2-44,topY+55,84,true));
-      } else if(cfg.id==='instagram'){
-        // Normal but symmetrical — everything is aesthetic here
-        platforms.push(SAFE_PLAT(W/2-52,topY+188,104));
-        platforms.push(SAFE_PLAT(W/2-48,topY+124,96));
-        platforms.push(SAFE_PLAT(W/2-52,topY+60,104));
-      } else if(cfg.id==='youtube'){
-        // Wide sponsor pads on the way up
-        const sp1=SAFE_PLAT(W/2-55,topY+190,110);sp1.sponsor=true;platforms.push(sp1);
-        platforms.push(SAFE_PLAT(W/2-44,topY+122,88));
-        const sp2=SAFE_PLAT(W/2-50,topY+58,100);sp2.sponsor=true;platforms.push(sp2);
-      } else if(cfg.id==='threads'){
-        // Slightly offset — Meta keeps pushing updates
-        platforms.push(SAFE_PLAT(W/2-100,topY+188,88));
-        platforms.push(SAFE_PLAT(W/2+10,topY+122,88));
-        platforms.push(SAFE_PLAT(W/2-80,topY+58,92));
-      } else if(cfg.id==='bluesky'){
-        // Far apart — chronological, spacious, sparse
-        platforms.push(SAFE_PLAT(W/2-44,topY+210,88));
-        platforms.push(SAFE_PLAT(W/2-40,topY+130,84,true));
-        platforms.push(SAFE_PLAT(W/2-44,topY+62,88));
-      } else if(cfg.id==='reddit'){
-        // Labelled subreddit rungs
-        const r1=SAFE_PLAT(rand(20,W-90),topY+185,82);r1.subreddit='r/gaming';platforms.push(r1);
-        const r2=SAFE_PLAT(rand(20,W-90),topY+120,78);r2.subreddit='r/all';platforms.push(r2);
-        const r3=SAFE_PLAT(rand(20,W-90),topY+58,82);r3.subreddit='r/popular';platforms.push(r3);
-      } else if(cfg.id==='pinterest'){
-        // Narrow tall pins, heavy gravity means closer spacing
-        platforms.push(SAFE_PLAT(W/2-38,topY+160,76));
-        platforms.push(SAFE_PLAT(W/2-34,topY+105,72,true));
-        platforms.push(SAFE_PLAT(W/2-38,topY+52,76));
-      } else if(cfg.id==='mastodon'){
-        // Drifting — finish pad already moves, rungs are solid anchors
-        platforms.push(SAFE_PLAT(W/2-80,topY+188,92));
-        platforms.push(SAFE_PLAT(W/2+5,topY+122,88,true));
-        platforms.push(SAFE_PLAT(W/2-76,topY+58,92));
-      } else {
-        // Practice / fallback
-        platforms.push(SAFE_PLAT(W/2-80,topY+180,88));
-        platforms.push(SAFE_PLAT(W/2+10,topY+120,88,true));
-        platforms.push(SAFE_PLAT(W/2-78,topY+60,92));
-      }
+      addFinalRunway(cfg,topY);
 
       finishPad=SAFE_PLAT(W/2-hw/2,topY,hw);
       finishPad.type='finish';finishPad.h=16;
