@@ -1042,7 +1042,7 @@ let level=0;
 let player,platforms,particles,hazards,bullets;
 // per-level state
 let cam,maxAlt,finishPad,levelDone,shootCd;
-let jumpCount,combo,lastSafePlatform,highestLandedY;
+let jumpCount,combo,lastSafePlatform;
 // mechanic-specific
 let waveY;        // demonetize wave Y position
 let shiftTimer;   // threads shift countdown
@@ -1268,7 +1268,7 @@ function startLevel(n){
   level=n;
   const cfg=getCfg();
   platforms=[];particles=[];hazards=[];bullets=[];
-  shootCd=0;jumpCount=0;combo=0;cam=0;maxAlt=0;highestLandedY=99999;
+  shootCd=0;jumpCount=0;combo=0;cam=0;maxAlt=0;
   levelDone=false;finishPad=null;lastSafePlatform=null;
   waveY=H+20;shiftTimer=480;pinnedPlatforms=new Set();finishDrift=0;hijackTimer=0;
 
@@ -1433,8 +1433,7 @@ function update(){
         }
         player.djUsed=false;
         lastSafePlatform=p;
-        // Only count progress when landing on a platform higher than any previous
-        if(p.y<highestLandedY){highestLandedY=p.y;jumpCount++;}
+        jumpCount++;
         combo++;if(combo&&combo%6===0)toast('🔥 '+combo+' COMBO',900);
       }
     }
