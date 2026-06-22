@@ -93,8 +93,23 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 #comboTag{font-size:10px;letter-spacing:.12em;color:var(--paper);margin-top:2px;opacity:0;transition:opacity .2s}
 #comboTag.show{opacity:1}
 #pauseBtn{pointer-events:auto;width:38px;height:38px;border-radius:4px;border:1px solid rgba(240,242,255,.25);background:rgba(10,13,22,.6);color:var(--paper);font-size:13px;cursor:pointer;font-family:var(--display);backdrop-filter:blur(4px)}
-#progressWrap{position:absolute;top:max(56px,calc(env(safe-area-inset-top)+46px));left:14px;right:14px;height:5px;background:rgba(240,242,255,.1);border-radius:3px;overflow:hidden}
-#progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));border-radius:3px;transition:width .25s}
+#progressWrap{
+  position:absolute;
+  top:max(56px,calc(env(safe-area-inset-top)+46px));
+  left:14px;
+  right:14px;
+  height:5px;
+  background:rgba(240,242,255,.1);
+  border-radius:3px;
+  overflow:hidden;
+}
+#progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));
+  border-radius:3px;
+  transition:width .25s;
+}
 #mechHint{position:absolute;top:max(70px,calc(env(safe-area-inset-top)+60px));left:14px;right:14px;text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.35;pointer-events:none}
 #shootZone{display:none;position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto}
 #hud.show #shootZone{display:flex}
