@@ -1042,7 +1042,7 @@ let level=0;
 let player,platforms,particles,hazards,bullets;
 // per-level state
 let cam,maxAlt,finishPad,levelDone,shootCd;
-let jumpCount,combo,lastSafePlatform;
+let jumpCount,combo,lastSafePlatform,platformSeq,highestLandedRank;
 // mechanic-specific
 let waveY;        // demonetize wave Y position
 let shiftTimer;   // threads shift countdown
@@ -1121,6 +1121,8 @@ const BASE_JUMP=-13.2;
 const SPRING_V=-20;
 const MOVE_ACC=.52;
 const MAX_VX=6.0;
+
+function trackPlatform(p){p.progressRank=platformSeq++;return p;}
 
 function mkPlatform(y,cfg,wide=false){
   const r=Math.random();
@@ -1211,12 +1213,12 @@ function spawnHazard(y,cfg){
   }
 }
 
-const SAFE_PLAT=(x,y,w,spr=false)=>({x,y,w,h:13,type:'solid',vx:0,spring:spr,broken:false,sponsor:false,humbleBrag:false,isFYP:false,subreddit:null,tiktokTimer:null,tiktokActive:false,ghost:false,ghostVis:1,ghostSolid:true,pinned:false});
+const SAFE_PLAT=(x,y,w,spr=false)=>({x,y,w,h:13,type:'solid',vx:0,spring:spr,broken:false,sponsor:false,humbleBrag:false,isFYP:false,subreddit:null,tiktokTimer:null,tiktokActive:false,ghost:false,ghostVis:1,ghostSolid:true,pinned:false,progressRank:-1});
 
 function addFinalRunway(cfg,topY){
   // Deterministic final runways prevent late-game RNG from creating impossible gaps,
   // disappearing dead ends, or hazards above the finish. Keep platform flavor via flags/labels.
-  const add=p=>{platforms.push(p);return p;};
+  const add=p=>{platforms.push(trackPlatform(p));return p;};
   if(cfg.id==='linkedin'){
     const b=add(SAFE_PLAT(W/2-90,topY+190,120));b.humbleBrag=true;
     add(SAFE_PLAT(W/2-60,topY+125,110));
@@ -1268,7 +1270,7 @@ function startLevel(n){
   level=n;
   const cfg=getCfg();
   platforms=[];particles=[];hazards=[];bullets=[];
-  shootCd=0;jumpCount=0;combo=0;cam=0;maxAlt=0;
+  shootCd=0;jumpCount=0;combo=0;cam=0;maxAlt=0;platformSeq=0;highestLandedRank=-1;
   levelDone=false;finishPad=null;lastSafePlatform=null;
   waveY=H+20;shiftTimer=480;pinnedPlatforms=new Set();finishDrift=0;hijackTimer=0;
 
@@ -1286,18 +1288,18 @@ function startLevel(n){
   // Build initial platforms — wide safe start
   let y=H-40;
   const startW=cfg.practice?170:140;
-  platforms.push(SAFE_PLAT(W/2-startW/2,y,startW));
+  platforms.push(trackPlatform(SAFE_PLAT(W/2-startW/2,y,startW)));
   // A few safe rungs to get started
   const safeRungs=cfg.practice?7:4;
   for(let i=0;i<safeRungs;i++){
     y-=rand(48,64);
     const w=cfg.practice?150:clamp(100-i*6,72,110);
-    platforms.push(SAFE_PLAT(rand(18,W-w-18),y,w));
+    platforms.push(trackPlatform(SAFE_PLAT(rand(18,W-w-18),y,w)));
   }
   // Normal generation upward
   while(y>-H*1.8){
     y-=rand(cfg.gap[0],cfg.gap[1]);
-    platforms.push(mkPlatform(y,cfg));
+    platforms.push(trackPlatform(mkPlatform(y,cfg)));
     spawnHazard(y,cfg);
   }
 
@@ -1433,7 +1435,10 @@ function update(){
         }
         player.djUsed=false;
         lastSafePlatform=p;
-        jumpCount++;
+        if(p.progressRank>highestLandedRank){
+          highestLandedRank=p.progressRank;
+          jumpCount++;
+        }
         combo++;if(combo&&combo%6===0)toast('🔥 '+combo+' COMBO',900);
       }
     }
@@ -1556,10 +1561,10 @@ function update(){
 
       finishPad=SAFE_PLAT(W/2-hw/2,topY,hw);
       finishPad.type='finish';finishPad.h=16;
-      platforms.push(finishPad);
+      platforms.push(trackPlatform(finishPad));
       levelDone=true;break;
     } else {
-      platforms.push(mkPlatform(topY,cfg));
+      platforms.push(trackPlatform(mkPlatform(topY,cfg)));
       spawnHazard(topY,cfg);
     }
   }
