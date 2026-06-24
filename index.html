@@ -1399,7 +1399,9 @@ function update(){
   }
 
   // ── Threads: periodic shift ──
-  if(cfg.id==='threads'||cfg.id==='mastodon'){
+  if((cfg.id==='threads'||cfg.id==='mastodon')&&!finishPad){
+    // Once the viral pad is unlocked, the final approach becomes a stable safe zone.
+    // Random side-shifts here could move the runway out from under a committed jump.
     shiftTimer--;
     if(shiftTimer<=0){
       shiftTimer=480;
@@ -1536,17 +1538,22 @@ function update(){
   }
 
   // ── Twitter: spawn ratio bombs from top ──
-  if(cfg.id==='twitter'&&jumpCount>2&&Math.random()<.008){
+  if(cfg.id==='twitter'&&!finishPad&&jumpCount>2&&Math.random()<.008){
     hazards.push({type:'ratio',x:rand(24,W-24),y:-20,vx:(Math.random()<.5?-1:1)*rand(.6,1.4),vy:rand(1.4,2.4),r:16,rot:0,dead:false});
   }
 
-  // ── Mastodon: finish pad drifts ──
+  // ── Mastodon: final boss finish drift ──
   if(cfg.id==='mastodon'&&finishPad){
-    finishDrift+=.008;
-    finishPad.x=clamp(W/2-finishPad.w/2+Math.sin(finishDrift)*80,10,W-finishPad.w-10);
+    // Keep the boss flavor, but make the pad slow and centered so the final runway remains usable.
+    finishDrift+=.004;
+    finishPad.x=clamp(W/2-finishPad.w/2+Math.sin(finishDrift)*34,24,W-finishPad.w-24);
   }
 
   // ── Clean up ──
+  if(finishPad){
+    // The viral approach is earned: remove random chaos above/around it so the level ends on skill, not RNG.
+    hazards=hazards.filter(h=>h.dead||h.y>finishPad.y+260);
+  }
   hazards=hazards.filter(h=>!h.dead&&h.y<H+80);
   // On TikTok, also cull hazards that have scrolled far above the player (big FYP launch)
   if(cfg.id==='tiktok')hazards=hazards.filter(h=>h.y>player.y-H*.6);
@@ -1564,6 +1571,16 @@ function update(){
     // YouTube's demonetization wave is screen-space pressure, not world geometry.
     // Do not add camera lift here: doing so drops/resets the wave whenever the camera scrolls.
     cam+=lift;maxAlt=Math.max(maxAlt,cam);
+  }
+
+  // ── Viral pad safety net ──
+  if(finishPad&&!finishPad.broken){
+    const tooHigh=player.y+player.h<finishPad.y-92;
+    const nearFinishX=player.x+player.w>finishPad.x-34&&player.x<finishPad.x+finishPad.w+34;
+    if(tooHigh&&nearFinishX){
+      player.y=finishPad.y-92-player.h;
+      player.vy=Math.max(player.vy,2.2);
+    }
   }
 
   // ── Spawn more platforms upward ──
@@ -1593,8 +1610,9 @@ function update(){
   platforms=platforms.filter(p=>p.y<H+120&&!(p.broken&&p.y>H));
 
   // ── HUD updates ──
-  $('progressBar').style.width=Math.min(100,jumpCount/cfg.goal*100)+'%';
-  $('reachTag').textContent=hijackTimer>0?'💃 CONTROLS REVERSED':'Reach: '+Math.floor(maxAlt/10).toLocaleString();
+  const progressPct=Math.min(100,jumpCount/cfg.goal*100);
+  $('progressBar').style.width=progressPct+'%';
+  $('reachTag').textContent=hijackTimer>0?'💃 CONTROLS REVERSED':finishPad?'Viral pad unlocked ✨':'Reach: '+Math.floor(maxAlt/10).toLocaleString();
   const ce=$('comboTag');ce.textContent='Combo ×'+combo;ce.classList.toggle('show',combo>=3);
 
   // ── POST button danger pulse ──
