@@ -9,7 +9,7 @@
 <title>FEED VELOCITY — Jump the Algorithm</title>
 <meta name="description" content="A browser game about managing social media. 10 platforms. Each mechanic mirrors how that algorithm actually works. Built by Ben Campbell.">
 <meta property="og:type" content="website">
-<!-- TODO: Confirm canonical launch URL; JS currently uses https://feed-velocity.netlify.app/. -->
+<!-- TODO: Confirm canonical launch URL; JS currently uses https://feedvelocity.netlify.app/. -->
 <meta property="og:url" content="https://feedvelocity.netlify.app/">
 <meta property="og:title" content="FEED VELOCITY — Jump the Algorithm">
 <meta property="og:description" content="10 platforms. Zero mercy. Each level is mechanically designed around how that algorithm actually behaves.">
@@ -115,9 +115,9 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   box-shadow:0 0 14px rgba(0,229,160,.65);
 }
 #mechHint{position:absolute;top:max(70px,calc(env(safe-area-inset-top)+60px));left:14px;right:14px;text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.35;pointer-events:none}
-#shootZone{display:none;position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto}
+#shootZone{display:none;position:absolute;bottom:max(28px,calc(env(safe-area-inset-bottom) + 12px));left:50%;transform:translateX(-50%);pointer-events:auto}
 #hud.show #shootZone{display:flex}
-#shootBtn{width:80px;height:36px;border-radius:18px;border:1px solid rgba(240,242,255,.22);background:rgba(10,13,22,.5);color:rgba(240,242,255,.7);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;letter-spacing:.06em;backdrop-filter:blur(4px);touch-action:auto;transition:all .12s}
+#shootBtn{width:80px;height:36px;border-radius:18px;border:1px solid rgba(240,242,255,.22);background:rgba(10,13,22,.5);color:rgba(240,242,255,.7);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;letter-spacing:.06em;backdrop-filter:blur(4px);touch-action:none;transition:all .12s}
 #shootBtn:active{background:rgba(0,229,160,.15);border-color:var(--viral);color:var(--paper)}
 #shootBtn.danger{background:rgba(255,77,109,.25);border-color:var(--engage);color:#fff;animation:dangerPulse .7s ease-in-out infinite alternate}
 @keyframes dangerPulse{from{transform:scale(1)}to{transform:scale(1.07)}}
@@ -132,6 +132,14 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 /* ── SCREEN FLASH ── */
 #screenFlash{position:fixed;inset:0;background:#fff;z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
 #screenFlash.flash{opacity:.7;transition:opacity .05s}
+#comboFlash{position:fixed;inset:0;z-index:81;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(46px,16vw,96px);font-weight:700;letter-spacing:.06em;text-shadow:0 0 24px currentColor,0 6px 0 rgba(0,0,0,.45);opacity:0;pointer-events:none}
+#comboFlash.pop{animation:comboPop .72s ease-out both}
+@keyframes comboPop{0%{opacity:0;transform:scale(.45) rotate(-8deg)}18%{opacity:1;transform:scale(1.12) rotate(3deg)}55%{opacity:.9;transform:scale(.96) rotate(0)}100%{opacity:0;transform:scale(1.35) rotate(0)}}
+#practiceGuide{position:fixed;inset:0;z-index:82;pointer-events:none;display:none}
+#practiceGuide.show{display:block}
+.practice-bubble{position:absolute;transform:translate(-50%,-50%);max-width:220px;padding:10px 14px;border-radius:12px;background:rgba(10,13,22,.88);border:1px solid currentColor;box-shadow:0 0 24px rgba(0,229,160,.18);font-family:var(--display);font-size:12px;line-height:1.35;text-align:center;color:var(--paper);animation:bubbleFade 3s ease-in-out both}
+.practice-bubble b{color:var(--viral)}
+@keyframes bubbleFade{0%,100%{opacity:0;transform:translate(-50%,-44%) scale(.92)}15%,82%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 @keyframes crownFloat{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-8px) rotate(4deg)}}
 @keyframes cellPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
 
@@ -284,7 +292,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
     <div class="how-row"><span>📱</span><p><b>Mobile:</b> hold or tap the left/right side of the screen to steer.</p></div>
     <div class="how-row"><span>⌨️</span><p><b>Desktop:</b> use A/D or arrow keys to steer.</p></div>
     <div class="how-row"><span>🧱</span><p>Land on post platforms to jump. Wrap around screen edges.</p></div>
-    <div class="how-row"><span>🚀</span><p>Tap <b>POST</b> or press <b>Space</b> to fire.</p></div>
+    <div class="how-row"><span>🚀</span><p>Tap <b>POST</b> at bottom center or press <b>Space</b> to fire. The POST zone will not trigger steering.</p></div>
     <div class="how-row"><span>✨</span><p>Reach the <b>VIRAL POST</b> pad to clear the level.</p></div>
     <div class="how-row"><span>🧠</span><p>Read or save strategy cards between levels.</p></div>
   </div>
@@ -438,6 +446,8 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 </div>
 
 <div id="screenFlash"></div>
+<div id="comboFlash"></div>
+<div id="practiceGuide"></div>
 <div id="toast"></div>
 
 <script>
@@ -447,7 +457,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
    ===================================================================== */
 
 const W=390,H=680;
-const GAME_URL='https://feed-velocity.netlify.app/';
+const GAME_URL='https://feedvelocity.netlify.app/';
 const cvs=document.getElementById('game');
 const ctx=cvs.getContext('2d');
 let viewScale=1;
@@ -1017,6 +1027,23 @@ function sndClick(){beep(600,.04,'square',.022);}
 function sndShift(){beep(180,.12,'triangle',.035);}
 function sndHit(){beep(320,.07,'sawtooth',.05);}
 
+function sndCombo(n){
+  const steps={6:740,9:880,12:1040,15:1240,18:1480};
+  const base=steps[n]||740+n*35;
+  [base,base*1.25,base*1.5].forEach((f,i)=>setTimeout(()=>beep(f,.08,'triangle',.045+i*.006),i*55));
+}
+function triggerComboFlash(n){
+  const colors={6:'#ffd700',9:'#00e5a0',12:'#5b8dff',15:'#ff4dbe',18:'#ffffff'};
+  if(!colors[n])return;
+  const el=$('comboFlash');
+  el.textContent='×'+n;
+  el.style.color=colors[n];
+  el.classList.remove('pop');
+  void el.offsetWidth;
+  el.classList.add('pop');
+  sndCombo(n);
+}
+
 /* ─────────────────────────────────────────────
    INPUT
 ───────────────────────────────────────────── */
@@ -1024,6 +1051,8 @@ const input={dir:0,justShot:false};
 addEventListener('pointerdown',e=>{
   if(state!=='playing')return;
   if(e.target.closest('#pauseBtn')||e.target.closest('#shootBtn'))return;
+  const shootDeadZone=Math.abs(e.clientX-window.innerWidth/2)<=120&&e.clientY>=window.innerHeight*.78;
+  if(shootDeadZone)return;
   input.dir=e.clientX<window.innerWidth/2?-1:1;
 });
 addEventListener('pointerup',()=>input.dir=0);
@@ -1194,7 +1223,7 @@ function mkPlatform(y,cfg,wide=false){
   // LinkedIn humble brag
   let humbleBrag=false;
   if(cfg.id==='linkedin'&&!wide&&Math.random()<.16){humbleBrag=true;type='solid';}
-  // TikTok platform disappears — timer starts inactive
+  // TikTok platform disappears — timer starts at spawn
   let tiktokTimer=null;
   // FYP pad — rare, wide, permanent, gold
   let isFYP=false;
@@ -1207,8 +1236,8 @@ function mkPlatform(y,cfg,wide=false){
   return{x,y,w:isFYP?clamp(w+40,110,130):w,h:13,type,vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
     spring:!wide&&!sponsor&&!humbleBrag&&!isFYP&&Math.random()<cfg.spring,
     broken:false,sponsor,humbleBrag,subreddit,isFYP,
-    tiktokTimer:hasTiktokTimer?0:null,
-    tiktokActive:false,
+    tiktokTimer:hasTiktokTimer?180:null,
+    tiktokActive:hasTiktokTimer,
     ghost,ghostPhase,ghostVis:1,ghostSolid:true,
     pinned:false};
 }
@@ -1312,6 +1341,26 @@ function addFinalRunway(cfg,topY){
   }
 }
 
+
+function showPracticeGuide(){
+  if(localStorage.getItem('fv_tips_shown'))return;
+  const guide=$('practiceGuide');
+  const tips=[
+    {html:'<b>STEER</b><br>Hold left or right side.',left:28,top:64},
+    {html:'<b>LAND</b><br>Bounce on post platforms.',left:50,top:48},
+    {html:'<b>SHOOT</b><br>POST is bottom center.',left:50,top:84},
+    {html:'<b>VIRAL PAD</b><br>Reach it to clear the level.',left:55,top:24},
+  ];
+  let i=0;guide.classList.add('show');
+  const next=()=>{
+    if(i>=tips.length){guide.classList.remove('show');guide.innerHTML='';localStorage.setItem('fv_tips_shown','true');return;}
+    const tip=tips[i++];
+    guide.innerHTML=`<div class="practice-bubble" style="left:${tip.left}%;top:${tip.top}%">${tip.html}</div>`;
+    setTimeout(next,3000);
+  };
+  next();
+}
+
 function startLevel(n){
   level=n;
   const cfg=getCfg();
@@ -1356,6 +1405,7 @@ function startLevel(n){
   toastQ.length=0;toastBusy=false;clearTimeout(_toastTm);$('toast').classList.remove('show');
 
   setState('playing');
+  if(cfg.practice)showPracticeGuide();
 }
 
 /* ─────────────────────────────────────────────
@@ -1397,17 +1447,11 @@ function update(){
   if(player.x>W)player.x=-player.w;
   if(player.x<-player.w)player.x=W;
 
-  // ── TikTok: platform timers — only countdown when on screen ──
+  // ── TikTok: platform timers — countdown starts at spawn ──
   if(cfg.id==='tiktok'){
     for(const p of platforms){
       if(p.tiktokTimer===null||p.broken||p.type==='finish'||p.isFYP)continue;
-      const onScreen=p.y>-60&&p.y<H+60;
-      if(onScreen&&!p.tiktokActive){
-        // Platform just entered screen — start its countdown (2-3.5 seconds at 60fps)
-        p.tiktokTimer=130+Math.floor(Math.random()*80);
-        p.tiktokActive=true;
-      }
-      if(p.tiktokActive&&p.tiktokTimer>0){
+      if(p.tiktokTimer>0){
         p.tiktokTimer--;
         if(p.tiktokTimer<=0){p.broken=true;jet(p.x+p.w/2,p.y,'#69c9d0',4);}
       }
@@ -1487,7 +1531,7 @@ function update(){
           highestLandedRank=p.progressRank;
           jumpCount++;
         }
-        combo++;if(combo&&combo%6===0)toast('🔥 '+combo+' COMBO',900);
+        combo++;if(combo&&combo%6===0)toast('🔥 '+combo+' COMBO',900);triggerComboFlash(combo);
       }
     }
   }
@@ -1794,18 +1838,18 @@ function drawPost(p,cfg,t){
     const bars=Math.round(p.ghostVis*3);
     for(let i=0;i<3;i++){c.fillStyle=i<bars?cfg.color:'rgba(255,255,255,.15)';c.fillRect(p.x+p.w-16+i*5,p.y+4,3,6+i*2);}
   }
-  // TikTok timer bar — only show when active and counting down
-  if(p.tiktokTimer!==null&&p.tiktokActive&&p.tiktokTimer>0){
-    const maxT=210;// matches spawn max
+  // TikTok timer bar — visible from spawn and counting down
+  if(p.tiktokTimer!==null&&p.tiktokTimer>0){
+    const maxT=180;
     const frac=p.tiktokTimer/maxT;
     const danger=frac<.3;
     // Flash red when almost gone
     if(danger&&Math.floor(performance.now()/120)%2===0){
       c.fillStyle='rgba(255,0,80,.18)';c.fillRect(p.x,p.y,p.w,p.h);
     }
-    c.fillStyle='rgba(0,0,0,.35)';c.fillRect(p.x,p.y+p.h-3,p.w,3);
+    c.fillStyle='rgba(0,0,0,.35)';c.fillRect(p.x,p.y+p.h-5,p.w,5);
     c.fillStyle=frac>.5?cfg.color:frac>.25?'#ff8800':'#ff0050';
-    c.fillRect(p.x,p.y+p.h-3,p.w*frac,3);
+    c.fillRect(p.x,p.y+p.h-5,p.w*frac,5);
   }
   // FYP badge
   if(p.isFYP){
