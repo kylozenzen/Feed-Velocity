@@ -9,6 +9,7 @@
 <title>FEED VELOCITY — Jump the Algorithm</title>
 <meta name="description" content="A browser game about managing social media. 10 platforms. Each mechanic mirrors how that algorithm actually works. Built by Ben Campbell.">
 <meta property="og:type" content="website">
+<!-- TODO: Confirm canonical launch URL; JS currently uses https://feed-velocity.netlify.app/. -->
 <meta property="og:url" content="https://feedvelocity.netlify.app/">
 <meta property="og:title" content="FEED VELOCITY — Jump the Algorithm">
 <meta property="og:description" content="10 platforms. Zero mercy. Each level is mechanically designed around how that algorithm actually behaves.">
@@ -35,18 +36,20 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--ink);font-family:var(--mono);color:var(--paper);touch-action:manipulation;user-select:none;-webkit-user-select:none}
-body{background:#050709;}
+body{background:radial-gradient(circle at 50% 20%,#111a3f 0,#050709 55%,#020308 100%);}
 /* The animated menu art is rendered inside the fixed 390×680 canvas shell.
    Keep the page chrome plain so desktop gutters never impersonate gameplay. */
-#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
-canvas{display:block}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#stage:before{content:"";position:absolute;width:min(430px,100vw);height:min(740px,100vh);border:1px solid rgba(91,141,255,.18);box-shadow:0 0 70px rgba(91,141,255,.18),inset 0 0 45px rgba(0,229,160,.05);border-radius:18px;pointer-events:none}
+canvas{display:block;border-radius:14px;box-shadow:0 18px 80px rgba(0,0,0,.55)}
 
 /* ── OVERLAYS ── */
 .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px 20px;text-align:center;background:rgba(10,13,22,.94);backdrop-filter:blur(12px);z-index:10;overflow-y:auto}
 .overlay.hidden{display:none}
 .eyebrow{font-size:10px;letter-spacing:.4em;color:var(--viral);text-transform:uppercase;margin-bottom:-4px}
 .sub{font-size:12px;opacity:.7;max-width:300px;line-height:1.65}
-.btn{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);border:none;padding:13px 28px;min-width:200px;cursor:pointer;border-radius:4px;box-shadow:0 4px 0 rgba(0,0,0,.6);transition:transform .06s,box-shadow .06s;flex-shrink:0}
+.btn{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);border:none;padding:13px 28px;min-width:200px;cursor:pointer;border-radius:6px;box-shadow:0 4px 0 rgba(0,0,0,.6),0 0 24px rgba(240,242,255,.08);transition:transform .06s,box-shadow .06s,filter .12s;flex-shrink:0;touch-action:manipulation}
+.btn:hover{filter:brightness(1.08)}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.6)}
 .btn.accent{background:var(--engage);color:#fff}
 .btn.viral{background:var(--viral);color:var(--ink)}
@@ -109,6 +112,7 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   background:linear-gradient(90deg,var(--schedule),var(--viral),var(--engage));
   border-radius:3px;
   transition:width .25s;
+  box-shadow:0 0 14px rgba(0,229,160,.65);
 }
 #mechHint{position:absolute;top:max(70px,calc(env(safe-area-inset-top)+60px));left:14px;right:14px;text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.35;pointer-events:none}
 #shootZone{display:none;position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto}
@@ -196,9 +200,14 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
 .how-row span{font-size:18px;width:26px;text-align:center;flex-shrink:0;margin-top:1px}
 
 #menuScreen{
-  background:rgba(10,13,22,.42);
+  background:rgba(10,13,22,.32);
   backdrop-filter:none;
+  padding:max(16px,env(safe-area-inset-top)) 18px max(16px,env(safe-area-inset-bottom));
 }
+.platform-icon-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:100%;max-width:230px;margin-top:-4px}
+.platform-icon-grid img{width:26px;height:26px;filter:drop-shadow(0 0 8px rgba(91,141,255,.35));opacity:.9}
+.beta-line{font-size:9px;line-height:1.45;letter-spacing:.08em;color:rgba(240,242,255,.55);border:1px solid rgba(0,229,160,.18);background:rgba(0,229,160,.05);border-radius:999px;padding:6px 10px}
+@media (max-height:640px){#mainTitle{font-size:42px}.overlay{gap:8px;padding:14px}.ben-card,.card{padding:12px}.platform-icon-grid{display:none}}
   
 </style>
 </head>
@@ -231,8 +240,10 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
         <span class="word-vel">VELOCITY</span>
       </div>
       <div style="height:34px;display:flex;align-items:center;justify-content:center;width:100%">
-        <p id="menuTagline" style="font-size:11px;opacity:.45;text-align:center;line-height:1.5;max-width:260px"></p>
+        <p id="menuTagline" style="font-size:11px;opacity:.55;text-align:center;line-height:1.5;max-width:260px"></p>
       </div>
+      <div class="platform-icon-grid" id="menuPlatformGrid" aria-label="Playable platforms"></div>
+      <p class="beta-line">Built fast. May break. The algorithm does too.</p>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
       <button class="btn accent" id="startBtn" style="width:100%">Start Posting</button>
@@ -270,12 +281,12 @@ h2{font-family:var(--display);font-size:clamp(18px,5vw,28px);letter-spacing:.08e
   <div class="eyebrow">Quick start</div>
   <h2>HOW TO PLAY</h2>
   <div class="card" style="display:grid;gap:11px;text-align:left">
-    <div class="how-row"><span>↔️</span><p>Hold left/right to steer. Wrap around edges.</p></div>
-    <div class="how-row"><span>🧱</span><p>Land on posts to bounce up. Each platform = a post.</p></div>
-    <div class="how-row"><span>🚀</span><p>Tap POST to fire back at trolls, bots, and bad takes.</p></div>
-    <div class="how-row"><span>✨</span><p>Reach the VIRAL pad to clear the level.</p></div>
-    <div class="how-row"><span>🧠</span><p>Between levels, grab an optional strategy card — or skip straight to the next platform.</p></div>
-    <div class="how-row"><span>⚠️</span><p>Every platform has its own chaos. Read the intro.</p></div>
+    <div class="how-row"><span>📱</span><p><b>Mobile:</b> hold or tap the left/right side of the screen to steer.</p></div>
+    <div class="how-row"><span>⌨️</span><p><b>Desktop:</b> use A/D or arrow keys to steer.</p></div>
+    <div class="how-row"><span>🧱</span><p>Land on post platforms to jump. Wrap around screen edges.</p></div>
+    <div class="how-row"><span>🚀</span><p>Tap <b>POST</b> or press <b>Space</b> to fire.</p></div>
+    <div class="how-row"><span>✨</span><p>Reach the <b>VIRAL POST</b> pad to clear the level.</p></div>
+    <div class="how-row"><span>🧠</span><p>Read or save strategy cards between levels.</p></div>
   </div>
   <button class="btn viral" id="practiceBtn">Practice Run</button>
   <button class="btn accent" id="howStartBtn">Start Game</button>
@@ -1057,6 +1068,8 @@ const TAGLINES=[
 let taglineIdx=0;
 $('menuTagline').textContent=TAGLINES[0];
 setInterval(()=>{taglineIdx=(taglineIdx+1)%TAGLINES.length;$('menuTagline').textContent=TAGLINES[taglineIdx];},3200);
+const mpg=$('menuPlatformGrid');
+if(mpg)mpg.innerHTML=PLATFORMS.map(p=>`<img src="${getLogoUrl(p.id)}" alt="${p.name}" title="${p.name}">`).join('');
 
 /* ─────────────────────────────────────────────
    STARS
@@ -1070,6 +1083,7 @@ makeStars();
 ───────────────────────────────────────────── */
 let state='menu';
 let level=0;
+let introReturn='menu';
 // game objects
 let player,platforms,particles,hazards,bullets;
 // per-level state
@@ -1916,7 +1930,7 @@ function jet(x,y,color,n=6){
    GAME FLOW
 ───────────────────────────────────────────── */
 const SCREENS=['menuScreen','howScreen','levelSelectScreen','introScreen','pauseScreen','failScreen','clearScreen','winScreen','aboutScreen'];
-function show(id){SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>$(s).classList.add('hidden'));if(id==='menuScreen')updateSavedBadge();}
+function show(id){SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));if(!id)SCREENS.forEach(s=>$(s).classList.add('hidden'));if(id==='menuScreen')updateSavedBadge();input.dir=0;}
 function setState(s){state=s;$('hud').classList.toggle('show',s==='playing');if(s==='playing')show(null);}
 
 function pauseGame(){
@@ -2047,7 +2061,7 @@ function buildLevelGrid(){
 <span class="lvl-num">${i+1}</span>
 <span class="lvl-name">${cfg.id}</span>
 ${best?`<span class="lvl-name" style="color:var(--gold)">☆ ${Math.floor(best/10).toLocaleString()}</span>`:''}`;
-    if(unlocked)node.addEventListener('pointerup',e=>{e.stopPropagation();sndClick();openIntro(i);});
+    if(unlocked)node.addEventListener('pointerup',e=>{e.stopPropagation();sndClick();openIntro(i,'levelselect');});
     grid.appendChild(node);
   });
 }
@@ -2055,7 +2069,8 @@ ${best?`<span class="lvl-name" style="color:var(--gold)">☆ ${Math.floor(best/1
 /* ─────────────────────────────────────────────
    PLATFORM INTRO SCREEN
 ───────────────────────────────────────────── */
-function openIntro(n){
+function openIntro(n,from){
+  if(from)introReturn=from;
   level=n;const cfg=getCfg();
   $('introEyebrow').textContent=`Platform ${n+1} of ${PLATFORMS.length}`;
   $('introName').textContent=cfg.name;
@@ -2079,27 +2094,27 @@ function openIntro(n){
 /* ─────────────────────────────────────────────
    BUTTON WIRING
 ───────────────────────────────────────────── */
-$('startBtn').onclick=()=>{sndClick();openIntro(0);};
+$('startBtn').onclick=()=>{sndClick();openIntro(0,'menu');};
 $('howBtn').onclick=()=>{sndClick();state='how';show('howScreen');};
 $('practiceBtn').onclick=()=>{sndClick();startLevel(-1);};
-$('howStartBtn').onclick=()=>{sndClick();openIntro(0);};
+$('howStartBtn').onclick=()=>{sndClick();openIntro(0,'how');};
 $('howBackBtn').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('lvlSelBtn').onclick=()=>{sndClick();buildLevelGrid();state='levelselect';show('levelSelectScreen');};
 $('aboutBtn').onclick=()=>{sndClick();state='about';show('aboutScreen');};
 $('aboutBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
-$('feedBtn').onclick=()=>{openStoriesPanel(()=>{state='menu';show('menuScreen');},'saved');};
+$('feedBtn').onclick=()=>{sndClick();openStoriesPanel(()=>{state='menu';show('menuScreen');},'feed');};
 $('lvlSelBack').onclick=()=>{sndClick();state='menu';show('menuScreen');};
 $('introGo').onclick=()=>{sndClick();startLevel(level);};
-$('introBack').onclick=()=>{sndClick();state='levelselect';buildLevelGrid();show('levelSelectScreen');};
+$('introBack').onclick=()=>{sndClick();if(introReturn==='levelselect'){state='levelselect';buildLevelGrid();show('levelSelectScreen');}else{state='menu';show('menuScreen');}};
 $('pauseBtn').onclick=()=>{if(state==='playing')pauseGame();};
 $('resumeBtn').onclick=()=>{show(null);setState('playing');};
-$('pauseFeedBtn').onclick=()=>openStoriesPanel(()=>{show(null);setState('playing');},'saved');
+$('pauseFeedBtn').onclick=()=>openStoriesPanel(()=>{show(null);setState('playing');},'feed');
 $('pauseMenuBtn').onclick=()=>{state='menu';$('hud').classList.remove('show');show('menuScreen');};
-$('retryBtn').onclick=()=>{sndClick();openIntro(level);};
+$('retryBtn').onclick=()=>{sndClick();openIntro(level,'fail');};
 $('failMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('nextBtn').onclick=()=>{sndClick();if(level<0)openIntro(0);else openIntro(level+1);};
+$('nextBtn').onclick=()=>{sndClick();if(level<0)openIntro(0,'menu');else openIntro(level+1,'clear');};
 $('clearMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
-$('againBtn').onclick=()=>{sndClick();openIntro(0);};
+$('againBtn').onclick=()=>{sndClick();openIntro(0,'menu');};
 $('winMenuBtn').onclick=()=>{state='menu';show('menuScreen');};
 $('shootBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(state==='playing')shoot();});
 
