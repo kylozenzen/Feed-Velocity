@@ -1193,6 +1193,7 @@ initMenuBg();
 ───────────────────────────────────────────── */
 const BASE_GRAV=.37;
 const BASE_JUMP=-13.2;
+const TIKTOK_TIMER_MAX=360;
 const SPRING_V=-20;
 const MOVE_ACC=.52;
 const MAX_VX=6.0;
@@ -1236,7 +1237,7 @@ function mkPlatform(y,cfg,wide=false){
   return{x,y,w:isFYP?clamp(w+40,110,130):w,h:13,type,vx:type==='moving'?(Math.random()<.5?-1:1)*rand(1.2,2.0):0,
     spring:!wide&&!sponsor&&!humbleBrag&&!isFYP&&Math.random()<cfg.spring,
     broken:false,sponsor,humbleBrag,subreddit,isFYP,
-    tiktokTimer:hasTiktokTimer?180:null,
+    tiktokTimer:hasTiktokTimer?TIKTOK_TIMER_MAX:null,
     tiktokActive:hasTiktokTimer,
     ghost,ghostPhase,ghostVis:1,ghostSolid:true,
     pinned:false};
@@ -1840,8 +1841,7 @@ function drawPost(p,cfg,t){
   }
   // TikTok timer bar — visible from spawn and counting down
   if(p.tiktokTimer!==null&&p.tiktokTimer>0){
-    const maxT=180;
-    const frac=p.tiktokTimer/maxT;
+    const frac=p.tiktokTimer/TIKTOK_TIMER_MAX;
     const danger=frac<.3;
     // Flash red when almost gone
     if(danger&&Math.floor(performance.now()/120)%2===0){
